@@ -45,12 +45,14 @@ function Promise(fn){
 Promise.prototype.then = function(onFulfilled, onRejected){
     var promise = this;
     return new Promise(function (resolve, reject) {
+        // 所有的then实例的promise都会添加这两个方法，如果得到的是函数就执行，不是函数则执行下一个then中的回调函数
         function success(value) {
             var ret = typeof onFulfilled === 'function' && onFulfilled(value) || value;
             resolve(ret);
         }
         function erro(reason) {
             reason = typeof onRejected === 'function' && onRejected(reason) || reason;
+            console.log(onRejected, reason);
             reject(reason);
         }
 
