@@ -9,9 +9,7 @@ function Promise(fn){
         resolveCall = onFulfilled;
     };
     function resolve(v){
-        setTimeout(_ => {
-            callback(v);
-        })
+        callback(v);
     }
     fn(resolve);
 }

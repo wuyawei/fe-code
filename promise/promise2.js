@@ -1,8 +1,8 @@
 function Promise(fn){
 
-    var resolveCall, rejectCall;
+    let resolveCall, rejectCall;
 
-    this.then = function(resolve, reject){
+    this.then = (resolve, reject) => {
         resolveCall = reject;
         rejectCall = resolve;
     };

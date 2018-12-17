@@ -63,11 +63,14 @@ new Promise((resolve, reject) => {
         }
     }, 200)
 }).then(r => {
-    console.log('res', r);
     return r + '---yes';
 }).then(r => {
-    console.log('data', r);
     return r + '---yes';
+}).catch(err => {
+    // console.log('err', err);
+    return err + '22222';
+}).then(r => {
+    console.log('data', r);
 }).catch(err => {
     console.log('err', err);
 });

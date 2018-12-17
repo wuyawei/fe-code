@@ -77,7 +77,7 @@ let getCatch = new Promise((resolve, reject) => {
     reject('reject--->');
 });
 
-new Promise((resolve, reject) => {
+let getInfo = new Promise((resolve, reject) => {
     setTimeout(_ => {
         let ran = Math.random();
         console.log(ran);
@@ -86,18 +86,13 @@ new Promise((resolve, reject) => {
         } else {
             reject('fail');
         }
-    }, 200)
+    }, 200);
+});
+getInfo.then(r => {
+    console.log(r);
+    return r + '----> Vchat';
 }).then(r => {
-    console.log('res', r);
-    // return getCatch;
-}).then(data => {
-    return data + '已经';
+    console.log(r);
 }).catch(err => {
-    console.log(err + 'oh 下线了');
-}).then(data => {
-    return data + '上线了';
-}).then(data => {
-    console.log(data);
-}).catch(err => {
-    console.log(err + 'oh 下线了');
+    console.log(err);
 });

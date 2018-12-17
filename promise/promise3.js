@@ -4,7 +4,7 @@
 
 function Promise(fn){
 
-    var promise = this;
+    let promise = this;
     promise.status = 'PENDING';
     promise.value;
     promise.reason;
@@ -35,18 +35,18 @@ function Promise(fn){
     };
     if(promise.status === 'PENDING') {
         function resolve(value){
-            promise.status = 'FULFILLED';
-            promise.value = value;
             setTimeout(_ => {
+                promise.status = 'FULFILLED';
+                promise.value = value;
                 promise.resolves.forEach(fn => {
                     promise.value = fn(promise.value) || value;
                 });
             });
         }
         function reject(reason){
-            promise.status = 'REJECTED';
-            promise.reason = reason;
             setTimeout(_ => {
+                promise.status = 'REJECTED';
+                promise.reason = reason;
                 promise.rejects.forEach(fn => {
                     promise.reason = fn(promise.reason) || reason;
                 });
