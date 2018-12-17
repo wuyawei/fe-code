@@ -2,35 +2,57 @@
  * Created by wyw on 2018/12/16.
  */
 
-var PENDING = 0, FULFILLED = 1, REJECTED = 2;
-var isFunction = function(obj){
-    return 'function' === typeof obj;
-};
 function Promise(fn){
 
-    var resolveCall, rejectCall, promise = this;
-    promise.status = PENDING;
+    var promise = this;
+    promise.status = 'PENDING';
+    promise.value;
+    promise.reason;
+    promise.resolves = [];
+    promise.rejects = [];
 
     this.then = function(onFulfilled, onRejected){
-        void(isFunction(onFulfilled) ? resolveCall = onFulfilled :null);
-        void(isFunction(onRejected) ? rejectCall = onRejected :null);
+        // resolveCall = onFulfilled; // 后续的函数会把第一次附的值覆盖
+        // rejectCall = onRejected;
+        function success (value) {
+            return typeof onFulfilled === 'function' ? onFulfilled(value) : value;
+        }
+        function erro (reason) {
+            return typeof onRejected === 'function' ? onRejected(reason) : reason;
+        }
+        if (promise.status === 'PENDING') {
+            promise.resolves.push(success);
+            promise.rejects.push(erro);
+        }else if(promise.status === 'FULFILLED'){ // 状态改变后的then操作，立刻执行
+            success(promise.value);
+        }else if(promise.status === 'REJECTED'){
+            erro(promise.reason);
+        }
         return promise;
     };
     this.catch = function(onRejected){
         return this.then(null, onRejected);
     };
-    if(promise.status === PENDING) {
-        setTimeout(_ => {
-            function resolve(v){
-                promise.status = FULFILLED;
-                resolveCall(v);
-            }
-            function reject(v){
-                promise.status = REJECTED;
-                rejectCall(v);
-            }
-            fn(resolve, reject);
-        });
+    if(promise.status === 'PENDING') {
+        function resolve(value){
+            promise.status = 'FULFILLED';
+            promise.value = value;
+            setTimeout(_ => {
+                promise.resolves.forEach(fn => {
+                    promise.value = fn(promise.value) || value;
+                });
+            });
+        }
+        function reject(reason){
+            promise.status = 'REJECTED';
+            promise.reason = reason;
+            setTimeout(_ => {
+                promise.rejects.forEach(fn => {
+                    promise.reason = fn(promise.reason) || reason;
+                });
+            });
+        }
+        fn(resolve, reject);
     }
 }
 
@@ -46,6 +68,10 @@ new Promise((resolve, reject) => {
     }, 200)
 }).then(r => {
     console.log('res', r);
+    return r + '---yes';
+}).then(r => {
+    console.log('data', r);
+    return r + '---yes';
 }).catch(err => {
     console.log('err', err);
 });

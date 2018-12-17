@@ -1,19 +1,23 @@
 function Promise(fn){
 
-    var callback;
+    var resolveCall, rejectCall;
 
-    this.then = function(done){
-        callback = done;
+    this.then = function(resolve, reject){
+        resolveCall = reject;
+        rejectCall = resolve;
     };
-    setTimeout(_ => {
-        function resolve(v){
-            callback(v);
-        }
-        function reject(v){
-            callback(v);
-        }
-        fn(resolve, reject);
-    });
+    function resolve(v){
+        setTimeout(_ => {
+            resolveCall(v);
+        });
+    }
+    function reject(v){
+        setTimeout(_ => {
+            rejectCall(v);
+        });
+    }
+
+    fn(resolve, reject);
 }
 
 new Promise((resolve, reject) => {
@@ -26,6 +30,8 @@ new Promise((resolve, reject) => {
             reject('fail');
         }
     }, 200)
-}).then(r => {
-    console.log(r);
+}).then(resolve => {
+    console.log(resolve);
+},reject => {
+    console.log(reject);
 });
