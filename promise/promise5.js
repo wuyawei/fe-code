@@ -10,10 +10,10 @@ function Promise(Fn){
 
     this.then = (onFulfilled, onRejected) => {
         function success (value) {
-            return typeof onFulfilled === 'function' ? onFulfilled(value) : value;
+            return typeof onFulfilled === 'function' && onFulfilled(value) || value;
         }
         function erro (reason) {
-            return typeof onRejected === 'function' ? onRejected(reason) : reason;
+            return typeof onRejected === 'function' && onRejected(reason) || reason;
         }
 
         if (this.status === 'PENDING') {

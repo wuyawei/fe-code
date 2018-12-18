@@ -16,7 +16,6 @@ function Promise(Fn){
                     queue = this[f ? 'resolves' : 'rejects'];
                 queue.forEach(fn => val = fn(val) || val);
                 this[f ? 'value' : 'reason'] = val;
-                console.log(this);
             });
         };
 
@@ -39,12 +38,20 @@ function Promise(Fn){
 Promise.prototype.then = function(onFulfilled, onRejected) {
     let promise = this;
     return new Promise((resolve, reject) => {
-        function success (value) {
-            let val = typeof onFulfilled === 'function' ? onFulfilled(value) : value;
-            resolve(val);
+        function success(value) {
+            let val = typeof onFulfilled === 'function' && onFulfilled(value) || value;
+            if(val && typeof val['then'] === 'function'){ // 判断是否有then方法
+                val.then(function(value){ // 如果返回的是Promise 则直接执行得到结果后再调用后面的then方法
+                    resolve(value);
+                },function(reason){
+                    reject(reason);
+                });
+            }else{
+                resolve(val);
+            }
         }
         function erro (reason) {
-            let rea = typeof onRejected === 'function' ? onRejected(reason) : reason;
+            let rea = typeof onRejected === 'function' && onRejected(reason) || reason;
             reject(rea);
         }
         if (promise.status === 'PENDING') {
@@ -58,24 +65,32 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
     });
 };
 
-let getInfor = new Promise((resolve, reject) => {
-    setTimeout(_ => {
-        let ran = Math.random();
-        console.log(ran);
-        if (ran > 0.5) {
-            resolve('success');
-        } else {
-            reject('fail');
-        }
-    }, 200);
-}).then(resolve => {
-    console.log(resolve);
-    return resolve + '111111';
-}, reject => {
-    console.log(reject);
-    return 'erro';
-}).then(resolve => {
-    console.log(resolve);
-}, reject => {
-    console.log(reject);
+
+Promise.prototype.catch = function(onRejected){
+    return this.then(null, onRejected);
+};
+
+function getInfo(success, fail) {
+    return new Promise((resolve, reject) => {
+        setTimeout(_ => {
+            let ran = Math.random();
+            console.log(success, ran);
+            if (ran > 0.5) {
+                resolve(success);
+            } else {
+                reject(fail);
+            }
+        }, 200);
+    })
+}
+
+getInfo('Vchat', 'fail').then(res => {
+    console.log(res);
+    return getInfo('可以线上预览了', 'erro');
+}).catch(err => {
+    console.log(err);
+}).then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
 });
