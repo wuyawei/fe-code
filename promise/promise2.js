@@ -1,37 +1,23 @@
+/**
+ * Created by wyw on 2018/12/17.
+ */
 function Promise(fn){
 
-    let resolveCall, rejectCall;
+    let resolveCall = function() {console.log('我是默认的');};
 
-    this.then = (resolve, reject) => {
-        resolveCall = reject;
-        rejectCall = resolve;
+    this.then = (onFulfilled) => {
+        resolveCall = onFulfilled;
     };
     function resolve(v){
         setTimeout(_ => {
             resolveCall(v);
         });
     }
-    function reject(v){
-        setTimeout(_ => {
-            rejectCall(v);
-        });
-    }
-
-    fn(resolve, reject);
+    fn(resolve);
 }
 
 new Promise((resolve, reject) => {
-    setTimeout(_ => {
-        let ran = Math.random();
-        console.log(ran);
-        if (ran > 0.5) {
-            resolve('success');
-        } else {
-            reject('fail');
-        }
-    }, 200)
-}).then(resolve => {
-    console.log(resolve);
-},reject => {
-    console.log(reject);
+    resolve('success');
+}).then(r => {
+    console.log(r);
 });

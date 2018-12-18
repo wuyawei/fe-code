@@ -3,15 +3,13 @@
  */
 function Promise(fn){
 
-    let resolveCall;
+    let resolveCall = function() {console.log('我是默认的');};
 
     this.then = (onFulfilled) => {
         resolveCall = onFulfilled;
     };
     function resolve(v){
-        setTimeout(_ => {
-            callback(v);
-        })
+        resolveCall(v);
     }
     fn(resolve);
 }

@@ -1,76 +1,41 @@
 /**
- * Created by wyw on 2018/12/16.
+ * Created by wyw on 2018/12/17.
  */
-
 function Promise(fn){
+    this.resolves = [];
+    this.status = 'PENDING';
+    this.value;
 
-    var promise = this;
-    promise.status = 'PENDING';
-    promise.value;
-    promise.reason;
-    promise.resolves = [];
-    promise.rejects = [];
-
-    this.then = function(onFulfilled, onRejected){
-        // resolveCall = onFulfilled; // 后续的函数会把第一次附的值覆盖
-        // rejectCall = onRejected;
-        function success (value) {
-            return typeof onFulfilled === 'function' ? onFulfilled(value) : value;
+    this.then = (onFulfilled) => {
+        if (this.status === 'PENDING') {
+            this.resolves.push(onFulfilled);
+        } else if (this.status === 'FULFILLED') {
+            console.log('isFULFILLED');
+            onFulfilled(this.value);
         }
-        function erro (reason) {
-            return typeof onRejected === 'function' ? onRejected(reason) : reason;
-        }
-        if (promise.status === 'PENDING') {
-            promise.resolves.push(success);
-            promise.rejects.push(erro);
-        }
-        return promise;
+        return this;
     };
-    this.catch = function(onRejected){
-        return this.then(null, onRejected);
-    };
-    if(promise.status === 'PENDING') {
-        function transition (status, val) {
+    let resolve = (value) =>{
+        if (this.status === 'PENDING') {
             setTimeout(_ => {
-                promise.status = status;
-                let st = status === 'FULFILLED';
-                let queue  = promise[st ? 'resolves' : 'rejects'];
-
-                promise[st ? 'value' : 'reason'] = val;
-                queue.forEach(fn => {
-                    promise[st ? 'value' : 'reason'] = fn(promise[st ? 'value' : 'reason']) || val;
-                });
+                this.status = 'FULFILLED';
+                this.resolves.forEach(fn => value = fn(value) || value);
+                this.value = value;
             });
         }
-        function resolve(value){
-            transition('FULFILLED', value);
-        }
-        function reject(reason){
-            transition('REJECTED', reason);
-        }
-        fn(resolve, reject);
-    }
+    };
+    fn(resolve);
 }
 
-new Promise((resolve, reject) => {
-    setTimeout(_ => {
-        let ran = Math.random();
-        console.log(ran);
-        if (ran > 0.5) {
-            resolve('success');
-        } else {
-            reject('fail');
-        }
-    }, 200)
+let getInfor = new Promise((resolve, reject) => {
+    resolve('success');
 }).then(r => {
-    return r + '---yes';
-}).then(r => {
-    return r + '---yes';
-}).catch(err => {
-    // console.log('err', err);
-    return err + '22222';
-}).then(r => {
-    console.log('data', r);
-}).catch(err => {
-    console.log('err', err);
+    console.log('hahah');
 });
+setTimeout(_ => {
+    getInfor.then(r => {
+        console.log(r);
+    })
+});
+
+//现在我们在then方法中return的是他本身，这样一来所有的操作都是在一个Promise上，而Promise的状态又是不能随意转化的，所以都是以第一个Promise的状态为准

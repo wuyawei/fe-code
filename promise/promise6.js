@@ -26,24 +26,26 @@ function Promise(Fn){
         }
         return this;
     };
-    let resolve = (value) =>{
-        if (this.status === 'PENDING') {
+
+    if(this.status === 'PENDING') {
+        let transition = (status, val) => {
             setTimeout(_ => {
-                this.status = 'FULFILLED';
-                this.resolves.forEach(fn => value = fn(value) || value);
-                this.reason = value;
+                this.status = status;
+                let f = status === 'FULFILLED',
+                    queue = this[f ? 'resolves' : 'rejects'];
+                queue.forEach(fn => val = fn(val) || val);
+                this[f ? 'value' : 'reason'] = val;
             });
+        };
+
+        function resolve(value) {
+            transition('FULFILLED', value);
         }
-    };
-    let reject = (reason) =>{
-        if (this.status === 'PENDING') {
-            setTimeout(_ => {
-                this.status = 'REJECTED';
-                this.rejects.forEach(fn => reason = fn(reason) || reason);
-                this.reason = reason;
-            });
+
+        function reject(reason) {
+            transition('REJECTED', reason);
         }
-    };
+    }
     try {
         Fn(resolve, reject);
     }
@@ -64,7 +66,7 @@ let getInfor = new Promise((resolve, reject) => {
     }, 200);
 }).then(resolve => {
     console.log(resolve);
-    return 0;
+    return resolve + '111111';
 }, reject => {
     console.log(reject);
     return 'erro';
