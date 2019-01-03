@@ -1,26 +1,15 @@
-var userInfo = {};
-Object.defineProperty(userInfo, "nickName", {
+let VchatInfo = {};
+let Input = document.getElementById('input');
+let introduceDom = document.getElementById('introduce');
+Object.defineProperty(VchatInfo, "introduce", {
     get: function(){
-        return document.getElementById('nickName').innerHTML;
-    },
-    set: function(nick){
-        document.getElementById('nickName').innerHTML = nick;
-    }
-});
-Object.defineProperty(userInfo, "introduce", {
-    get: function(){
-        return document.getElementById('introduce').innerHTML;
+        return introduceDom.innerHTML;
     },
     set: function(introduce){
-        document.getElementById('introduce').innerHTML = introduce;
+        introduceDom.innerHTML = introduce;
     }
 });
-
-userInfo.nickName = "hi";
-userInfo.introduce = "vchat";
-
-let Input = document.getElementById('input');
-Input.onchange = function() {
-    console.log(11111111);
-    userInfo.introduce = Input.value;
+VchatInfo.introduce = Input.value = "vchat是一个社交聊天系统";
+Input.oninput = function() {
+    VchatInfo.introduce = Input.value;
 };
