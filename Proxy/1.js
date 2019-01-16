@@ -3,9 +3,8 @@ let ironman = {
 }
 let ironmanProxy = new Proxy(ironman.hobbies, {
     set (target, property, value) {
-        console.log(property)
         target[property] = value
-        console.log('change....')
+        console.log('change....', property, value)
         return true
     }
 })
