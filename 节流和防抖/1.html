@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button onclick="aa()">click</button>
+</body>
+<script>
+    function throttle(fn, delay) {
+        var timer = null;
+        var prev = Date.now();
+        return function() {
+            var that = this;
+            var args = [].slice.call(arguments);
+            var now = Date.now();
+            var diff = now - prev;
+            if(timer) clearTimeout(timer);
+            if(diff >= delay) {
+                fn.apply(that, args);
+                prev = now;
+            }else {
+                console.log(timer);
+                timer = setTimeout(function() {
+                    fn.apply(that, args);
+                    prev = Date.now();
+                    timer = null;
+                }, delay)
+            }
+        }
+    }
+    let aa = throttle(() => {console.log(11111)}, 1000);
+</script>
+</html>
