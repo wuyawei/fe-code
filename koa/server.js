@@ -6,6 +6,8 @@ const Koa = require('koa');
 const path = require('path');
 const koaSend = require('koa-send');
 const static = require('koa-static');
+const fs = require('fs');
+const https = require('https');
 
 // 创建一个Koa对象表示web app本身:
 const app = new Koa();
@@ -31,7 +33,15 @@ app.use(async (ctx, next) => {
 });
 
 // 在端口3001监听:
-app.listen(3000, _ => {
-    console.log('app started at port 3000...');
+/*app.listen(3001, _ => {
+    console.log('app started at port 3001...');
+});*/
+let options = {
+    key: fs.readFileSync('./privatekey.pem'),
+    cert: fs.readFileSync('./certificate.pem')
+};
+// https协议需要生成相关证书
+https.createServer(options, app.callback()).listen(3001, _ => {
+    console.log('app started at port 3001...');
 });
 // https.createServer(app.callback()).listen(3001);
