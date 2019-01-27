@@ -15,23 +15,50 @@ const app = new Koa();
 app.use(static(
     path.join( __dirname,  './public')
 ));
-// 对于任何请求，app将调用该异步函数处理请求：
+
+// logger
+
 app.use(async (ctx, next) => {
-    if (!/\./.test(ctx.request.url)) {
-        await koaSend(
-            ctx,
-            'index.html',
-            {
-                root: path.join(__dirname, './'),
-                maxage: 1000 * 60 * 60 * 24 * 7,
-                gzip: true,
-            } // eslint-disable-line
-        );
-    } else {
-        await next();
-    }
+    await next();
+    const rt = ctx.response.get('X-Response-Time');
+    console.log(`${ctx.method} ${ctx.url} - ${rt}`);
 });
 
+// x-response-time
+
+app.use(async (ctx, next) => {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    ctx.set('X-Response-Time', `${ms}ms`);
+});
+
+// response
+
+// 对于任何请求，app将调用该异步函数处理请求：
+
+app.use((ctx, next) => {
+    let query = ctx.query;
+    console.log(query);
+    ctx.body = `${query['callback']}('wuyw')`;
+    next();
+});
+
+// app.use(async (ctx, next) => {
+//     if (/\./.test(ctx.request.url)) {
+//         await koaSend(
+//             ctx,
+//             'index.html',
+//             {
+//                 root: path.join(__dirname, './'),
+//                 maxage: 1000 * 60 * 60 * 24 * 7,
+//                 gzip: true,
+//             } // eslint-disable-line
+//         );
+//     } else {
+//         await next();
+//     }
+// });
 // 在端口3001监听:
 /*app.listen(3001, _ => {
     console.log('app started at port 3001...');
