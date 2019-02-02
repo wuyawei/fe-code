@@ -39,7 +39,6 @@ app.use(async (ctx, next) => {
 
 app.use((ctx, next) => {
     let query = ctx.query;
-    console.log(query);
     ctx.body = `${query['callback']}('wuyw')`;
     next();
 });
