@@ -1,0 +1,25 @@
+{
+  "name": "server-demo",
+  "version": "1.0.0",
+  "description": "server-demo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "koa",
+    "async"
+  ],
+  "author": "wuyw",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "koa": "^2.0.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
+    "pem": "^1.14.1"
+  }
+}
