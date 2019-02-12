@@ -22,8 +22,3 @@ function debounce(fn, delay, isImmediate) {
         if(callNow) fn.apply(that, args);
     }
 }
-
-// 使用
-window.addEventListener('resize', debounce(function() {
-    console.log('防抖了');
-}, 600))

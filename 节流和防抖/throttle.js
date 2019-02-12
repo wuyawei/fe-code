@@ -5,11 +5,11 @@
  */
 function throttle(fn, delay) {
     var timer = null;
-    var prev = Date.now();
+    var prev = +new Date();
     return function() {
         var that = this;
         var args = [].slice.call(arguments);
-        var now = Date.now();
+        var now = +new Date();
         var diff = now - prev;
         if(timer) clearTimeout(timer);
         if(diff >= delay) {
@@ -24,8 +24,3 @@ function throttle(fn, delay) {
         }
     }
 }
-
-// 使用
-window.addEventListener('resize', debounce(function() {
-    console.log('节流了');
-}, 600))
