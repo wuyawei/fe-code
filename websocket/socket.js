@@ -1,10 +1,11 @@
 class Socket {
     constructor({timeout, url, onmessage}) {
         this.socketUrl = url;
-        this.timeout= timeout || 1000;
+        this.timeout= timeout || 600000;
         this.ws = null;
-        this.lockReconnect = true;
+        this.lockReconnect = false;
         this.notReconnect = false;
+        this.timeoutObj = null;
         this.onmessage = onmessage;
         this.init();
     }
@@ -48,8 +49,8 @@ class Socket {
         if(this.lockReconnect) return;
         if (this.notReconnect) return;
         this.lockReconnect = true;
+        this.init();
         setTimeout(() => {    //没连接上会一直重连，设置延迟避免请求过多
-            this.init();
             this.lockReconnect = false;
         }, 5000);
     }
