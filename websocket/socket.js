@@ -1,7 +1,7 @@
 class Socket {
-    constructor({timeout, url, onmessage}) {
+    constructor({timeout = 600000, url, onmessage}) {
         this.socketUrl = url;
-        this.timeout= timeout || 600000;
+        this.timeout= timeout;
         this.ws = null;
         this.lockReconnect = false;
         this.notReconnect = false;
