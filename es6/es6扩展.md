@@ -120,3 +120,81 @@
     'oh'.padEnd(8, 'na') // 'ohnanana'
 ```
 * 模版字符串
+> 用反引号（`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+
+``` javascript
+    let obj = {x: 1, y: 2};
+    `${obj.x + obj.y}`;
+    // "3"
+    
+    alert`123` // 标签模版
+    // 等同于
+    alert(123)
+```
+
+* es5 中常用字符串方法
+
+### 数值的扩展
+* Number.isFinite(), Number.isNaN() 
+> 它们与传统的全局方法isFinite()和isNaN()的区别在于，传统方法先调用Number()将非数值的值转为数值，再进行判断，而这两个新方法只对数值有效，Number.isFinite()对于非数值一律返回false, Number.isNaN()只有对于NaN才返回true，非NaN一律返回false。
+
+``` javascript
+    isFinite(2) // true
+    isFinite("2") // true
+    Number.isFinite(2) // true
+    Number.isFinite("2") // false
+    
+    isNaN(NaN) // true
+    isNaN("NaN") // true
+    Number.isNaN(NaN) // true
+    Number.isNaN("NaN") // false
+```
+* Math
+
+``` javascript
+    // Math.trunc()  去除一个数的小数部分，返回整数部分。
+    Math.trunc(3.1) // 3
+    Math.trunc(-3.8) // -3
+    
+    // Math.sign() 判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。
+    /*
+        参数为正数，返回+1；
+        参数为负数，返回-1；
+        参数为 0，返回0；
+        参数为-0，返回-0;
+        其他值，返回NaN。 
+    */
+    Math.sign(-2) // -1
+    Math.sign(2) // +1
+    Math.sign(0) // +0
+    Math.sign(-0) // -0
+    Math.sign(NaN) // NaN
+    
+    // Math.cbrt() 计算一个数的立方根。
+    Math.cbrt(8) // 2
+    
+    // 以下为es5方法
+    Math.sqrt(4) // 2 计算一个数的平方根。
+    Math.abs(-1) // 1 取绝对值
+    Math.ceil(1.2) // 2 向上取整
+    Math.ceil(1.2) // 2 向上取整
+    Math.max(1, 2) // 2 返回 x 和 y 中的最大值。
+    Math.min(1, 2) // 1 返回 x 和 y 中的最小值。
+    Math.pow(2, 2) // 4 回 x 的 y 次幂。
+    Math.random() // 返回 0 ~ 1 之间的随机数。
+    Math.round(2.3) // 2 四舍五入
+```
+* 指数运算符 **
+``` javascript
+    2 ** 2 // 4
+    2 ** 3 // 8
+    // 指数运算符可以与等号结合，形成一个新的赋值运算符（**=）。
+    let a = 1;
+    a **= 2;
+    // 等同于 a = a * a;
+    
+    let b = 2;
+    b **= 3;
+    // 等同于 b = b * b * b;
+```
+
