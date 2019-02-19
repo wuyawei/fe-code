@@ -37,3 +37,8 @@ console.log([...dom]);*/
 // let p = {price: 3};
 // let a = [2, 3, 5, 1].find(function(n) { return n > this.price }, p);
 // console.log(a);
+
+// let i = 0;
+// let a = i++;
+// let b = ++i;
+// console.log(a, b); // 0 2
