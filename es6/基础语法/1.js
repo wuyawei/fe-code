@@ -42,3 +42,18 @@ console.log([...dom]);*/
 // let a = i++;
 // let b = ++i;
 // console.log(a, b); // 0 2
+let obj = {
+    [Symbol.iterator]() {
+        return {
+            next: function () {
+                return {
+                    value: 'hahaha',
+                    done: false
+                };
+            }
+        };
+    }
+};
+for (let v of obj) {
+    console.log(v)
+}
