@@ -42,18 +42,47 @@ console.log([...dom]);*/
 // let a = i++;
 // let b = ++i;
 // console.log(a, b); // 0 2
-let obj = {
-    [Symbol.iterator]() {
-        return {
-            next: function () {
-                return {
-                    value: 'hahaha',
-                    done: false
-                };
-            }
-        };
+// let obj = { // 给对象添加迭代器
+//     [Symbol.iterator]() {
+//         return {
+//             next: function () {
+//                 return {
+//                     value: 'hahaha',
+//                     done: false
+//                 };
+//             }
+//         };
+//     }
+// };
+// for (let v of obj) {
+//     console.log(v)
+// }
+// let arr = [{name: 'a', id: '1'}, {name: 'a', id: '2'}];
+// let f1 = arr.every(v => {
+//    return v.id === '1';
+// });
+// let f2 = arr.some(v => {
+//     return v.id === '1';
+// });
+// let f3 = arr.filter(v => {
+//     return v.id === '1';
+// });
+// let f4 = arr.map(v => {
+//     return v.id;
+// });
+// console.log(f1,f2,f3,f4);
+
+let arr = [{name: '红烧牛肉饭', price: 29}, {name: '黄焖鸡米饭', price: 22}, {name: '农家小炒肉', price: 28}];
+let price_all = arr.reduce((prev, curr, index, arr) => {
+    return prev + curr.price;
+}, arr[0].price);
+console.log(price_all);
+
+let goods = arr.reduce((prev, curr, index, arr) => {
+    if (index === arr.length -1) {
+        return prev + curr.name;
     }
-};
-for (let v of obj) {
-    console.log(v)
-}
+    return prev + curr.name + ' + ';
+}, '您选择的商品为：');
+
+console.log(goods);
