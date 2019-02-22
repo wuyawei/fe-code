@@ -89,23 +89,61 @@
 // }
 
 // 对象的扩展
-let obj = { // es5不能在这里写[]
-    name: 'lisi',
-    age: 18
-};
-obj.name = 'lisisi';
-obj['age'] = 18;
-// [] 里可以写表达式
-let say = 'say';
-obj[say] = function(){
-    console.log(this.name);
-};
-obj.say();
+// let obj = { // es5不能在这里写[]
+//     name: 'lisi',
+//     age: 18
+// };
+// obj.name = 'lisisi';
+// obj['age'] = 18;
+// // [] 里可以写表达式
+// let say = 'say';
+// obj[say] = function(){
+//     console.log(this.name);
+// };
+// obj.say();
+//
+// let wangwu = {
+//     name: 'wangwu',
+//     [say]() {
+//         console.log(this.name);
+//     }
+// };
+// wangwu.say();
 
-let wangwu = {
-    name: 'wangwu',
-    [say]() {
-        console.log(this.name);
-    }
-};
-wangwu.say();
+// 获取对象属性的描述
+// let obj = { name: 'lisi' };
+// Object.getOwnPropertyDescriptor(obj, 'name');
+// console.log(Object.getOwnPropertyDescriptor(obj, 'name'));
+
+// 遍历对象的次序
+// let obj = {
+//     [Symbol()]: 0,
+//     '6': 0,
+//     '0': 0,
+//     'hi': 'hello',
+//     '3': 0
+// };
+// console.log(Reflect.ownKeys(obj));
+// for (let k in obj) {
+//     console.log(k);
+// }
+
+// Object.is()
+
+// a = Object.is('hello', 'hello'); // true
+// b = Object.is({}, {}); // false
+// c = Object.is([], []); // false
+// d = +0 === -0; //true
+// e = NaN === NaN; // false
+// f = Object.is(+0, -0); // false
+// g = Object.is(NaN, NaN); // true
+// console.log(a, b, c, d, e, f, g);
+
+// Object.assign()
+// let obj1 = {name: 'lisi', age: 16};
+// let obj2 = {age: 18};
+// let obj3 = {name: 'zhangsan', age: 22};
+// console.log(Object.assign(obj1, obj2, obj3));
+
+const map = new Map().set('name', 'lisi').set('age', 18);
+console.log(Object.fromEntries(map)); // 谷歌不支持 { name: "lisi", age: 18 }
