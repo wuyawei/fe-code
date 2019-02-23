@@ -149,11 +149,41 @@
 // console.log(Object.fromEntries(map)); // 谷歌不支持 { name: "lisi", age: 18 }
 
 // 函数默认值
-function fn1({x = 1, y = 2}) {
-    console.log(x + y);
-}
-function fn(x, y = 2, z) {
-    console.log(x + y);
-}
-console.log(fn.length);
+// function fn1({x = 1, y = 2}) {
+//     console.log(x + y);
+// }
+// function fn(x, y = 2, z) {
+//     console.log(x + y);
+// }
+// console.log(fn.length);
 // fn1({x: 2}); // 4
+
+// function Fibonacci(n) {
+//     if (n < 3) {
+//         return 1;
+//     }
+//     return Fibonacci(n -1) + Fibonacci(n -2);
+// }
+// console.log(Fibonacci(10), Fibonacci(40));
+
+// function Fibonacci(n, a1 = 1, a2 = 1) { // 1,1  1,2  2,3  3,5
+//     if (n <= 2) {
+//         return a2;
+//     }
+//     return Fibonacci(n -1, a2, a1 + a2);
+// }
+//
+// console.log(Fibonacci(100));
+function add(x){
+    var sum=x;
+    var tmp=function(y){
+        sum=sum+y;
+        return tmp;
+    };
+    tmp.toString=function(){
+        return sum;
+    };
+    return tmp;
+}
+console.log(add(1)(2)(3));
+console.log(add(1)(2)(3)(4));
