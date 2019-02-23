@@ -145,5 +145,15 @@
 // let obj3 = {name: 'zhangsan', age: 22};
 // console.log(Object.assign(obj1, obj2, obj3));
 
-const map = new Map().set('name', 'lisi').set('age', 18);
-console.log(Object.fromEntries(map)); // 谷歌不支持 { name: "lisi", age: 18 }
+// const map = new Map().set('name', 'lisi').set('age', 18);
+// console.log(Object.fromEntries(map)); // 谷歌不支持 { name: "lisi", age: 18 }
+
+// 函数默认值
+function fn1({x = 1, y = 2}) {
+    console.log(x + y);
+}
+function fn(x, y = 2, z) {
+    console.log(x + y);
+}
+console.log(fn.length);
+// fn1({x: 2}); // 4
