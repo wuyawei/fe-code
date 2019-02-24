@@ -299,31 +299,87 @@
 // let arr1 = arr.concat([4,5]);
 // console.log(...arr1);
 
-let handle = function(type) {
-    switch (type) {
-        case 'number':
-            return 8;
-        case 'string':
-            return '好嗨哟';
-        case 'default':
-            return 'hello world';
-        default:
-            throw new Error();
-    }
-};
-let obj = {
-    [Symbol.toPrimitive] : handle,
-    toString() {
-        return 'String';
-    }
-};
-let fn = function () {};
-fn.toString = function () {
-    return 'oh nanana';
-};
-fn[Symbol.toPrimitive] = handle;
-console.log(obj * 2);
-console.log(obj + '!!!');
-console.log(Number(obj));
-console.log(String(obj));
-console.log(String(fn));
+// let handle = function(type) {
+//     switch (type) {
+//         case 'number':
+//             return 8;
+//         case 'string':
+//             return '好嗨哟';
+//         case 'default':
+//             return 'hello world';
+//         default:
+//             throw new Error();
+//     }
+// };
+// let obj = {
+//     [Symbol.toPrimitive] : handle,
+//     toString() {
+//         return 'String';
+//     }
+// };
+// let fn = function () {};
+// fn.toString = function () {
+//     return 'oh nanana';
+// };
+// fn[Symbol.toPrimitive] = handle;
+// console.log(obj * 2);
+// console.log(obj + '!!!');
+// console.log(Number(obj));
+// console.log(String(obj));
+// console.log(String(fn));
+
+// set
+// let s = new Set();
+// s.add(2).add(3).add(2);
+// let s1 = new Set([1,1,2,2,3]);
+// let obj = {
+//     [Symbol.iterator]() {
+//         let index = 0;
+//         return {
+//             next: function () {
+//                 if (index < 3) {
+//                     return {
+//                         value: index++,
+//                         done: false
+//                     };
+//                 }
+//                 return {
+//                     value: 'undefined',
+//                     done: true
+//                 };
+//             }
+//         };
+//     }
+// };
+// let s2 = new Set(obj);
+// console.log(s); // Set { 2, 3 }
+// console.log(s1);
+// console.log(s2);
+
+// let s = new Set();
+// s.add(NaN).add(NaN).add({}).add({});
+// console.log(s); // Set { NaN, {}, {} }
+// let s = new Set();
+// s.add(1).add(3).add(5);
+// console.log(s, s.size);
+// s.delete(3);
+// console.log(s.has(3), s);
+// for (let v of s.keys()) {
+//     console.log(v);
+// }
+// for (let v of s.values()) {
+//     console.log(v);
+// }
+// for (let v of s.entries()) {
+//     console.log(v);
+// }
+//
+// // 因为set的遍历器生成函数就是它的values方法，Set.prototype[Symbol.iterator] === Set.prototype.values
+// // 所以values方法等同于
+// for (let v of s) {
+//     console.log(v);
+// }
+// //
+// s.forEach((v, k) => console.log(k + '=>' + v));
+// // 结合filter实现取两个set的交集
+// console.log(new Set([...s].filter(x => new Set([1]).has(x))));
