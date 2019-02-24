@@ -174,16 +174,65 @@
 // }
 //
 // console.log(Fibonacci(100));
-function add(x){
-    var sum=x;
-    var tmp=function(y){
-        sum=sum+y;
-        return tmp;
-    };
-    tmp.toString=function(){
-        return sum;
-    };
-    return tmp;
-}
-console.log(add(1)(2)(3));
-console.log(add(1)(2)(3)(4));
+
+// 普通阶乘函数
+// function factorial(n) {
+//     if (n <= 1) return 1;
+//     return n * factorial(n-1);
+// }
+// console.log(factorial(5)); // 120
+
+// 尾调用阶乘
+// function factorial(n, total = 1) {
+//     if (n <= 1) return total;
+//     return factorial(n-1, n*total);
+// }
+// console.log(factorial(5)); // 120
+
+// 柯里化阶乘
+// function factorial(n, total = 1) {
+//     if (n <= 1) return total;
+//     return factorial(n-1, n*total);
+// }
+// function curring(fn, ...arg) {
+//     return function (..._arg) {
+//         let args = [..._arg, ...arg];
+//         return fn(...args);
+//     };
+// }
+// let curringFactorial = curring(factorial, 1);
+// console.log(curringFactorial(5)); // 120
+
+// 柯里化
+// function add(x){
+//     var sum=x;
+//     var tmp=function(y){
+//         sum=sum+y;
+//         return tmp;
+//     };
+//     tmp.toString=function(){
+//         return sum;
+//     };
+//     return tmp;
+// }
+// let a = add(1);
+// console.log(a, add(1)(2)(3)); // ƒ 1 ƒ 6
+//
+// function CurryingAdd(...arg) {
+//     let args = [...arg];
+//     let fn = function (..._arg) {
+//         args = [...args, ..._arg];
+//         return fn;
+//     };
+//     /*fn.valueOf = function () {
+//         return 1;
+//     };*/
+//     fn.toString = function () {
+//         return args.reduce((m, n) => {
+//             return m + n;
+//         })
+//     };
+//     return fn;
+// }
+// console.log(CurryingAdd(1)(3)(5)); // 9
+
