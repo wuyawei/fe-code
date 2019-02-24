@@ -236,3 +236,94 @@
 // }
 // console.log(CurryingAdd(1)(3)(5)); // 9
 
+// symbol
+// let obj = {
+//     toString() {
+//         return 'hello';
+//     },
+//     valueOf() {
+//         return 'haha';
+//     }
+// };
+// let fn = function () {};
+// fn.toString = function () {
+//     return 'world';
+// };
+// fn.valueOf = function () {
+//     return 'nihao';
+// };
+//
+// let s1 = Symbol(obj);
+// let s2 = Symbol(fn);
+// console.log(s1, s2);
+
+// let s1 = Symbol('name');
+// let s2 = Symbol('name');
+// let obj = {
+//     [s1]: 'zs',
+//     [s2]() {
+//         return 'ls';
+//     },
+//     say() {
+//        return this.name;
+//     }
+// };
+// console.log(obj[s1], obj[s2]());
+// console.log(obj.s1);
+// obj.s1 = 'wyw';
+// // console.log(obj.s1, obj['s1']);
+// console.log(Object.getOwnPropertySymbols(obj));
+// console.log(Reflect.ownKeys(obj));
+// for (let k in obj) {
+//     console.log(k);
+// }
+
+// let s1 = Symbol.for();
+// let s2 = Symbol.for();
+// let s3 = Symbol.for('undefined');
+// let s4 = Symbol.for('name');
+// let s5 = Symbol('name');
+// console.log(s1 === s2, s2 === s3, s4 === s5, Symbol.keyFor(s1), Symbol.keyFor(s5));
+
+// Symbol.hasInstance
+// class Person{
+//     static [Symbol.hasInstance](obj) {
+//         return true;
+//     }
+// }
+// console.log(1 instanceof Person);
+// Symbol.isConcatSpreadable
+// let arr = [1,2,3];
+// console.log(arr[Symbol.isConcatSpreadable]); // undefined
+// arr[Symbol.isConcatSpreadable] = false;
+// let arr1 = arr.concat([4,5]);
+// console.log(...arr1);
+
+let handle = function(type) {
+    switch (type) {
+        case 'number':
+            return 8;
+        case 'string':
+            return '好嗨哟';
+        case 'default':
+            return 'hello world';
+        default:
+            throw new Error();
+    }
+};
+let obj = {
+    [Symbol.toPrimitive] : handle,
+    toString() {
+        return 'String';
+    }
+};
+let fn = function () {};
+fn.toString = function () {
+    return 'oh nanana';
+};
+fn[Symbol.toPrimitive] = handle;
+console.log(obj * 2);
+console.log(obj + '!!!');
+console.log(Number(obj));
+console.log(String(obj));
+console.log(String(fn));
