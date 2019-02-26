@@ -77,20 +77,15 @@ function f3(val) {
 }
 
 function chainPromise(array) {
-    // 变量ret用来保存上一个异步的返回值
     let ret = null;
-    // 新建一个空的Promise
     let p = Promise.resolve();
-    // 使用then方法，添加所有异步操作
     for(let f of array) {
         p = p.then(function(val) {
             ret = val;
             return f(val);
         });
     }
-    // 返回一个部署了错误捕捉机制的Promise
     return p.catch(function(e) {
-        /* 忽略错误，继续执行 */
     }).then(function(re) {
         console.log(re);
         return ret;
