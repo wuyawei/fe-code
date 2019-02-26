@@ -383,3 +383,27 @@
 // s.forEach((v, k) => console.log(k + '=>' + v));
 // // 结合filter实现取两个set的交集
 // console.log(new Set([...s].filter(x => new Set([1]).has(x))));
+
+// let clock = function* () {
+//     while (true) {
+//         console.log('Tick!');
+//         yield;
+//         console.log('Tock!');
+//         yield;
+//     }
+// };
+// let c = clock();
+// c.next();
+// c.next();
+function* gen() {
+    yield false;
+}
+let i = 0;
+let t = setInterval(function g() {
+    let v = gen().next().value;
+    i++;
+    if (v || i>2) {
+        clearInterval(t);
+    }
+    return g;
+}(), 2000);

@@ -1,6 +1,6 @@
 .red{
     color: red;
-    background: url('./2.jpg');
+    background: url('2.jpg');
     background-position: center;
     background-size: cover;
 }
