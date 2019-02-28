@@ -58,9 +58,21 @@ let liwu = new Person('liwu');
 // console.log(Object.getPrototypeOf(lisisi));
 // console.log(lisisi.constructor === Person); // true
 // console.log(lisisi.__proto__ === Person.prototype);
-let a = 'oh nanana', b = 0, c = true;
-console.log(a.constructor, b.constructor, c.constructor);
-a.constructor = {};
-b.constructor = {};
-c.constructor = {};
-console.log(a.constructor, b.constructor, c.constructor);
+// let a = 'oh nanana', b = 0, c = true;
+// console.log(a.constructor, b.constructor, c.constructor);
+// a.constructor = {};
+// b.constructor = {};
+// c.constructor = {};
+// console.log(a.constructor, b.constructor, c.constructor);
+// Object.defineProperty( Object.prototype, "__proto__", {
+//     get: function() {
+//         return Object.getPrototypeOf( this );
+//     },
+//     set: function(o) {
+//         // ES6 中的 setPrototypeOf(..) 设置原型对象
+//         Object.setPrototypeOf(this, o );
+//         return o;
+//     }
+// } );
+console.log(lisi.__proto__.__proto__.__proto__);
+console.log(Person.__proto__.__proto__.__proto__);
