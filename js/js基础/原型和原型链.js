@@ -38,10 +38,29 @@ let liwu = new Person('liwu');
 // console.log(lisi.age, liwu.age); // 18 18
 // Person.prototype.age = 20;
 // console.log(lisi.age, liwu.age); // 20 20
-lisi.say = function() {
-    console.log('oh nanana');
-};
-lisi.say();
-liwu.say();
-console.log(lisi);
-console.log(lisi.hasOwnProperty('say'), liwu.hasOwnProperty('say')); // true false
+// lisi.say = function() {
+//     console.log('oh nanana');
+// };
+// lisi.say();
+// liwu.say();
+// console.log(lisi);
+// console.log(lisi.hasOwnProperty('say'), liwu.hasOwnProperty('say')); // true false
+// function Chinese() {
+//     this.country = '中国';
+// }
+// Person.prototype = new Chinese();
+// Person.prototype.constructor = Person;
+// let lisisi = new Person('lisisi');
+// console.log(lisi, lisisi);
+// console.log(lisisi.constructor === Chinese);
+// console.log(lisisi instanceof Person);
+// console.log(Person.prototype.isPrototypeOf(lisisi));
+// console.log(Object.getPrototypeOf(lisisi));
+// console.log(lisisi.constructor === Person); // true
+// console.log(lisisi.__proto__ === Person.prototype);
+let a = 'oh nanana', b = 0, c = true;
+console.log(a.constructor, b.constructor, c.constructor);
+a.constructor = {};
+b.constructor = {};
+c.constructor = {};
+console.log(a.constructor, b.constructor, c.constructor);
