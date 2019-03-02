@@ -1,12 +1,4 @@
-### 前排占楼
-> 个人开源项目 — Vchat 正式上线了，欢迎各位小哥哥小姐姐体验。如果觉得还行的话，记得给个star哟 ^_^。
-* [线上预览](http://www.vchatdw.com)
-* [Vchat源码](https://github.com/wuyawei/Vchat)
-* [Vchat原文地址](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
-* [本文源码](https://github.com/wuyawei/demo)
-* [知乎](https://zhuanlan.zhihu.com/p/52714698)
-
-### 言归正传，你经历过绝望吗？
+言归正传，你经历过绝望吗？
 
 ![](https://user-gold-cdn.xitu.io/2018/12/18/167c123d42eb074a?w=240&h=240&f=jpeg&s=8404)
 > 众所周知，js是单线程异步机制的。这样就会导致很多异步处理会嵌套很多的回调函数，最为常见的就是ajax请求，我们需要等请求结果返回后再进行某些操作。如：
