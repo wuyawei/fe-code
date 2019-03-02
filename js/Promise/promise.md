@@ -1,4 +1,4 @@
-你经历过绝望吗？
+## 你经历过绝望吗？
 
 ![](https://user-gold-cdn.xitu.io/2018/12/18/167c123d42eb074a?w=240&h=240&f=jpeg&s=8404)
 > 众所周知，js是单线程异步机制的。这样就会导致很多异步处理会嵌套很多的回调函数，最为常见的就是ajax请求，我们需要等请求结果返回后再进行某些操作。如：
@@ -31,7 +31,7 @@
 ```javascript
     ajax().success().fail();
 ```
-### 何为 Promise
+## 何为 Promise
 > 那么什么是Promise呢？
 1. Promise是为了解决异步编程的弊端，使你的代码更有条理、更清晰、更易维护。
 2. Promise是一个构造函数（或者类），接受一个函数作为参数，该函数接受resolve，reject两个参数。
@@ -63,7 +63,7 @@
     // ran <= 0.5输出 fail
 ```
 先定个小目标，然后一步步实现它。
-### 构建Promise
+## 构建Promise
 * 基础构造
     > 首先需要了解一下基本原理。我第一次接触Promise的时候，还很懵懂（捂脸）。那会只知道这么写，不知道到底是个什么流程走向。下面，我们来看看最基本的实现：
 
@@ -360,7 +360,7 @@
         // 可以线上预览了 0.03702367800412443
         // erro
     ```
-### 总结
+## 总结
 > 到这里，Promise的主要功能基本上都实现了。还有很多实用的扩展，我们也可以添加。
 比如 catch可以看做then的一个语法糖，只有onRejected回调的then方法。其它Promise的方法，比如.all、.race 等等，感兴趣的小伙伴可以自己实现一下。另外，文中如有不对之处，还请指出。
     
@@ -370,12 +370,8 @@
     }
 ```
 
-### 相关文章
+## 相关文章
 * [手把手教你实现一个完整的 Promise](http://www.cnblogs.com/huansky/p/6064402.html)
 * [教你一步一步实现一个Promise - 飞魚](https://www.tuicool.com/articles/RzQRV3)
 * [阮一峰老师的es6-Promise章节](http://es6.ruanyifeng.com/#docs/promise)
 
-### 交流群
-> 前端交流群，欢迎各种技术交流，期待你的加入
-
-![](https://user-gold-cdn.xitu.io/2018/12/18/167c1819dce17401?w=240&h=328&f=jpeg&s=41198)
