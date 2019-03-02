@@ -76,12 +76,12 @@ let liwu = new Person('liwu');
 // // } );
 // console.log(lisi.__proto__.__proto__.__proto__);
 // console.log(Person.__proto__.__proto__.__proto__);
-function newObj() {
-    let o, f = [].shift.call(arguments); // 取出参数的第一个成员，即构造函数
-    o = Object.create(f.prototype); // 创建一个继承了构造函数原型的新对象
-    f.call(o, ...arguments); // 执行构造函数使得新对象获取相应属性
-    return o;
-}
-let zs = newObj(Person, 'zs');
-console.log(zs instanceof Person);
-console.log(zs);
+// function newObj() {
+//     let o, f = [].shift.call(arguments); // 取出参数的第一个成员，即构造函数
+//     o = Object.create(f.prototype); // 创建一个继承了构造函数原型的新对象
+//     f.call(o, ...arguments); // 执行构造函数使得新对象获取相应属性
+//     return o;
+// }
+// let zs = newObj(Person, 'zs');
+// console.log(zs instanceof Person);
+// console.log(zs);
