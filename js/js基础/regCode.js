@@ -13,8 +13,7 @@ function Regcode(params = {}) {
         fontFamily: 'Georgia', // 字体类型
         fontStyle: 'fill', // 字体绘制方法，fill/stroke
         content: 'acdefhijkmnpwxyABCDEFGHJKMNPQWXY12345789', // 验证码因子
-        len: 4, // 验证码长度
-        callback: function () {} // 回调函数
+        len: 4 // 验证码长度
     }, params);
     Object.keys(p).forEach(k => { // 将所有属性组合后添加到this上
         this[k] = p[k];
@@ -25,13 +24,14 @@ function Regcode(params = {}) {
 
 Regcode.prototype.getColor = function(arr) { // 随机获取颜色
     let colors = new Array(3).fill(''); // 创建一个长度为3的数组，值都填充为 ''
-    arr.sort((a, b) => a - b); // 将传入的参数从小到大排序
-    colors = colors.map(v => this.getRand(...arr)); // 重组为新数组
+    colors = colors.map(v => this.getRand(...arr)); // 每个成员随机获取一个强度值重组为新数组
+    console.log(colors);
     return colors;
 };
 
-Regcode.prototype.getRand = function(a, b) { // 获取某个区间的随机数
-    return Math.floor(Math.random() * (b - a) + a);
+Regcode.prototype.getRand = function(...arr) { // 获取某个区间的随机数
+    arr.sort((a, b) => a - b); // 将传入的参数从小到大排序
+    return Math.floor(Math.random() * (arr[1] - arr[0]) + arr[0]);
 };
 
 Regcode.prototype.getText = function() { // 随机获取验证码
@@ -115,12 +115,14 @@ Regcode.prototype.font = function() { // 绘制文字
     }
 };
 
-Regcode.prototype.draw = function(dom, callback) { // 绘图
+Regcode.prototype.draw = function(dom, callback = function () {}) { // 绘图
     // 获取canvas dom
     if (!this.paint) {
         this.canvas = dom;
+        // console.log(dom instanceof HTMLElement);
+        if (!this.canvas) return;
         this.paint = this.canvas.getContext('2d');
-        if (!this.canvas || !this.paint) return;
+        if (!this.paint) return;
 
         // 回调函数赋值给this，方便使用
         this.callback = callback;
@@ -137,8 +139,8 @@ Regcode.prototype.draw = function(dom, callback) { // 绘图
     this.paint.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // 绘图
-    this.line();
     this.arc();
+    this.line();
     this.font();
 };
 
