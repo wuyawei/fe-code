@@ -10,23 +10,23 @@
 <script src="原型和原型链.js"></script>
 <script src="regCode.js"></script>
 <script>
-    let reg = new Regcode({
-        lineWidth: 0.5,  // 线条宽度
-        lineNum: 5,  // 线条数量
-        dotNum: 20, // 点的数量
-        dotR: 1, // 点的半径
-        foregroundColor: [10, 80], // 前景色区间
-        backgroundColor: [150, 250], // 背景色区间
-        fontSize: 36, // 字体大小
-        fontFamily: 'Georgia', // 字体类型
-        fontStyle: 'fill', // 字体绘制方法，fill/stroke
-        content: 'acdefhijkmnpwxyABCDEFGHJKMNPQWXY12345789', // 验证码因子
-        len: 4, // 验证码长度
-        callback: function () {} // 回调函数
-    });
-    reg.draw(document.querySelector('#regcode'), r => {
-        console.log(r);
-    });
-    console.log(reg);
+//    let reg = new Regcode({
+//        lineWidth: 0.5,  // 线条宽度
+//        lineNum: 5,  // 线条数量
+//        dotNum: 20, // 点的数量
+//        dotR: 1, // 点的半径
+//        foregroundColor: [10, 80], // 前景色区间
+//        backgroundColor: [150, 250], // 背景色区间
+//        fontSize: 36, // 字体大小
+//        fontFamily: 'Georgia', // 字体类型
+//        fontStyle: 'fill', // 字体绘制方法，fill/stroke
+//        content: 'acdefhijkmnpwxyABCDEFGHJKMNPQWXY12345789', // 验证码因子
+//        len: 4, // 验证码长度
+//        callback: function () {} // 回调函数
+//    });
+//    reg.draw(document.querySelector('#regcode'), r => {
+//        console.log(r);
+//    });
+//    console.log(reg);
 </script>
 </html>

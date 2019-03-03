@@ -30,7 +30,9 @@ function Person(name){
 Person.prototype.say = function () {
     console.log(this.name);
 };
+// console.log(Person.constructor === Function.prototype.constructor);
 let lisi = new Person('lisi');
+// console.log(lisi.constructor === Person.prototype.constructor);
 let liwu = new Person('liwu');
 // console.log(lisi.say === liwu.say); // true
 // console.log(lisi.hasOwnProperty('say'), liwu.hasOwnProperty('say')); // false false
