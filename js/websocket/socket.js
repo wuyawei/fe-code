@@ -6,16 +6,21 @@ class Socket {
         this.lockReconnect = false;
         this.notReconnect = false;
         this.timeoutObj = null;
+        this.closeTimeout = null;
         this.onmessage = onmessage;
         this.init();
     }
     reset() {
         clearTimeout(this.timeoutObj);
+        clearTimeout(this.closeTimeout);
         this.start();
     }
     start() {
         this.timeoutObj = setTimeout(() => {
             this.ws.send("HeartBeat");
+            this.closeTimeout = setTimeout(() => { //  超时后主动断开连接 触发重连
+                this.ws.close();
+            }, this.timeout)
         }, this.timeout);
     }
     init() {
