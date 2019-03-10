@@ -140,7 +140,7 @@ class Compiler{
         return node.nodeType === 1; 
     }
 }
-// 3月16日开班
+
 CompileUtil = {
     // 根据表达式取到对应的数据
     getVal(vm,expr){ // vm.$data   'school'  [school,name]
