@@ -395,15 +395,38 @@
 // let c = clock();
 // c.next();
 // c.next();
-function* gen() {
-    yield false;
-}
-let i = 0;
-let t = setInterval(function g() {
-    let v = gen().next().value;
-    i++;
-    if (v || i>2) {
-        clearInterval(t);
-    }
-    return g;
-}(), 2000);
+// function* gen() {
+//     yield false;
+// }
+// let i = 0;
+// let t = setInterval(function g() {
+//     let v = gen().next().value;
+//     i++;
+//     if (v || i>2) {
+//         clearInterval(t);
+//     }
+//     return g;
+// }(), 2000);
+
+// let arr = [6,2,3,4,5,6];
+// delete arr[2];
+// arr = arr.flat();
+// console.log(arr);
+// function slice(arr, i) {
+//     let set = new Set();
+//     for (let k in arr) {
+//         if (k != i) {
+//             set.add(arr[k]);
+//         }
+//     }
+//     return [...set];
+// }
+// console.log(slice(arr, 0));
+// let foo = function() {
+//     console.log(1)
+// };
+// (function foo() {
+//     foo = 10;
+//     console.log(foo)
+// }() );
+// console.log(foo);
