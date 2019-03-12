@@ -1,0 +1,104 @@
+<body rid='4234701553' xmlns='http://jabber.org/protocol/httpbind' sid='a4x1zz5iz6'>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"sdp":{"type":"answer","sdp":"v=0\r\no=- 4529643706346503021 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0
+            0\r\na=group:BUNDLE audio video\r\na=msid-semantic: WMS UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG\r\nm=audio 9
+            UDP/TLS/RTP/SAVPF 111 103 104 9 0 8 106 105 13 110 112 113 126\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4
+            0.0.0.0\r\na=ice-ufrag:hlM9\r\na=ice-pwd:iF43E4E+4P7zSUZ3TVvub+4O\r\na=ice-options:trickle\r\na=fingerprint:sha-256
+            DD:B2:C0:47:A9:C5:A3:F9:3E:A1:59:8F:DF:31:CE:45:0B:BF:D3:F0:55:A2:5A:7B:85:E0:2A:31:F9:29:C4:6A\r\na=setup:active\r\na=mid:audio\r\na=extmap:1
+            urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=sendrecv\r\na=rtcp-mux\r\na=rtpmap:111
+            opus/48000/2\r\na=rtcp-fb:111 transport-cc\r\na=fmtp:111 minptime=10;useinbandfec=1\r\na=rtpmap:103
+            ISAC/16000\r\na=rtpmap:104 ISAC/32000\r\na=rtpmap:9 G722/8000\r\na=rtpmap:0 PCMU/8000\r\na=rtpmap:8
+            PCMA/8000\r\na=rtpmap:106 CN/32000\r\na=rtpmap:105 CN/16000\r\na=rtpmap:13 CN/8000\r\na=rtpmap:110
+            telephone-event/48000\r\na=rtpmap:112 telephone-event/32000\r\na=rtpmap:113
+            telephone-event/16000\r\na=rtpmap:126 telephone-event/8000\r\na=ssrc:1534829806
+            cname:k6g1eJLfFeuq+bw/\r\na=ssrc:1534829806 msid:UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG
+            2d17e5b3-3406-4730-bc8b-29211ed5016b\r\na=ssrc:1534829806
+            mslabel:UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG\r\na=ssrc:1534829806
+            label:2d17e5b3-3406-4730-bc8b-29211ed5016b\r\nm=video 9 UDP/TLS/RTP/SAVPF 96 97 98 99 100 101 102 122 127
+            121 125 107 108 109 124 120 123 119 114\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4
+            0.0.0.0\r\na=ice-ufrag:hlM9\r\na=ice-pwd:iF43E4E+4P7zSUZ3TVvub+4O\r\na=ice-options:trickle\r\na=fingerprint:sha-256
+            DD:B2:C0:47:A9:C5:A3:F9:3E:A1:59:8F:DF:31:CE:45:0B:BF:D3:F0:55:A2:5A:7B:85:E0:2A:31:F9:29:C4:6A\r\na=setup:active\r\na=mid:video\r\na=extmap:2
+            urn:ietf:params:rtp-hdrext:toffset\r\na=extmap:3
+            http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:4
+            urn:3gpp:video-orientation\r\na=extmap:5
+            http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:6
+            http://www.webrtc.org/experiments/rtp-hdrext/playout-delay\r\na=extmap:7
+            http://www.webrtc.org/experiments/rtp-hdrext/video-content-type\r\na=extmap:8
+            http://www.webrtc.org/experiments/rtp-hdrext/video-timing\r\na=sendrecv\r\na=rtcp-mux\r\na=rtcp-rsize\r\na=rtpmap:96
+            VP8/90000\r\na=rtcp-fb:96 goog-remb\r\na=rtcp-fb:96 transport-cc\r\na=rtcp-fb:96 ccm fir\r\na=rtcp-fb:96
+            nack\r\na=rtcp-fb:96 nack pli\r\na=rtpmap:97 rtx/90000\r\na=fmtp:97 apt=96\r\na=rtpmap:98
+            VP9/90000\r\na=rtcp-fb:98 goog-remb\r\na=rtcp-fb:98 transport-cc\r\na=rtcp-fb:98 ccm fir\r\na=rtcp-fb:98
+            nack\r\na=rtcp-fb:98 nack pli\r\na=fmtp:98 x-google-profile-id=0\r\na=rtpmap:99 rtx/90000\r\na=fmtp:99
+            apt=98\r\na=rtpmap:100 H264/90000\r\na=rtcp-fb:100 goog-remb\r\na=rtcp-fb:100 transport-cc\r\na=rtcp-fb:100
+            ccm fir\r\na=rtcp-fb:100 nack\r\na=rtcp-fb:100 nack pli\r\na=fmtp:100
+            level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f\r\na=rtpmap:101
+            rtx/90000\r\na=fmtp:101 apt=100\r\na=rtpmap:102 H264/90000\r\na=rtcp-fb:102 goog-remb\r\na=rtcp-fb:102
+            transport-cc\r\na=rtcp-fb:102 ccm fir\r\na=rtcp-fb:102 nack\r\na=rtcp-fb:102 nack pli\r\na=fmtp:102
+            level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f\r\na=rtpmap:122
+            rtx/90000\r\na=fmtp:122 apt=102\r\na=rtpmap:127 H264/90000\r\na=rtcp-fb:127 goog-remb\r\na=rtcp-fb:127
+            transport-cc\r\na=rtcp-fb:127 ccm fir\r\na=rtcp-fb:127 nack\r\na=rtcp-fb:127 nack pli\r\na=fmtp:127
+            level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f\r\na=rtpmap:121
+            rtx/90000\r\na=fmtp:121 apt=127\r\na=rtpmap:125 H264/90000\r\na=rtcp-fb:125 goog-remb\r\na=rtcp-fb:125
+            transport-cc\r\na=rtcp-fb:125 ccm fir\r\na=rtcp-fb:125 nack\r\na=rtcp-fb:125 nack pli\r\na=fmtp:125
+            level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f\r\na=rtpmap:107
+            rtx/90000\r\na=fmtp:107 apt=125\r\na=rtpmap:108 H264/90000\r\na=rtcp-fb:108 goog-remb\r\na=rtcp-fb:108
+            transport-cc\r\na=rtcp-fb:108 ccm fir\r\na=rtcp-fb:108 nack\r\na=rtcp-fb:108 nack pli\r\na=fmtp:108
+            level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d0032\r\na=rtpmap:109
+            rtx/90000\r\na=fmtp:109 apt=108\r\na=rtpmap:124 H264/90000\r\na=rtcp-fb:124 goog-remb\r\na=rtcp-fb:124
+            transport-cc\r\na=rtcp-fb:124 ccm fir\r\na=rtcp-fb:124 nack\r\na=rtcp-fb:124 nack pli\r\na=fmtp:124
+            level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032\r\na=rtpmap:120
+            rtx/90000\r\na=fmtp:120 apt=124\r\na=rtpmap:123 red/90000\r\na=rtpmap:119 rtx/90000\r\na=fmtp:119
+            apt=123\r\na=rtpmap:114 ulpfec/90000\r\na=ssrc-group:FID 1768013835 3106594088\r\na=ssrc:1768013835
+            cname:k6g1eJLfFeuq+bw/\r\na=ssrc:1768013835 msid:UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG
+            f800923f-1343-4f3c-87b0-670bc1b8c563\r\na=ssrc:1768013835
+            mslabel:UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG\r\na=ssrc:1768013835
+            label:f800923f-1343-4f3c-87b0-670bc1b8c563\r\na=ssrc:3106594088 cname:k6g1eJLfFeuq+bw/\r\na=ssrc:3106594088
+            msid:UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG f800923f-1343-4f3c-87b0-670bc1b8c563\r\na=ssrc:3106594088
+            mslabel:UAdXvouhsbJniCkO8zLBKrF9Klykkag91RIG\r\na=ssrc:3106594088
+            label:f800923f-1343-4f3c-87b0-670bc1b8c563\r\n"},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"answer"}
+        </body>
+    </message>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"candidate":{"candidate":"candidate:1249514885 1 udp 2122194687 192.168.12.208 62905 typ host generation
+            0 ufrag hlM9 network-id
+            2","sdpMid":"audio","sdpMLineIndex":0},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"candidate"}
+        </body>
+    </message>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"candidate":{"candidate":"candidate:2264345110 1 udp 1685987071 219.143.170.174 42265 typ srflx raddr
+            192.168.12.208 rport 62905 generation 0 ufrag hlM9 network-id
+            2","sdpMid":"audio","sdpMLineIndex":0},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"candidate"}
+        </body>
+    </message>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"candidate":{"candidate":"candidate:2264345110 1 udp 1685987071 219.143.170.174 11639 typ srflx raddr
+            192.168.12.208 rport 62905 generation 0 ufrag hlM9 network-id
+            2","sdpMid":"audio","sdpMLineIndex":0},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"candidate"}
+        </body>
+    </message>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"candidate":{"candidate":"candidate:4225850127 1 tcp 1518275327 2001::2841:aa90:200d:260f:3f57:f32f 9 typ
+            host tcptype active generation 0 ufrag hlM9 network-id 1 network-cost
+            50","sdpMid":"audio","sdpMLineIndex":0},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"candidate"}
+        </body>
+    </message>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"candidate":{"candidate":"candidate:83487093 1 tcp 1518214911 192.168.12.208 9 typ host tcptype active
+            generation 0 ufrag hlM9 network-id
+            2","sdpMid":"audio","sdpMLineIndex":0},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"candidate"}
+        </body>
+    </message>
+    <message to='98f475edc1c743709ba1092697957fd8@conference.ubuntu/00c4cd574c534b2686767374e8ed0650' type='chat'
+             xmlns='jabber:client'>
+        <body>{"candidate":{"candidate":"candidate:2740705887 1 udp 41819903 120.77.253.101 64554 typ relay raddr
+            219.143.170.174 rport 42265 generation 0 ufrag hlM9 network-id
+            2","sdpMid":"audio","sdpMLineIndex":0},"account":"00c4cd574c534b2686767374e8ed0650_40eb4a8682664a7d8b3e4405cd23c641","type":"candidate"}
+        </body>
+    </message>
+</body>
