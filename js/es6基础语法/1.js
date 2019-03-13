@@ -430,3 +430,7 @@
 //     console.log(foo)
 // }() );
 // console.log(foo);
+
+// let arr1 = ['a','a','a', 'b', 'b', 'c'];
+// let arr2 = arr1.map((v, i, arr) => i + 1 - arr.indexOf(v));
+// console.log(arr2); // [ 1, 2, 3, 1, 2, 1 ]
