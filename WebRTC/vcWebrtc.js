@@ -25,7 +25,7 @@ class VcRtc {
         }
         return new Promise((resolve, reject) => {
             navigator.mediaDevices.getUserMedia(constraints)
-                .then((stream) => {
+                .then(stream => {
                     let video;
                     if (typeof dom === 'string') {
                         video = document.querySelector(dom);

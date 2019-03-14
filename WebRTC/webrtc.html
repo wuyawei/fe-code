@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #rtc{
+        width:480px;
+        height:320px;
+    }
+</style>
+<body>
+<video src="" id="rtc" autoplay></video>
+</body>
+<script>
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
+        console.log(stream);
+        document.querySelector('#rtc').srcObject = stream;
+    })
+</script>
+</html>
