@@ -18,9 +18,11 @@
    * getUserMedia：获取音频和视频流（MediaStream）
    * RTCPeerConnection：点对点通信
    * RTCDataChannel：数据通信
+   
+  不过，虽然浏览器给我们解决了大部分音视频处理问题，但是从浏览器请求音频和视频时，我们还是需要特别注意流的大小和质量。因为即便硬件能够捕获高清质量流，CPU 和带宽也不一定可以跟上，这也是我们在建立多个对等连接时，不得不考虑的问题。
   
-## 原理
-  想要弄清楚 WebRTC 的实现过程，我们可以从上文提到的 API 入手，了解它的作用，才能知道怎么去用。
+## 实现
+  接下来，我们通过分析上文提到的 API，来逐步弄懂 WebRTC 实时通信实现的流程。
 ### getUserMedia
 * MediaStream
 
@@ -126,23 +128,37 @@
   这里就不接着做搬运工了，更多精彩尽在 [MDN](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)，^_^!
 ### RTCPeerConnection
 * 概述
- 
-  我们虽然把 WebRTC 称之为点对点的连接，但并不意味着，实现过程中不需要服务器的参与。因为在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的 `Strophe.js`来做双向通信，但是在本例中则会使用`Socket.io `以及 Koa 来做项目演示。
   
-  RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。通常在信令阶段需要完成的任务：
+  RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。在信令阶段需要完成的任务：
   
-     * 为每个呼叫端创建一个RTCPeerConnection，并在每一端添加本地流。
-     * 获取并交换网络信息：潜在的连接端点称为ICE候选者。
-     * 获取并交换本地和远程描述：SDP格式的本地媒体元数据。
-   
+     * 为每个连接端创建一个 RTCPeerConnection，并添加本地流。
+     * 获取并交换本地和远程描述：SDP 格式的本地媒体元数据。
+     * 获取并交换网络信息：潜在的连接端点称为 ICE 候选者。
+  
+  我们虽然把 WebRTC 称之为点对点的连接，但并不意味着，实现过程中不需要服务器的参与。因为在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的`Strophe.js`来做双向通信，但是在本例中则会使用`Socket.io `以及 Koa 来做项目演示。
 * 建立点对点连接
+
+  我们先看连接任务的第一条：为每个连接端创建一个 RTCPeerConnection，并添加本地流。事实上，如果是一般直播模式，则只需要播放端添加本地流进行输出，其他参与者只需要接受流进行观看即可。
+  
+  因为各浏览器差异，RTCPeerConnection 一样需要加上前缀。
+``` javascript
+    let PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    
+    let peer = new PeerConnection(iceServer);
+```
+  我们看见 RTCPeerConnection 也同样接收一个参数 — iceServer，来看看它长什么样：
+  
   我们通过结合图示来分析连接的过程。
 
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810c20bb10132?w=680&h=189&f=png&s=6589)
 
-  显而易见，在上述连接的过程中，lisi 作为请求方（在这里都是指代浏览器），需要给 zhangsan 发送一条名为 offer 的信息，zhangsan 在接收到请求后，则返回一条 answer 信息给 lisi。这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
+  显而易见，在上述连接的过程中，请求方（在这里都是指代浏览器）需要给 接收方 发送一条名为 offer 的信息，接收方 在接收到请求后，则返回一条 answer 信息给 请求方。这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
   
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810cd0eb2e77c?w=680&h=280&f=png&s=12173)
+  
+     * 请求方 创建 offer 信息后，先调用 setLocalDescription 存储本地 offer 描述，再将其发送给 接收方。
+     * 接收方 收到 offer 后，先调用 setRemoteDescription 存储远端 offer 描述；然后又创建 answer 信息，同样需要调用 setLocalDescription 存储本地 answer 描述，再返回给 请求方
+     * 请求方 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描述。
 
 ## 后记
 如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。
