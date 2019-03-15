@@ -24,7 +24,7 @@
 ### getUserMedia
 * MediaStream
 
-  getUserMedia 这个 API 大家可能并不陌生，因为常见的 H5 录音等功能就需要用到它，主要就是用来获取设备的媒体流（即 MediaStream）。它可以接受一个约束对象 constraints 作为参数，用来指定需要获取到什么样的媒体流。
+ getUserMedia 这个 API 大家可能并不陌生，因为常见的 H5 录音等功能就需要用到它，主要就是用来获取设备的媒体流（即 MediaStream）。它可以接受一个约束对象 constraints 作为参数，用来指定需要获取到什么样的媒体流。
 ``` javascript
     navigator.mediaDevices.getUserMedia({ audio: true, video: true }) // 表示需要同时获取到音频和视频
         .then(stream => {
@@ -42,19 +42,19 @@
 
   可以看到它有很多属性，我们只需要了解一下就好，更多信息可以查看 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStream)。
   
-   * id [String]: 对当前的 MS 进行唯一标识。所以每次刷新浏览器或是重新获取 MS，id 都会变动。
-   * active [boolean]: 表示当前 MS 是否是活跃状态（就是是否可以播放）。
-   * onactive: 当 active 为 true 时，触发该事件。
+    * id [String]: 对当前的 MS 进行唯一标识。所以每次刷新浏览器或是重新获取 MS，id 都会变动。
+    * active [boolean]: 表示当前 MS 是否是活跃状态（就是是否可以播放）。
+    * onactive: 当 active 为 true 时，触发该事件。
   
   结合上图，我们顺便复习一下上期讲的原型和原型链。MediaStream 的 `__proto__` 指向它的构造函数所对应的原型对象，在原型对象中又有一个 constructor 属性指向了它所对应的构造函数。也就是说 MediaStream 的构造函数是一个名为 MediaStream 的函数。可能说得有一点绕，对原型还不熟悉的同学，可以去看一下上期文章 [JavaScript 原型和原型链及 canvas 验证码实践](https://juejin.im/post/5c7b524ee51d453ee81877a7)。
   
   也可以通过 getAudioTracks()、getVideoTracks() 来查看获取到的流的某些信息，更多信息查看 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack)。
 
-![](https://user-gold-cdn.xitu.io/2019/3/14/1697b85bb19a0658?w=600&h=196&f=png&s=47157)
+  ![](https://user-gold-cdn.xitu.io/2019/3/14/1697b85bb19a0658?w=600&h=196&f=png&s=47157)
   
-   * kind: 是当前获取的媒体流类型（Audio/Video）。
-   * label: 是媒体设备，我这里用的是虚拟摄像头。
-   * muted: 表示媒体轨道是否静音。
+    * kind: 是当前获取的媒体流类型（Audio/Video）。
+    * label: 是媒体设备，我这里用的是虚拟摄像头。
+    * muted: 表示媒体轨道是否静音。
 * 兼容性
 
   继续来看 getUserMedia，`navigator.mediaDevices.getUserMedia` 是新版的 API，旧版的是 `navigator.getUserMedia`。为了避免兼容性问题，我们可以稍微处理一下（其实说到底，现在 WebRTC 的支持率还不算高，有需要的可以选择一些适配器，如 `adapter.js`）。
@@ -94,11 +94,11 @@
 ```
 * API
 
-  对于 constraints 约束对象，我们可以用来指定一些和媒体流有关的属性。比如指定是否获取某种流：
+ 对于 constraints 约束对象，我们可以用来指定一些和媒体流有关的属性。比如指定是否获取某种流：
 ``` javascript
     navigator.mediaDevices.getUserMedia({ audio: false, video: true }); // 只需要视频流，不要音频
 ```
-  指定视频流的宽高、帧率以及理想值：
+指定视频流的宽高、帧率以及理想值：
 ``` javascript
     // 获取指定宽高，这里需要注意：在改变视频流的宽高时，
     // 如果宽高比和采集到的不一样，会直接截掉某部分
@@ -127,15 +127,23 @@
 ### RTCPeerConnection
 * 概述
  
+  我们虽然把 WebRTC 称之为点对点的连接，但并不意味着，实现过程中不需要服务器的参与。因为在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的 `Strophe.js`来做双向通信，但是在本例中则会使用`Socket.io `以及 Koa 来做项目演示。
+  
   RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。通常在信令阶段需要完成的任务：
   
-   * 为每个呼叫端创建一个RTCPeerConnection，并在每一端添加本地流。
-   * 获取和共享网络信息：潜在的连接端点称为ICE候选者。
-   * 获取并共享本地和远程描述：SDP格式的本地媒体元数据。
+     * 为每个呼叫端创建一个RTCPeerConnection，并在每一端添加本地流。
+     * 获取并交换网络信息：潜在的连接端点称为ICE候选者。
+     * 获取并交换本地和远程描述：SDP格式的本地媒体元数据。
    
-  我们虽然把 WebRTC 称之为点对点的连接，但并不意味着，过程中不需要服务器的参与。因为在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的 `Strophe.js`来做双向通信，但是在本例中则会使用 `Socket.io ` 以及 Koa 来做项目演示。
 * 建立点对点连接
-  我们通过一张图来分析连接的过程。
+  我们通过结合图示来分析连接的过程。
+
+  ![](https://user-gold-cdn.xitu.io/2019/3/15/169810c20bb10132?w=680&h=189&f=png&s=6589)
+
+  显而易见，在上述连接的过程中，lisi 作为请求方（在这里都是指代浏览器），需要给 zhangsan 发送一条名为 offer 的信息，zhangsan 在接收到请求后，则返回一条 answer 信息给 lisi。这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
+  
+  ![](https://user-gold-cdn.xitu.io/2019/3/15/169810cd0eb2e77c?w=680&h=280&f=png&s=12173)
+
 ## 后记
 如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。
 * 文章代码库 [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
