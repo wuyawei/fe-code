@@ -374,4 +374,7 @@
 * [手把手教你实现一个完整的 Promise](http://www.cnblogs.com/huansky/p/6064402.html)
 * [教你一步一步实现一个Promise - 飞魚](https://www.tuicool.com/articles/RzQRV3)
 * [阮一峰老师的es6-Promise章节](http://es6.ruanyifeng.com/#docs/promise)
-
+## 公众号
+欢迎关注公众号 **前端发动机**，江三疯的前端二三事，专注技术，也会时常迷糊。希望在未来的前端路上，与你一同成长。
+  
+![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
