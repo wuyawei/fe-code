@@ -1,7 +1,18 @@
 ## 前言
-  这个主题会作为两期发布，本期主要会讲解 WebRTC 基础 API，并结合相应的练习，尽量让大家在阅读的时候更容易理解。以及1 对 1 通话、和多人通话的基本流程。
+  【 **从头到脚** 】会作为一个系列文章来发布，它包括但不限于 WebRTC 多人视频，预计会有：
+   * WebRTC 实战（一）：也就是本期，主要是基础讲解以及一对一的本地对等连接，网络对等连接。
+   * WebRTC 实战（二）：主要讲解数据传输以及多端本地对等连接、网络对等连接。
+   * WebRTC 实战（三）：实现一个一对一的视频聊天项目，包括但不限于截图、录制等。
+   * WebRTC + Canvas 实现一个共享画板项目。
+   * 作者开源作品  [💘🍦🙈Vchat — 一个社交聊天系统（vue + node + mongodb）](https://github.com/wuyawei/Vchat) 的系列文章
   
+  因为文章输出确实要耗费很大的精力，所以上面计划不一定是这个发布顺序，中间也会穿插发布其它方向的文章，如 Vue、JavaScript 或者其他学习的主题。
   
+  在这里也希望大家可以关注一波，你们的关注支持，也能激励我输出更好的文章。
+  * 本文示例 **源码库** [webrtc-stream](https://github.com/wuyawei/webrtc-stream)
+  * **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
+  
+  文章末尾有 **交流群** 和 **公众号**，希望大家支持，感谢🍻。
 ## 什么是 WebRTC ？
   WebRTC 是由一家名为 Gobal IP Solutions，简称 GIPS 的瑞典公司开发的。Google 在 2011 年收购了 GIPS，并将其源代码开源。然后又与 IETF 和 W3C 的相关标准机构合作，以确保行业达成共识。其中：
   
@@ -123,6 +134,9 @@
 ``` javascript
     { audio: true, video: { facingMode: "user" } } // 前置
     { audio: true, video: { facingMode: { exact: "environment" } } } // 后置
+    // 也可以指定设备 id，
+    // 通过 navigator.mediaDevices.enumerateDevices() 可以获取到支持的设备
+    { video: { deviceId: myCameraDeviceId } }
 ```
   还有一个比较有意思的就是设置视频源为屏幕，但是目前只有火狐支持了这个属性。
 ``` javascript
@@ -136,14 +150,14 @@
   
     RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。在信令阶段需要完成的任务：
   
-     * 为每个连接端创建一个 RTCPeerConnection，并添加本地流。
+     * 为每个连接端创建一个 RTCPeerConnection，并添加本地媒体流。
      * 获取并交换本地和远程描述：SDP 格式的本地媒体元数据。
      * 获取并交换网络信息：潜在的连接端点称为 ICE 候选者。
   
   我们虽然把 WebRTC 称之为点对点的连接，但并不意味着，实现过程中不需要服务器的参与。因为在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的`Strophe.js`来做双向通信，但是在本例中则会使用`Socket.io `以及 Koa 来做项目演示。
 * NAT 穿越技术
 
-  我们先看连接任务的第一条：为每个连接端创建一个 RTCPeerConnection，并添加本地流。事实上，如果是一般直播模式，则只需要播放端添加本地流进行输出，其他参与者只需要接受流进行观看即可。
+  我们先看连接任务的第一条：为每个连接端创建一个 RTCPeerConnection，并添加本地媒体流。事实上，如果是一般直播模式，则只需要播放端添加本地流进行输出，其他参与者只需要接受流进行观看即可。
   
   因为各浏览器差异，RTCPeerConnection 一样需要加上前缀。
     ``` javascript
@@ -167,7 +181,9 @@
     ```
   参数配置了两个 url，分别是 STUN 和 TURN，这便是 WebRTC 实现点对点通信的关键，也是一般 P2P 连接都需要解决的问题：NAT穿越。
   
-  NAT（Network Address Translation，网络地址转换）简单来说就是为了解决 IPV4 下的 IP 地址匮乏而出现的一种技术，也就是一个 公网 IP 地址一般都对应 n 个内网 IP。这样也就会导致不是同一局域网下的浏览器在尝试 WebRTC 连接时，无法直接拿到对方的公网 IP 也就不能进行通信，所以就需要用到 NAT 穿越（也叫打洞）。
+  NAT（Network Address Translation，网络地址转换）简单来说就是为了解决 IPV4 下的 IP 地址匮乏而出现的一种技术，也就是一个 公网 IP 地址一般都对应 n 个内网 IP。这样也就会导致不是同一局域网下的浏览器在尝试 WebRTC 连接时，无法直接拿到对方的公网 IP 也就不能进行通信，所以就需要用到 NAT 穿越（也叫打洞）。以下为 NAT 穿越基本流程：
+  
+  ![](https://user-gold-cdn.xitu.io/2019/3/16/16984621b1f7f498?w=676&h=434&f=png&s=88128)
   
   一般情况下会采用 ICE 协议框架进行 NAT 穿越，ICE 的全称为 Interactive Connectivity Establishment，即交互式连接建立。它使用 STUN 协议以及 TURN 协议来进行穿越。关于 NAT 穿越的更多信息可以参考  [ICE协议下NAT穿越的实现（STUN&TURN）](https://www.jianshu.com/p/84e8c78ca61d)、[P2P通信标准协议(三)之ICE](https://www.cnblogs.com/pannengzhi/p/5061674.html)。
   
@@ -180,14 +196,41 @@
 
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810c20bb10132?w=680&h=189&f=png&s=6589)
 
-  显而易见，在上述连接的过程中，**请求方**（在这里都是指代浏览器）需要给 **接收方** 发送一条名为 offer 的信息，**接收方** 在接收到请求后，则返回一条 answer 信息给 **请求方**。这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
+  显而易见，在上述连接的过程中：
+     * **请求方**（在这里都是指代浏览器）需要给 **接收方** 发送一条名为 offer 的信息。
+     * **接收方** 在接收到请求后，则返回一条 answer 信息给 **请求方**。
+     
+  这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。sdp 信息一般长这样：
+    ``` javascript
+        v=0
+        o=- 1837933589686018726 2 IN IP4 127.0.0.1
+        s=-
+        t=0 0
+        a=group:BUNDLE audio video
+        a=msid-semantic: WMS yvKeJMUSZzvJlAJHn4unfj6q9DMqmb6CrCOT
+        m=audio 9 UDP/TLS/RTP/SAVPF 111 103 104 9 0 8 106 105 13 110 112 113 126
+        ...
+        ...
+    ```
+  
+  但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
   
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810cd0eb2e77c?w=680&h=280&f=png&s=12173)
   
      * **请求方** 创建 offer 信息后，先调用 setLocalDescription 存储本地 offer 描述，再将其发送给 **接收方**。
      * **接收方** 收到 offer 后，先调用 setRemoteDescription 存储远端 offer 描述；然后又创建 answer 信息，同样需要调用 setLocalDescription 存储本地 answer 描述，再返回给 **请求方**
      * **请求方** 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描述。
+     
+  到这里点对点连接还缺一步，也就是网络信息 ICE 候选交换。不过这一步和 offer、answer 信息的交换并没有先后顺序，流程也是一样的。即：在**请求方**和**接收方**的 ICE 候选信息准备完成后，进行交换，并互相保存对方的信息，这样就完成了一次连接。
+  
+  ![](https://user-gold-cdn.xitu.io/2019/3/16/169860e7cf668614?w=904&h=785&f=png&s=75228)
 
+  这张图是我认为比较完善的了，详细的描述了整个连接的过程。正好我们再来小结一下：
+     * 基础设施：必要的信令服务和 NAT 穿越服务
+     * clientA 和 clientB 分别创建 RTCPeerConnection 并为输出端添加本地媒体流。如果是视频通话类型，则意味着，两端都需要添加媒体流进行输出。
+     * 本地 ICE 候选信息采集完成后，通过信令服务进行交换。
+     * 呼叫端（好比 A 给 B 打视频电话，A 为呼叫端）发起 offer 信息，接收端接收并返回一个 answer 信息，呼叫端保存，完成连接。
+### 本地对等连接
 ## 后记
 如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。
 * 文章代码库 [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
