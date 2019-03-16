@@ -198,8 +198,8 @@
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810c20bb10132?w=680&h=189&f=png&s=6589)
 
   显而易见，在上述连接的过程中：
-     * **请求方**（在这里都是指代浏览器）需要给 **接收方** 发送一条名为 offer 的信息。
-     * **接收方** 在接收到请求后，则返回一条 answer 信息给 **请求方**。
+     * **呼叫端**（在这里都是指代浏览器）需要给 **接收端** 发送一条名为 offer 的信息。
+     * **接收端** 在接收到请求后，则返回一条 answer 信息给 **呼叫端**。
      
   这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。sdp 信息一般长这样：
     ``` javascript
@@ -218,11 +218,11 @@
   
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810cd0eb2e77c?w=680&h=280&f=png&s=12173)
   
-     * **请求方** 创建 offer 信息后，先调用 setLocalDescription 存储本地 offer 描述，再将其发送给 **接收方**。
-     * **接收方** 收到 offer 后，先调用 setRemoteDescription 存储远端 offer 描述；然后又创建 answer 信息，同样需要调用 setLocalDescription 存储本地 answer 描述，再返回给 **请求方**
-     * **请求方** 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描述。
+     * **呼叫端** 创建 offer 信息后，先调用 setLocalDescription 存储本地 offer 描述，再将其发送给 **接收端**。
+     * **接收端** 收到 offer 后，先调用 setRemoteDescription 存储远端 offer 描述；然后又创建 answer 信息，同样需要调用 setLocalDescription 存储本地 answer 描述，再返回给 **接收端**
+     * **呼叫端** 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描述。
      
-  到这里点对点连接还缺一步，也就是网络信息 ICE 候选交换。不过这一步和 offer、answer 信息的交换并没有先后顺序，流程也是一样的。即：在**请求方**和**接收方**的 ICE 候选信息准备完成后，进行交换，并互相保存对方的信息，这样就完成了一次连接。
+  到这里点对点连接还缺一步，也就是网络信息 ICE 候选交换。不过这一步和 offer、answer 信息的交换并没有先后顺序，流程也是一样的。即：在**呼叫端**和**接收端**的 ICE 候选信息准备完成后，进行交换，并互相保存对方的信息，这样就完成了一次连接。
   
   ![](https://user-gold-cdn.xitu.io/2019/3/16/169860e7cf668614?w=904&h=785&f=png&s=75228)
 
@@ -232,7 +232,111 @@
      * 本地 ICE 候选信息采集完成后，通过信令服务进行交换。
      * 呼叫端（好比 A 给 B 打视频电话，A 为呼叫端）发起 offer 信息，接收端接收并返回一个 answer 信息，呼叫端保存，完成连接。
 ### 本地对等连接
-  基础流程讲完了，接下来是骡子是马拉出来溜溜。我们来实现一个本地的对等连接，意思就是不经过服务，在本地页面的两个 video 之间进行连接。算了，还是上图的，一看就懂。
+  基础流程讲完了，那么是骡子是马拉出来溜溜。我们先来实现一个本地的对等连接，借此熟悉一下流程和部分 API。本地连接，意思就是不经过服务，在本地页面的两个 video 之间进行连接。算了，还是上图吧，一看就懂。
+  
+  ![](https://user-gold-cdn.xitu.io/2019/3/16/16986acdf2e662b0?w=480&h=208&f=gif&s=508424)
+  明确一下目标，A 作为输出端，需要获取到本地流并添加到自己的 RTCPeerConnection；B 作为呼叫端，并没有输出的需求，因此只需要接收流。
+  * 创建媒体流
+  
+  页面布局很简单，就是两个 video 标签，分别代表 A 和 B。所以我们直接看代码，虽然源码是用 Vue 构建的，但是并没有用到特别的 API，整体上和 es6 的 class 语法相差不大，而且都有详细的注释，所以建议没有 Vue 基础的同学可以直接当成 es6 来阅读。示例 **源码库** [webrtc-stream](https://github.com/wuyawei/webrtc-stream)
+  ``` javascrit
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
+        let video = document.querySelector('#rtcA');
+        video.srcObject = stream;
+        this.localstream = stream; // 保存到全局
+        this.initPeer(); // 获取到媒体流后，调用函数初始化 RTCPeerConnection
+    })
+  ```
+  * 初始化 RTCPeerConnection
+  ``` javascript
+    initPeer() {
+        ...
+        this.peerA.addStream(this.localstream); // 添加本地流
+        this.peerA.onicecandidate = (event) => {
+        // 监听 A 的ICE候选信息 如果收集到，就添加给 B 连接状态
+            if (event.candidate) {
+                this.peerB.addIceCandidate(event.candidate);
+            }
+        };
+        ...
+        // 监听是否有媒体流接入，如果有就赋值给 rtcB 的 src
+        this.peerB.onaddstream = (event) => {
+            let video = document.querySelector('#rtcB');
+            video.srcObject = event.stream;
+        };
+        this.peerB.onicecandidate = (event) => { 连接状态
+        // 监听 B 的ICE候选信息 如果收集到，就添加给 A
+            if (event.candidate) {
+                this.peerA.addIceCandidate(event.candidate);
+            }
+        };
+    }
+  ```
+  这部分主要就是分别创建 peer 实例，并互相交换 ICE 信息。不过有一个属性需要在这里提一下，就是 iceConnectionState。
+  ``` javascript
+    peer.oniceconnectionstatechange = (evt) => {
+        console.log('ICE connection state change: ' + evt.target.iceConnectionState);
+    };
+  ```
+  我们可以通过 `oniceconnectionstatechange` 方法来监测 ICE 连接的状态，它一共有七种状态：
+  ```
+new        ICE代理正在收集候选人或等待提供远程候选人。
+checking   ICE代理已经在至少一个组件上接收了远程候选者，并且正在检查候选但尚未找到连接。除了检查，它可能还在收集。
+connected  ICE代理已找到所有组件的可用连接，但仍在检查其他候选对以查看是否存在更好的连接。它可能还在收集。
+completed  ICE代理已完成收集和检查，并找到所有组件的连接。
+failed     ICE代理已完成检查所有候选对，但未能找到至少一个组件的连接。可能已找到某些组件的连接。
+disconnected ICE 连接断开
+closed      ICE代理已关闭，不再响应STUN请求。
+  ```
+  我们需要注意的是 completed 和 disconnected，一个是完成连接时触发，一个在断开连接时触发。
+  * 创建连接
+  ``` javascript
+    async call() {
+        if (!this.peerA || !this.peerB) { // 判断是否有对应实例，没有就重新创建
+            this.initPeer();
+        }
+        try {
+            let offer = await this.peerA.createOffer(this.offerOption); // 创建 offer
+            await this.onCreateOffer(offer);
+        } catch (e) {
+            console.log('createOffer: ', e);
+        }
+    }
+  ```
+  这里需要判断是否有对应实例，是为了挂断之后又重新呼叫做的处理。
+  ``` javascript
+    async onCreateOffer(desc) {
+        try {
+            await this.peerB.setLocalDescription(desc); // 呼叫端设置本地 offer 描述
+        } catch (e) {
+            console.log('Offer-setLocalDescription: ', e);
+        }
+        try {
+            await this.peerA.setRemoteDescription(desc); // 接收端设置远程 offer 描述
+        } catch (e) {
+            console.log('Offer-setRemoteDescription: ', e);
+        }
+        try {
+            let answer = await this.peerA.createAnswer(); // 接收端创建 answer
+            await this.onCreateAnswer(answer);
+        } catch (e) {
+            console.log('createAnswer: ', e);
+        }
+    },
+    async onCreateAnswer(desc) {
+        try {
+            await this.peerA.setLocalDescription(desc); // 接收端设置本地 answer 描述
+        } catch (e) {
+            console.log('answer-setLocalDescription: ', e);
+        }
+        try {
+            await this.peerB.setRemoteDescription(desc); // 呼叫端端设置远程 answer 描述
+        } catch (e) {
+            console.log('answer-setRemoteDescription: ', e);
+        }
+    }
+  ```
+  这基本就是之前重复过好几次的流程用代码写出来而已，看到这里，思路应该比较清晰了。不过有一点需要说明一下，就是现在这种情况，A 作为呼叫端，B 一样是可以拿到 A 的媒体流的。因为连接一旦建立了，就是双向的，只不过 B 初始化 peer 的时候没有添加本地流，所以 A 不会有 B 的媒体流。
   
 ## 交流群
 > qq前端交流群：960807765，欢迎各种技术交流，期待你的加入
