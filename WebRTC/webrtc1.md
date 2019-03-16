@@ -13,7 +13,7 @@
   WebRTC 的音视频处理引擎：
 ![WebRTC 的音视频处理引擎](https://user-gold-cdn.xitu.io/2019/3/13/16976878d1a2966c?w=616&h=456&f=png&s=12950)
   
-  所以，我们可以在不需要任何第三方插件的情况下，实现一个浏览器到浏览器的点对点（p2p）连接，从而进行音视频实时通信。当然，WebRTC 提供了一些 API 供我们使用，在实时音视频通信的过程中，我们主要用到以下三个：
+  所以，我们可以在不需要任何第三方插件的情况下，实现一个浏览器到浏览器的点对点（P2P）连接，从而进行音视频实时通信。当然，WebRTC 提供了一些 API 供我们使用，在实时音视频通信的过程中，我们主要用到以下三个：
   
    * getUserMedia：获取音频和视频流（MediaStream）
    * RTCPeerConnection：点对点通信
@@ -28,7 +28,8 @@
 
  getUserMedia 这个 API 大家可能并不陌生，因为常见的 H5 录音等功能就需要用到它，主要就是用来获取设备的媒体流（即 MediaStream）。它可以接受一个约束对象 constraints 作为参数，用来指定需要获取到什么样的媒体流。
 ``` javascript
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }) // 表示需要同时获取到音频和视频
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true }) 
+    // 参数表示需要同时获取到音频和视频
         .then(stream => {
           // 获取到优化后的媒体流
           let video = document.querySelector('#rtc');
@@ -50,7 +51,7 @@
   
   结合上图，我们顺便复习一下上期讲的原型和原型链。MediaStream 的 `__proto__` 指向它的构造函数所对应的原型对象，在原型对象中又有一个 constructor 属性指向了它所对应的构造函数。也就是说 MediaStream 的构造函数是一个名为 MediaStream 的函数。可能说得有一点绕，对原型还不熟悉的同学，可以去看一下上期文章 [JavaScript 原型和原型链及 canvas 验证码实践](https://juejin.im/post/5c7b524ee51d453ee81877a7)。
   
-  也可以通过 getAudioTracks()、getVideoTracks() 来查看获取到的流的某些信息，更多信息查看 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack)。
+  这里也可以通过 getAudioTracks()、getVideoTracks() 来查看获取到的流的某些信息，更多信息查看 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStreamTrack)。
 
   ![](https://user-gold-cdn.xitu.io/2019/3/14/1697b85bb19a0658?w=600&h=196&f=png&s=47157)
   
@@ -69,7 +70,8 @@
     // 继续判断是否有 navigator.mediaDevices.getUserMedia，没有就采用 navigator.getUserMedia
     if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia = function(prams) {
-            let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia; // 兼容获取
+            let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            // 兼容获取
             if (!getUserMedia) {
                 return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
             }
@@ -94,11 +96,12 @@
             console.error(err.name + ': ' + err.message);
         });
 ```
-* API
+* constraints
 
  对于 constraints 约束对象，我们可以用来指定一些和媒体流有关的属性。比如指定是否获取某种流：
 ``` javascript
-    navigator.mediaDevices.getUserMedia({ audio: false, video: true }); // 只需要视频流，不要音频
+    navigator.mediaDevices.getUserMedia({ audio: false, video: true });
+    // 只需要视频流，不要音频
 ```
 指定视频流的宽高、帧率以及理想值：
 ``` javascript
@@ -127,38 +130,63 @@
 ```
   这里就不接着做搬运工了，更多精彩尽在 [MDN](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)，^_^!
 ### RTCPeerConnection
+> RTCPeerConnection 接口代表一个由本地计算机到远端的 WebRTC 连接。该接口提供了创建，保持，监控，关闭连接的方法的实现。—— MDN
+  
 * 概述
   
-  RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。在信令阶段需要完成的任务：
+    RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。在信令阶段需要完成的任务：
   
      * 为每个连接端创建一个 RTCPeerConnection，并添加本地流。
      * 获取并交换本地和远程描述：SDP 格式的本地媒体元数据。
      * 获取并交换网络信息：潜在的连接端点称为 ICE 候选者。
   
   我们虽然把 WebRTC 称之为点对点的连接，但并不意味着，实现过程中不需要服务器的参与。因为在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的`Strophe.js`来做双向通信，但是在本例中则会使用`Socket.io `以及 Koa 来做项目演示。
-* 建立点对点连接
+* NAT 穿越技术
 
   我们先看连接任务的第一条：为每个连接端创建一个 RTCPeerConnection，并添加本地流。事实上，如果是一般直播模式，则只需要播放端添加本地流进行输出，其他参与者只需要接受流进行观看即可。
   
   因为各浏览器差异，RTCPeerConnection 一样需要加上前缀。
-``` javascript
-    let PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-    
-    let peer = new PeerConnection(iceServer);
-```
-  我们看见 RTCPeerConnection 也同样接收一个参数 — iceServer，来看看它长什么样：
+    ``` javascript
+        let PeerConnection = window.RTCPeerConnection ||
+                             window.mozRTCPeerConnection ||
+                             window.webkitRTCPeerConnection;
+        let peer = new PeerConnection(iceServers);
+    ```
+  我们看见 RTCPeerConnection 也同样接收一个参数 — iceServers，先来看看它长什么样：
+    ``` javascript
+        {
+          iceServers: [
+            { url: "stun:stun.l.google.com:19302"}, // 谷歌的公共服务
+            {
+              url: "turn:***",
+              username: ***, // 用户名
+              credential: *** // 密码
+            }
+          ]
+        }
+    ```
+  参数配置了两个 url，分别是 STUN 和 TURN，这便是 WebRTC 实现点对点通信的关键，也是一般 P2P 连接都需要解决的问题：NAT穿越。
   
-  我们通过结合图示来分析连接的过程。
+  NAT（Network Address Translation，网络地址转换）简单来说就是为了解决 IPV4 下的 IP 地址匮乏而出现的一种技术，也就是一个 公网 IP 地址一般都对应 n 个内网 IP。这样也就会导致不是同一局域网下的浏览器在尝试 WebRTC 连接时，无法直接拿到对方的公网 IP 也就不能进行通信，所以就需要用到 NAT 穿越（也叫打洞）。
+  
+  一般情况下会采用 ICE 协议框架进行 NAT 穿越，ICE 的全称为 Interactive Connectivity Establishment，即交互式连接建立。它使用 STUN 协议以及 TURN 协议来进行穿越。关于 NAT 穿越的更多信息可以参考  [ICE协议下NAT穿越的实现（STUN&TURN）](https://www.jianshu.com/p/84e8c78ca61d)、[P2P通信标准协议(三)之ICE](https://www.cnblogs.com/pannengzhi/p/5061674.html)。
+  
+  到这里，我们可以发现，WebRTC 的通信至少需要两种服务配合：
+  * 信令阶段需要双向通信服务辅助信息交换。
+  * STUN、TURN辅助实现 NAT 穿越。
+* 建立点对点连接
+
+  WebRTC 的点对点连接到底是什么样的过程呢，我们通过结合图例来分析连接。
 
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810c20bb10132?w=680&h=189&f=png&s=6589)
 
-  显而易见，在上述连接的过程中，请求方（在这里都是指代浏览器）需要给 接收方 发送一条名为 offer 的信息，接收方 在接收到请求后，则返回一条 answer 信息给 请求方。这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
+  显而易见，在上述连接的过程中，**请求方**（在这里都是指代浏览器）需要给 **接收方** 发送一条名为 offer 的信息，**接收方** 在接收到请求后，则返回一条 answer 信息给 **请求方**。这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
   
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810cd0eb2e77c?w=680&h=280&f=png&s=12173)
   
-     * 请求方 创建 offer 信息后，先调用 setLocalDescription 存储本地 offer 描述，再将其发送给 接收方。
-     * 接收方 收到 offer 后，先调用 setRemoteDescription 存储远端 offer 描述；然后又创建 answer 信息，同样需要调用 setLocalDescription 存储本地 answer 描述，再返回给 请求方
-     * 请求方 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描述。
+     * **请求方** 创建 offer 信息后，先调用 setLocalDescription 存储本地 offer 描述，再将其发送给 **接收方**。
+     * **接收方** 收到 offer 后，先调用 setRemoteDescription 存储远端 offer 描述；然后又创建 answer 信息，同样需要调用 setLocalDescription 存储本地 answer 描述，再返回给 **请求方**
+     * **请求方** 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描述。
 
 ## 后记
 如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。
