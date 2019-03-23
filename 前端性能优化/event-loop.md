@@ -65,4 +65,28 @@ process.nextTick(() => {
     console.log(6)
 })
 // 1、7、6、8、2、4、3、5
+
+setTimeout(function() {
+    console.log('setTimeout');
+}, 3000)
+
+new Promise(function(resolve) {
+    setTimeout(function() {
+        console.log('promise');
+        resolve()
+    }, 2000)
+}).then(function() {
+    console.log('then');
+})
+
+console.time()
+for (let i = 0; i < 20000; i++) {
+    setTimeout(function() {
+        console.log('for');
+    }, 3000)
+    // console.log('for');
+}
+console.timeEnd()
+console.log('console');
+// 执行完所有同步任务，观察有没有微任务，没有再进行下一个宏任务（setTimeout的计时是同时进行的，但是就算时间到了，也一定要执行栈清空以后才会运行。而且，被阻塞后，就算所有的计时器都到时间了，依然会按照定时器到点的先后顺序进行执行）。
 ```
