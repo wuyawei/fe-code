@@ -4,6 +4,7 @@
 * [站住，你这promise！](https://github.com/wuyawei/fe-code/blob/master/js/Promise/promise.md)
 * [js原型和原型链 及 canvas验证码实践](https://github.com/wuyawei/fe-code/blob/master/js/js%E5%9F%BA%E7%A1%80/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE.md)
 * [从头到脚撸一个多人视频聊天 — WebRTC 实战（一）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc1.md)
+* [【前端进阶良品】Vue 组件间通信方式完整版](https://github.com/wuyawei/fe-code/blob/master/vue/%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1/1.md)
 ## 未来的写作计划
 * WebRTC 实战（二）：主要讲解数据传输以及多端本地对等连接、网络对等连接。
 * WebRTC 实战（三）：实现一个一对一的视频聊天项目，包括但不限于截图、录制等。
