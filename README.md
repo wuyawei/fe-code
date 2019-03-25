@@ -3,7 +3,7 @@
 ## 文章列表
 ### 【前端进阶之路】系列
 * [【前端进阶之路】 站住，你这promise！](https://github.com/wuyawei/fe-code/blob/master/js/Promise/promise.md)
-* [【前端进阶之路】 js原型和原型链 及 canvas验证码实践](https://github.com/wuyawei/fe-code/blob/master/js/js%E5%9F%BA%E7%A1%80/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE.md)
+* [【前端进阶之路】 js原型和原型链 及 canvas验证码实践](https://github.com/wuyawei/fe-code/blob/master/JavaScript/js%E5%9F%BA%E7%A1%80/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE.md)
 * [【前端进阶之路】 Vue 组件间通信方式完整版](https://github.com/wuyawei/fe-code/blob/master/vue/%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1/1.md)
 ### 【从头到脚撸】系列
 * [【从头到脚】撸一个多人视频聊天 — WebRTC 实战（一）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc1.md)
