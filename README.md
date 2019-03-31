@@ -7,6 +7,7 @@
 * [【前端进阶之路】 Vue 组件间通信方式完整版](https://github.com/wuyawei/fe-code/blob/master/vue/%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1/1.md)
 ### 【从头到脚撸】系列
 * [【从头到脚】撸一个多人视频聊天 — WebRTC 实战（一）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc1.md)
+* [【从头到脚】WebRTC + Canvas 实现一个双人协作的共享画板](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc2.md)
 ## 学习和写作方向
 ### 【前端进阶之路】系列写作方向
 #### JavaScript
@@ -48,6 +49,6 @@
 
 ![](https://user-gold-cdn.xitu.io/2018/12/9/16792b974b1355eb?w=240&h=328&f=jpeg&s=41198)
 ## 公众号
-欢迎关注公众号 **前端发动机**，江三疯的前端二三事，专注技术，也会时常迷糊。希望在未来的前端路上，与你一同成长。
+欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有各类前端优质文章，希望在未来的前端路上，与你一同成长。
   
 ![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)

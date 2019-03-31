@@ -11,7 +11,7 @@
   在这里也希望大家可以 **关注** 一波，你们的关注支持，也能激励我输出更好的文章。
   * 本文示例 **源码库** [webrtc-stream](https://github.com/wuyawei/webrtc-stream)
   * **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
-  * 本文[演示地址](https://webrtc-stream-txrdcybqae.now.sh/#/)（建议谷歌查看）
+  * 本文[演示地址](https://webrtc-stream-jukbknonbo.now.sh/#/)（建议谷歌查看）
   
   文章末尾有 **交流群** 和 **公众号**，希望大家支持，感谢🍻。
 ## 什么是 WebRTC ？
@@ -567,6 +567,6 @@ closed      ICE代理已关闭，不再响应STUN请求。
 * [站住，你这个Promise！](https://juejin.im/post/5c179aad5188256d9832fb61)
 * [💘🍦🙈Vchat — 从头到脚，撸一个社交聊天系统（vue + node + mongodb）](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
 
-欢迎关注公众号 **前端发动机**，江三疯的前端二三事，专注技术，也会时常迷糊。希望在未来的前端路上，与你一同成长。
+欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有各类前端优质文章，希望在未来的前端路上，与你一同成长。
   
 ![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)

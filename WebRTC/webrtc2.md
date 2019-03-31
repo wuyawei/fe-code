@@ -9,7 +9,7 @@
 
   * 本文示例 **源码库** [webrtc-stream](https://github.com/wuyawei/webrtc-stream)
   * **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
-  * 本文 [演示地址](https://webrtc-stream-txrdcybqae.now.sh/#/)（建议谷歌查看）
+  * 本文 [演示地址](https://webrtc-stream-jukbknonbo.now.sh/#/)（建议谷歌查看）
 
 照例先看下本期的实战目标（灵魂画手上线）：实现一个可以两人（基于上期文章的 1 对 1 对等连接）协作作画的画板。是什么概念呢？简单来说就是两个人可以共享一个画板，都可以在上面作画。
 
