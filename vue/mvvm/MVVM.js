@@ -1,8 +1,7 @@
 /**
  * Created by wyw on 2019/3/10.
  */
-// 在添加观察者(watcher)的时候，通过取值触发指定data数据的get方法，从而初始化订阅系统（Dep）。此时因为defineProperty时的get方法形成了闭包，所以会收集对应的watcher。然后在set方法触发时，调用发布方法，进行相应的数据更新操作。
-// 通过一个例子来弄懂这个原理 也是发布订阅的核心
+// 在需要订阅的地方（如：模版编译），添加观察者（watcher），并立刻通过取值触发指定属性的get方法，从而将观察者添加进订阅系统Dep，然后在 Set 的时候，进行 notify，通知给所有观察者进行响应的update
 class Dep{
     constructor() {
         this.subs = [];
