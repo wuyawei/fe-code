@@ -481,6 +481,6 @@ handleChannel(channel) { // 处理 channel
 * [【从头到脚】撸一个多人视频聊天 — 前端 WebRTC 实战（一）](https://juejin.im/post/5c3acfa56fb9a049f36254be)
 * [【从头到脚】撸一个社交聊天系统（vue + node + mongodb）- 💘🍦🙈Vchat ](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
 
-欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有各类前端优质文章，希望在未来的前端路上，与你一同成长。
+欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有前端海量大佬优质文章，致力于成为推动前端成长的引擎。
   
 ![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
