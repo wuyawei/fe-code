@@ -434,3 +434,8 @@
 // let arr1 = ['a','a','a', 'b', 'b', 'c'];
 // let arr2 = arr1.map((v, i, arr) => i + 1 - arr.indexOf(v));
 // console.log(arr2); // [ 1, 2, 3, 1, 2, 1 ]
+let arr = [1,2,3,4,5,6];
+arr.forEach((v, i) => {
+    arr[i] = i;
+});
+console.log(arr);
