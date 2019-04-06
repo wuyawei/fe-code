@@ -567,6 +567,6 @@ closed      ICE代理已关闭，不再响应STUN请求。
 * [站住，你这个Promise！](https://juejin.im/post/5c179aad5188256d9832fb61)
 * [💘🍦🙈Vchat — 从头到脚，撸一个社交聊天系统（vue + node + mongodb）](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
 
-欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有前端海量大佬优质文章，致力于成为推动前端成长的引擎。
+欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有海量前端大佬优质文章，致力于成为推动前端成长的引擎。
   
 ![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
