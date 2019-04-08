@@ -1,6 +1,3 @@
-let data = {
-    name: '渣渣辉'
-};
 class Dep {
     constructor() {
         this.subs = new Map();
@@ -62,6 +59,9 @@ function Observer(obj) {
     };
     return new Proxy(obj, handler)
 }
+let data = {
+    name: '渣渣辉'
+};
 function print1(data) {
     console.log('我系', data);
 }
