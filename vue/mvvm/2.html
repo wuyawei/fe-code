@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    姓名：<input type="text" v-model="name"> <br>
+    年龄：<input type="text" v-model="age"> <br>
+    职业：<input type="text" v-model="profession"> <br>
+    <p>
+        输出：{{info}}
+    </p>
+    <button v-on:click="clear">清空</button>
+</div>
+</body>
+<script src="mvvm.js"></script>
+<script>
+    const app = new MVVM({
+        el: '#app',
+        data: {
+            name: '',
+            age: '',
+            profession: ''
+        },
+        methods: {
+            clear() {
+                this.name = '';
+                this.age =  '';
+                this.profession = '';
+            }
+        },
+        computed: {
+            info() {
+                return `我叫${this.name}，今年${this.age}，是一名${this.profession}`;
+            }
+        }
+    })
+</script>
+</html>

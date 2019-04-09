@@ -13,20 +13,20 @@ class Dep { // 发布订阅
 }
 
 class Watcher{ // 观察者
-    constructor(vm, expr, cb){
+    constructor(vm, exp, cb){
         this.vm = vm; // 实例
-        this.expr = expr; // 观察数据的表达式
+        this.exp = exp; // 观察数据的表达式
         this.cb = cb; // 更新触发的回调
         this.value = this.get(); // 保存旧值
     }
     get(){
         Dep.target = this;
-        let value = utils.getValue(this.vm, this.expr);
+        let value = resolveFn.getValue(this.vm, this.exp);
         Dep.target = null;
         return value;
     }
     update(){
-        let newValue = utils.getValue(this.vm, this.expr);
+        let newValue = resolveFn.getValue(this.vm, this.exp);
         if(newValue !== this.value){
             this.cb(newValue);
             this.value = newValue;
@@ -57,6 +57,7 @@ class Observer{ // 数据劫持
         let dep = new Dep();
         Object.defineProperty(obj, key, {
             get(){
+                console.log(obj, key, Dep.target, dep);
                 Dep.target && dep.addSub(Dep.target);
                 return value;
             },
@@ -75,42 +76,11 @@ class Compiler{
     constructor(el, vm) {
         this.el = this.isElementNode(el) ? el : document.querySelector(el);
         this.vm = vm;
-        let fragment = this.node2fragment(this.el);
+        let fragment = this.createFragment(this.el);
         this.compile(fragment);
         this.el.appendChild(fragment);
     }
-    isDirective(attrName) {
-        return attrName.startsWith('v-');
-    }
-    compileElement(node) {
-        let attributes = node.attributes;
-        [...attributes].forEach(attr=>{
-            let {name, value: expr} = attr;
-            if(this.isDirective(name)) {
-                let [, directive] = name.split('-');
-                let [directiveName, eventName] = directive.split(':');
-                utils[directiveName](node, expr, this.vm, eventName);
-            }
-        })
-    }
-    compileText(node) {
-        let content = node.textContent;
-        if(/\{\{(.+?)\}\}/.test(content)){ // 惰性匹配
-            utils['text'](node, content, this.vm);
-        }
-    }
-    compile(node) {
-        let childNodes = node.childNodes;
-        [...childNodes].forEach(child=>{
-            if(this.isElementNode(child)){
-                this.compileElement(child);
-                this.compile(child);
-            }else{
-                this.compileText(child);
-            }
-        });
-    }
-    node2fragment(node) {
+    createFragment(node) { // 将 dom 元素，转换成文档片段
         let fragment = document.createDocumentFragment();
         let firstChild;
         while(firstChild = node.firstChild) {
@@ -118,103 +88,117 @@ class Compiler{
         }
         return fragment;
     }
-    isElementNode(node) {
+    isDirective(attrName) {
+        return attrName.startsWith('v-');
+    }
+    isElementNode(node) { // 是否是元素节点
         return node.nodeType === 1;
+    }
+    compile(node) {
+        let childNodes = node.childNodes;
+        [...childNodes].forEach(child=>{
+            if(this.isElementNode(child)){
+                this.compile(child);
+                let attributes = child.attributes; // 获取元素节点的所有属性 v-model class 等
+                [...attributes].forEach(attr => { // 以  v-on:click="clear" 为例
+                    let {name, value: exp} = attr; // 结构获取 "clear"
+                    if(this.isDirective(name)) { // 判断是不是指令属性
+                        let [, directive] = name.split('-'); // 结构获取指令部分 v-on:click
+                        let [directiveName, eventName] = directive.split(':'); // on，click
+                        resolveFn[directiveName](child, exp, this.vm, eventName); // 执行相应指令
+                    }
+                })
+            }else{
+                let content = child.textContent;
+                if(/\{\{(.+?)\}\}/.test(content)) { // 惰性匹配
+                    resolveFn.text(child, content, this.vm);
+                }
+            }
+        });
     }
 }
 
-utils = {
-    getValue(vm, expr) {
-        return expr.split('.').reduce((data, current)=>{
+resolveFn = {
+    getValue(vm, exp) {
+        return exp.split('.').reduce((data, current)=>{
             return data[current];
         }, vm.$data);
     },
-    setValue(vm, expr, value) {
-        expr.split('.').reduce((data, current, index, arr)=>{
+    setValue(vm, exp, value) {
+        exp.split('.').reduce((data, current, index, arr)=>{
             if(index === arr.length-1) {
                 return data[current] = value;
             }
             return data[current];
         }, vm.$data);
     },
-    model(node, expr, vm) {
-        new Watcher(vm, expr, (newVal) => {
-            this.modelUpdater(node, newVal);
+    model(node, exp, vm) {
+        new Watcher(vm, exp, (newVal) => {
+            node.value = newVal;
         });
         node.addEventListener('input', (e) => {
             let value = e.target.value;
-            this.setValue(vm, expr, value);
+            this.setValue(vm, exp, value);
         });
-        let value  = this.getValue(vm, expr);
-        this.modelUpdater(node, value);
-    },
-    html(node, expr, vm) {
-        new Watcher(vm, expr, newVal => {
-            this.htmlUpdater(node, newVal);
-        });
-        let value  = this.getValue(vm, expr);
-    },
-    getContentValue(vm, expr) {
-        return expr.replace(/\{\{(.+?)\}\}/g, (...args)=>{
-            return this.getValue(vm, args[1]);
-        })
-    },
-    on(node, expr, vm, eventName) {
-        node.addEventListener(eventName, e => {
-            vm[expr].call(vm, e);
-        })
-    },
-    text(node, expr, vm) {
-        let content = expr.replace(/\{\{(.+?)\}\}/g, (...args) => {
-            new Watcher(vm, args[1],() => {
-                this.textUpdater(node, this.getContentValue(vm, expr));
-            });
-            return this.getValue(vm, args[1]);
-        });
-        this.textUpdater(node, content);
-    },
-    htmlUpdater(node, value) {
-        node.innerHTML = value;
-    },
-    modelUpdater(node, value) {
+        let value  = this.getValue(vm, exp);
         node.value = value;
     },
-    textUpdater(node, value) {
-        node.textContent = value;
+    html(node, exp, vm) {
+        new Watcher(vm, exp, newVal => {
+            node.innerHTML = newVal;
+        });
+        let value  = this.getValue(vm, exp);
+        node.innerHTML = value;
+    },
+    on(node, exp, vm, eventName) {
+        node.addEventListener(eventName, e => {
+            vm[exp].call(vm, e);
+        })
+    },
+    text(node, exp, vm) {
+        // 惰性匹配，避免连续多个模板时，会直接取到最后一个花括号
+        // {{name}} {{age}} 不用惰性匹配 会一次取全 "{{name}} {{age}}"
+        // 我们期望的是 ["{{name}}", "{{age}}"]
+        let reg = /\{\{(.+?)\}\}/;
+        let expr = exp.match(reg);
+        node.textContent = this.getValue(vm, expr[1]);
+        new Watcher(vm, expr[1], () => {
+            node.textContent = this.getValue(vm, expr[1]);
+        });
     }
 };
 
 class MVVM {
-    constructor(options){
+    constructor(options) {
         this.$el = options.el;
         this.$data = options.data;
         let computed = options.computed;
         let methods = options.methods;
+        let that = this;
         if(this.$el){
-            new Observer(this.$data);
             for(let key in computed){
-                Object.defineProperty(this.$data,key,{
-                    get:()=>{
-                        return computed[key].call(this);
+                Object.defineProperty(this.$data, key, {
+                    get() {
+                        console.log(key);
+                        return computed[key].call(that);
                     }
                 })
             }
-
             for(let key in methods){
-                Object.defineProperty(this,key,{
+                Object.defineProperty(this, key, {
                     get(){
-                        return methods[key]
+                        return methods[key];
                     }
                 })
             }
-            this.proxyVm(this.$data);
-
-            new Compiler(this.$el,this);
+            new Observer(this.$data);
+            this.proxyData(this.$data);
+            new Compiler(this.$el, this);
         }
     }
     proxyData(data) { // 数据代理
         for(let key in data){
-            Object.defineProperty(this,key,{
+            Object.defineProperty(this, key, {
                 get(){
                     return data[key];
                 },
