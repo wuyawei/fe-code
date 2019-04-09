@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="title">
+    <button>添加</button>
+    <br>
+    <h3>待办：{{doingList.length}}</h3>
+    <ul>
+        <li v-for="v in doingList">
+            <span>{{v.title}}</span>
+            <span v-on:click="done(v)">↓</span>
+        </li>
+    </ul>
+    <h3>已完成：{{doneList.length}}</h3>
+    <ul>
+        <li v-for="v in doneList">
+            <span>{{v.title}}</span>
+            <span v-on:click="doing(v)">↑</span>
+        </li>
+    </ul>
+</div>
+</body>
+<script src="./mvvm.js"></script>
+<script>
+    const app = new MVVM({
+        el: 'app',
+        data: {
+            title: '',
+            list: []
+        },
+        computed: {
+            doingList() {
+                return this.list.filter(v => v.type === 'doing');
+            },
+            doneList() {
+                return this.list.filter(v => v.type === 'done');
+            }
+        },
+        methods: {
+            done(v) {v.type = 'done'},
+            doing() {v.type = 'doing'}
+        }
+    })
+</script>
+</html>
