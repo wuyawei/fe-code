@@ -434,8 +434,59 @@
 // let arr1 = ['a','a','a', 'b', 'b', 'c'];
 // let arr2 = arr1.map((v, i, arr) => i + 1 - arr.indexOf(v));
 // console.log(arr2); // [ 1, 2, 3, 1, 2, 1 ]
-let arr = [1,2,3,4,5,6];
-arr.forEach((v, i) => {
-    arr[i] = i;
+// let arr = [1,2,3,4,5,6];
+// arr.forEach((v, i) => {
+//     arr[i] = i;
+// });
+// console.log(arr);
+
+function fetch(t) {
+    return new Promise((resolve, reject) => {
+        setTimeout(_ => {
+            let ran = Math.random();
+            console.log(ran);
+            if (ran > 0.5) {
+                resolve(t);
+            } else {
+                reject('<');
+            }
+        }, t * 1000)
+    })
+}
+let arr = [3, 2, 1];
+async function test() {
+    for (let o of arr) {
+        try {
+            let res = await fetch(o);
+            console.log(res);
+            if (res) {
+                console.log('end');
+                return;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+// test();
+
+// arr.forEach(async v =>{
+//     let res = await fetch(v);
+//     console.log(res);
+// });
+Array.prototype.foreach = async function (callback) {
+    let index = 0;
+    let arr = this.valueOf();
+    while (index < arr.length) {
+        await callback(arr[index], index);
+        index ++;
+    }
+};
+arr.foreach(async v => {
+    try {
+        let res = await fetch(v);
+        console.log(res);
+    } catch (e) {
+        console.log(e);
+    }
 });
-console.log(arr);
