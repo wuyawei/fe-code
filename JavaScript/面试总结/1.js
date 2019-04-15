@@ -1,15 +1,15 @@
 /**
 * Created by wyw on 2019/4/14.
 */
-let a = {
-    valueOf() {
-        console.log(11111);
-        return true;
-    },
-    toString() {
-        console.log(222222);
-        return 1;
-    },
+// let a = {
+//     valueOf() {
+//         console.log(11111);
+//         return true;
+//     },
+//     toString() {
+//         console.log(222222);
+//         return 1;
+//     },
     // [Symbol.toPrimitive](hint) {
     //     if(hint === 'number'){
     //         return 3;
@@ -21,9 +21,9 @@ let a = {
     //         return 'default';
     //     }
     // }
-};
+// };
 // let o = {};
-console.log(a + 1);
+// console.log(a + 1);
 // let b = function () {};
 // b.valueOf = function () {
 //     return 0;
@@ -43,3 +43,14 @@ console.log(a + 1);
 // console.log(a * 1, b * 1); // 3 0 // 转成数字
 // console.log(a + '1', b + '1'); // default1 01
 
+// function sleep(n) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(resolve, n);
+//     })
+// }
+//
+// async function test() {
+//     await sleep(2000);
+//     console.log('ok');
+// }
+// test();
