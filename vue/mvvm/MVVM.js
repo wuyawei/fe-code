@@ -56,6 +56,8 @@ class Observer{ // 数据劫持
         this.observe(value);
         let dep = new Dep();
         Object.defineProperty(obj, key, {
+            enumerable: true,
+            configurable: true,
             get(){
                 console.log(obj, key, Dep.target, dep);
                 Dep.target && dep.addSub(Dep.target);
@@ -121,6 +123,7 @@ class Compiler{
 resolveFn = {
     getValue(vm, exp) {
         return exp.split('.').reduce((data, current)=>{
+            console.log('current', current);
             return data[current];
         }, vm.$data);
     },
@@ -176,22 +179,23 @@ class MVVM {
         let methods = options.methods;
         let that = this;
         if(this.$el){
-            for(let key in computed){
+            new Observer(this.$data);
+            for(let key in computed){ // 需要代理，不需要Observer
                 Object.defineProperty(this.$data, key, {
+                    enumerable: true,
+                    configurable: true,
                     get() {
-                        console.log(key);
                         return computed[key].call(that);
                     }
                 })
             }
-            for(let key in methods){
+            for(let key in methods){ // 直接代理到this
                 Object.defineProperty(this, key, {
                     get(){
                         return methods[key];
                     }
                 })
             }
-            new Observer(this.$data);
             this.proxyData(this.$data);
             new Compiler(this.$el, this);
         }
@@ -199,6 +203,8 @@ class MVVM {
     proxyData(data) { // 数据代理
         for(let key in data){
             Object.defineProperty(this, key, {
+                enumerable: true,
+                configurable: true,
                 get(){
                     return data[key];
                 },
