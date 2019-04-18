@@ -1,4 +1,4 @@
-## 你经历过绝望吗？
+### 言归正传，你经历过绝望吗？
 
 ![](https://user-gold-cdn.xitu.io/2018/12/18/167c123d42eb074a?w=240&h=240&f=jpeg&s=8404)
 > 众所周知，js是单线程异步机制的。这样就会导致很多异步处理会嵌套很多的回调函数，最为常见的就是ajax请求，我们需要等请求结果返回后再进行某些操作。如：
@@ -184,6 +184,8 @@
                         //如果回调有返回值，更新当前value
                         this.status = 'FULFILLED';
                         this.resolves.forEach(fn => value = fn(value) || value);
+                        // 这里有一个问题 实际上Promise 并没有判断是否有fanhui返回值
+                        // fn => value = fn(value)，没有返回值就是 undefined 
                         this.value = value;
                     });
                 }
@@ -199,12 +201,12 @@
             console.log('hahah');
         });
         setTimeout(_ => { 
-            getInfor.then(r => {
+            getInfo.then(r => {
                 console.log(r); // success
             })
         }, 200);
     ```
-    在resolve函数中，判断了'PENDING' 状态才执行setTimeout方法，并且在执行时更改了状态为'FULFILLED'。这时，如果运行这个例子，只会输出一个‘success’，因为接下来的异步方法调用时状态已经被改为‘FULFILLED’，所以不会再次执行。
+    在resolve函数中，判断了'PENDING' 状态才执行setTimeout方法，并且在执行时更改了状态为'FULFILLED'。这时，如果运行这个例子，只会输出一个‘hahah’，因为接下来的异步方法调用时状态已经被改为‘FULFILLED’，所以不会再次执行。
     
     这种情况要想它可以执行，就需要用到then方法里的判断，如果状态是'FULFILLED'，则立即执行回调。此时的传参是在resolve执行时保存的this.value。这样就符合Promise的状态原则，PENDING不可逆，FULFILLED和REJECTED不能相互转化。
 * 增加失败处理
@@ -374,7 +376,10 @@
 * [手把手教你实现一个完整的 Promise](http://www.cnblogs.com/huansky/p/6064402.html)
 * [教你一步一步实现一个Promise - 飞魚](https://www.tuicool.com/articles/RzQRV3)
 * [阮一峰老师的es6-Promise章节](http://es6.ruanyifeng.com/#docs/promise)
-## 公众号
-欢迎关注公众号 **前端发动机**，江三疯的前端二三事，专注技术，也会时常迷糊。希望在未来的前端路上，与你一同成长。
   
-![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
+## 交流群
+> qq前端交流群：960807765，欢迎各种技术交流，期待你的加入
+
+## 公众号
+  欢迎关注公众号 **前端发动机**，江三疯的前端二三事，专注技术，也会时常迷糊。希望在未来的前端路上，与你一同成长。
+  ![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
