@@ -82,3 +82,64 @@
 // console.log(lisi, lisisi);
 
 // 实现一个柯里化
+// function add(...arg) {
+//     return arg.reduce((pre, cur) => pre + cur);
+// }
+// function curry() {
+//     let [fn, ...arg] = arguments;
+//     return function(..._arg) {
+//         return fn.call(this, ...[...arg, ..._arg]);
+//     }
+// }
+// let addCurry = curry(add, 1,2,3);
+// addCurry(4,5) // 15
+
+// 累加 add
+// function add(...arg) {
+//     let args = arg;
+//     let ret = function(..._arg) {
+//         args = [...args, ..._arg];
+//         return ret;
+//     };
+//     ret.toString = function() {
+//         return args.reduce((pre, cur) => pre + cur);
+//     };
+//     return ret;
+// }
+// add(1,2)(3)(5) // 10
+
+// 函数防抖
+// function debounce(fn, delay, imadiate) { // imadiate 是否立即执行
+//     let timer = null;
+//     return function(...arg) {
+//         let callbackNow = !timer && imadiate;
+//         if (timer) clearTimeout(timer);
+//         timer = setTimeout(() => {
+//             timer = null;
+//             if (!imadiate) fn.call(this, ...arg);
+//         }, delay);
+//
+//         if (callbackNow) fn.call(this, ...arg);
+//     }
+// }
+
+// 函数节流
+// function throttle(fn, delay) {
+//     let pre = +new Date();
+//     let timer = null;
+//     return function(... arg) {
+//         let now = +new Date();
+//         let diff = now - pre;
+//         if (timer) clearTimeout(timer);
+//         if (diff > delay) {
+//             fn.call(this, ...arg);
+//             pre = now;
+//         } else {
+//             timer = setTimeout(() => {
+//                 fn.call(this, ...arg);
+//                 pre = +new Date();
+//                 timer = null;
+//             }, delay)
+//         }
+//     }
+// }
