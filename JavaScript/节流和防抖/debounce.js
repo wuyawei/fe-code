@@ -13,7 +13,7 @@ function debounce(fn, delay, isImmediate) {
 
         if(timer) clearTimeout(timer);
 
-        // 非立即执行
+        // delay执行
         timer = setTimeout(function() {
             timer = null;
             if(!isImmediate) fn.apply(that, args);
