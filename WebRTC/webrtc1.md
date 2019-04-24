@@ -13,6 +13,10 @@
   * **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
   * 本文[演示地址](https://webrtc-stream-jukbknonbo.now.sh/#/)（建议谷歌查看）
   
+  先放个效果图，这期的目标是实现一个 1 V 1 的视频通话（笔记本摄像头不能用了，用的虚拟摄像头）。文章比较长，可以 mark 以后慢慢看。
+  
+![](https://user-gold-cdn.xitu.io/2019/3/18/1698e9ec991d201b?w=600&h=203&f=webp&s=6308)
+  
   文章末尾有 **交流群** 和 **公众号**，希望大家支持，感谢🍻。
 ## 什么是 WebRTC ？
   WebRTC 是由一家名为 Gobal IP Solutions，简称 GIPS 的瑞典公司开发的。Google 在 2011 年收购了 GIPS，并将其源代码开源。然后又与 IETF 和 W3C 的相关标准机构合作，以确保行业达成共识。其中：
@@ -37,7 +41,7 @@
 ## 实现
   接下来，我们通过分析上文提到的 API，来逐步弄懂 WebRTC 实时通信实现的流程。
 ### getUserMedia
-* MediaStream
+#### MediaStream
 
  getUserMedia 这个 API 大家可能并不陌生，因为常见的 H5 录音等功能就需要用到它，主要就是用来获取设备的媒体流（即 MediaStream）。它可以接受一个约束对象 constraints 作为参数，用来指定需要获取到什么样的媒体流。
 ``` javascript
@@ -71,7 +75,7 @@
     * kind: 是当前获取的媒体流类型（Audio/Video）。
     * label: 是媒体设备，我这里用的是虚拟摄像头。
     * muted: 表示媒体轨道是否静音。
-* 兼容性
+#### 兼容性
 
   继续来看 getUserMedia，`navigator.mediaDevices.getUserMedia` 是新版的 API，旧版的是 `navigator.getUserMedia`。为了避免兼容性问题，我们可以稍微处理一下（其实说到底，现在 WebRTC 的支持率还不算高，有需要的可以选择一些适配器，如 `adapter.js`）。
 ``` javascript
@@ -109,7 +113,7 @@
             console.error(err.name + ': ' + err.message);
         });
 ```
-* constraints
+#### constraints
 
  对于 constraints 约束对象，我们可以用来指定一些和媒体流有关的属性。比如指定是否获取某种流：
 ``` javascript
@@ -148,7 +152,7 @@
 ### RTCPeerConnection
 > RTCPeerConnection 接口代表一个由本地计算机到远端的 WebRTC 连接。该接口提供了创建，保持，监控，关闭连接的方法的实现。—— MDN
   
-* 概述
+#### 概述
   
     RTCPeerConnection 作为创建点对点连接的 API，是我们实现音视频实时通信的关键。在点对点通信的过程中，需要交换一系列信息，通常这一过程叫做 — 信令（signaling）。在信令阶段需要完成的任务：
   
@@ -157,30 +161,30 @@
      * 获取并交换网络信息：潜在的连接端点称为 ICE 候选者。
   
   我们虽然把 WebRTC 称之为点对点的连接，但并不代表在实现过程中不需要服务器的参与。相反，在点对点的信道建立起来之前，二者之间是没有办法通信的。这也就意味着，在信令阶段，我们需要一个通信服务来帮助我们建立起这个连接。WebRTC 本身没有指定某一个信令服务，所以，我们可以但不限于使用 XMPP、XHR、Socket 等来做信令交换所需的服务。我在工作中采用的方案是基于 XMPP 协议的`Strophe.js`来做双向通信，但是在本例中则会使用`Socket.io `以及 Koa 来做项目演示。
-* NAT 穿越技术
+#### NAT 穿越技术
 
   我们先看连接任务的第一条：为每个连接端创建一个 RTCPeerConnection，并添加本地媒体流。事实上，如果是一般直播模式，则只需要播放端添加本地流进行输出，其他参与者只需要接受流进行观看即可。
   
   因为各浏览器差异，RTCPeerConnection 一样需要加上前缀。
-    ``` javascript
-        let PeerConnection = window.RTCPeerConnection ||
-                             window.mozRTCPeerConnection ||
-                             window.webkitRTCPeerConnection;
-        let peer = new PeerConnection(iceServers);
-    ```
+``` javascript
+let PeerConnection = window.RTCPeerConnection ||
+                     window.mozRTCPeerConnection ||
+                     window.webkitRTCPeerConnection;
+let peer = new PeerConnection(iceServers);
+```
   我们看见 RTCPeerConnection 也同样接收一个参数 — iceServers，先来看看它长什么样：
-    ``` javascript
-        {
-          iceServers: [
-            { url: "stun:stun.l.google.com:19302"}, // 谷歌的公共服务
-            {
-              url: "turn:***",
-              username: ***, // 用户名
-              credential: *** // 密码
-            }
-          ]
-        }
-    ```
+``` javascript
+{
+  iceServers: [
+    { url: "stun:stun.l.google.com:19302"}, // 谷歌的公共服务
+    {
+      url: "turn:***",
+      username: ***, // 用户名
+      credential: *** // 密码
+    }
+  ]
+}
+```
   参数配置了两个 url，分别是 STUN 和 TURN，这便是 WebRTC 实现点对点通信的关键，也是一般 P2P 连接都需要解决的问题：NAT穿越。
   
   NAT（Network Address Translation，网络地址转换）简单来说就是为了解决 IPV4 下的 IP 地址匮乏而出现的一种技术，也就是一个 公网 IP 地址一般都对应 n 个内网 IP。这样也就会导致不是同一局域网下的浏览器在尝试 WebRTC 连接时，无法直接拿到对方的公网 IP 也就不能进行通信，所以就需要用到 NAT 穿越（也叫打洞）。以下为 NAT 穿越基本流程：
@@ -192,28 +196,30 @@
   到这里，我们可以发现，WebRTC 的通信至少需要两种服务配合：
   * 信令阶段需要双向通信服务辅助信息交换。
   * STUN、TURN辅助实现 NAT 穿越。
-* 建立点对点连接
+#### 建立点对点连接
 
   WebRTC 的点对点连接到底是什么样的过程呢，我们通过结合图例来分析连接。
 
   ![](https://user-gold-cdn.xitu.io/2019/3/15/169810c20bb10132?w=680&h=189&f=png&s=6589)
 
-  显而易见，在上述连接的过程中：
-     * **呼叫端**（在这里都是指代浏览器）需要给 **接收端** 发送一条名为 offer 的信息。
-     * **接收端** 在接收到请求后，则返回一条 answer 信息给 **呼叫端**。
+  显而易见，在上述连接的过程中： 
+  
+  **呼叫端**（在这里都是指代浏览器）需要给 **接收端** 发送一条名为 offer 的信息。
+  
+  **接收端** 在接收到请求后，则返回一条 answer 信息给 **呼叫端**。
      
   这便是上述任务之一 ，SDP 格式的本地媒体元数据的交换。sdp 信息一般长这样：
-    ``` javascript
-        v=0
-        o=- 1837933589686018726 2 IN IP4 127.0.0.1
-        s=-
-        t=0 0
-        a=group:BUNDLE audio video
-        a=msid-semantic: WMS yvKeJMUSZzvJlAJHn4unfj6q9DMqmb6CrCOT
-        m=audio 9 UDP/TLS/RTP/SAVPF 111 103 104 9 0 8 106 105 13 110 112 113 126
-        ...
-        ...
-    ```
+``` javascript
+    v=0
+    o=- 1837933589686018726 2 IN IP4 127.0.0.1
+    s=-
+    t=0 0
+    a=group:BUNDLE audio video
+    a=msid-semantic: WMS yvKeJMUSZzvJlAJHn4unfj6q9DMqmb6CrCOT
+    m=audio 9 UDP/TLS/RTP/SAVPF 111 103 104 9 0 8 106 105 13 110 112 113 126
+    ...
+    ...
+```
   
   但是任务不仅仅是交换，还需要分别保存自己和对方的信息，所以我们再加点料：
   
@@ -228,6 +234,7 @@
   ![](https://user-gold-cdn.xitu.io/2019/3/16/169860e7cf668614?w=904&h=785&f=png&s=75228)
 
   这张图是我认为比较完善的了，详细的描述了整个连接的过程。正好我们再来小结一下：
+  
      * 基础设施：必要的信令服务和 NAT 穿越服务
      * clientA 和 clientB 分别创建 RTCPeerConnection 并为输出端添加本地媒体流。如果是视频通话类型，则意味着，两端都需要添加媒体流进行输出。
      * 本地 ICE 候选信息采集完成后，通过信令服务进行交换。
@@ -238,7 +245,7 @@
   ![](https://user-gold-cdn.xitu.io/2019/3/16/16986acdf2e662b0?w=480&h=208&f=gif&s=508424)
   
   明确一下目标，A 作为输出端，需要获取到本地流并添加到自己的 RTCPeerConnection；B 作为呼叫端，并没有输出的需求，因此只需要接收流。
-  * 创建媒体流
+  #### 创建媒体流
   
   页面布局很简单，就是两个 video 标签，分别代表 A 和 B。所以我们直接看代码，虽然源码是用 Vue 构建的，但是并没有用到特别的 API，整体上和 es6 的 class 语法相差不大，而且都有详细的注释，所以建议没有 Vue 基础的同学可以直接当成 es6 来阅读。示例 **源码库** [webrtc-stream](https://github.com/wuyawei/webrtc-stream)
   ``` javascrit
@@ -250,7 +257,7 @@
         this.initPeer(); // 获取到媒体流后，调用函数初始化 RTCPeerConnection
     }
   ```
-  * 初始化 RTCPeerConnection
+  #### 初始化 RTCPeerConnection
   ``` javascript
     initPeer() {
         ...
@@ -292,7 +299,7 @@ disconnected ICE 连接断开
 closed      ICE代理已关闭，不再响应STUN请求。
   ```
   我们需要注意的是 completed 和 disconnected，一个是完成连接时触发，一个在断开连接时触发。
-  * 创建连接
+  #### 创建连接
   ``` javascript
     async call() {
         if (!this.peerA || !this.peerB) { // 判断是否有对应实例，没有就重新创建
@@ -342,7 +349,7 @@ closed      ICE代理已关闭，不再响应STUN请求。
   这基本就是之前重复过好几次的流程用代码写出来而已，看到这里，思路应该比较清晰了。不过有一点需要说明一下，就是现在这种情况，A 作为呼叫端，B 一样是可以拿到 A 的媒体流的。因为连接一旦建立了，就是双向的，只不过 B 初始化 peer 的时候没有添加本地流，所以 A 不会有 B 的媒体流。
 ### 网络 1 v 1 对等连接
   想必基本流程大家都已经熟悉了，通过图解、实例来来回回讲了好几遍。所以趁热打铁，我们这次把服务加上，做一个真正的点对点连接。在看下面的文章之前，我希望你有一点点 Koa 和 Scoket.io 的基础，了解一些基本 API 即可。不熟悉的同学也不要紧，现在看也来得及，[Koa](https://koa.bootcss.com/)、[Socke.io](https://www.w3cschool.cn/socket/socket-ulbj2eii.html)，或者可以参考我之前的文章 [Vchat - 一个社交聊天系统（vue + node + mongodb）](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)。
-* 需求
+#### 需求
 
   还是老规矩，先了解一下需求。图片加载慢，可以直接看[演示地址](https://webrtc-stream-txrdcybqae.now.sh/#/)
   
@@ -352,7 +359,7 @@ closed      ICE代理已关闭，不再响应STUN请求。
     * 加入房间后，获取到房间的所有在线成员。
     * 选择任一成员进行通话，也就是呼叫动作。这时候就有一些细节问题要处理：不能呼叫自己、同一时刻只允许呼叫一个人且需要判断对方是否是通话中、呼叫后回复需要有相应判断（同意、拒绝以及通话中）
     * 拒绝或通话中，都没有后续动作，可以换个人再呼叫。同意之后，就要开始建立点对点连接。
-* 加入房间
+#### 加入房间
 
   简单看一下加入房间的流程：
   ``` javascript
@@ -387,7 +394,7 @@ closed      ICE代理已关闭，不再响应STUN请求。
     });
   ```
   后端成员列表的处理，是因为做了多房间的逻辑，按每个房间的成员表返回的。你们如果做的时候没有多房间，则不需要这么考虑。sockS 的处理，是为了发送私聊消息。
-* 呼叫
+#### 呼叫
 
   前面已经说了呼叫的注意事项，所以这里就一起来讲。需要注意的就是消息中需要带有自己和对方的 account，因为这是判断成员 sock 的标识，也就是之前存储在 socks 中的用来发私聊消息的。然后是前面说的三种状态，在这里用 type 值 1, 2, 3 来区分，然后给出不同的回复。
   ``` javascript
@@ -425,7 +432,7 @@ closed      ICE代理已关闭，不再响应STUN请求。
     });
   ```
   后端比较简单，仅仅是转发一下请求，给对应的客户端。其实我们这个例子的后端，基本都是这个操作，所以后面的后端代码就不贴了，可以去源码直接看。
-* 回复
+#### 回复
 
   回复和和呼叫是一样的逻辑，分别处理不同的回复就好了。
   ``` javascript
@@ -451,7 +458,7 @@ closed      ICE代理已关闭，不再响应STUN请求。
         }
     });
   ```
-* 创建连接
+#### 创建连接
 
   呼叫和回复的逻辑基本清楚了，那我们继续思考，应该在什么时机创建 P2P 连接呢？我们之前说的，拒绝和通话中都不需要处理，只有同意需要，那就应该在同意请求的位置开始创建。需要注意的是，同意请求有两个地方：一个是你点了同意，另一个是对方知道你点了同意之后。
   
@@ -537,7 +544,7 @@ closed      ICE代理已关闭，不再响应STUN请求。
         }
     }
   ```
-* 挂断
+#### 挂断
 
   挂断的思路依然是将各自的 peer 关闭，但是这里挂断方还需要借助 Socket 告诉对方，你已经挂电话了，不然对方还在痴痴地等。
   ``` javascript
@@ -549,10 +556,9 @@ closed      ICE代理已关闭，不再响应STUN请求。
         this.isCall = false;
     }
   ```
-### 下期预告
-到这里，这期的内容已经讲完了。这篇文章花了不少时间，周末两天都在写这了，希望你们看完能有所收获。
-
-系列的下一期（ps：系列下一期不一定是文章下一期，写作不易，多多包涵 🍻）主要是讲数据传输以及多端本地对等连接、网络对等连接，因为还有一个重要的 API 没有提到，就是 RTCDataChannel - 数据传输，然后多人视频需要注意的地方也不少。最后，希望大家可以动动小手关注一下，或者扫描下面的公众号二维码，方便第一时间获得最新推送。
+##  参考文章
+* [WebRTC](https://hpbn.co/webrtc/#incremental-provisioning-trickle-ice)
+* [WebRTC 直播时代](https://www.villainhr.com/page/2017/02/20/WebRTC%20%E7%9B%B4%E6%92%AD%E6%97%B6%E4%BB%A3)
 ## 交流群
 > qq前端交流群：960807765，欢迎各种技术交流，期待你的加入
 
@@ -567,6 +573,6 @@ closed      ICE代理已关闭，不再响应STUN请求。
 * [站住，你这个Promise！](https://juejin.im/post/5c179aad5188256d9832fb61)
 * [💘🍦🙈Vchat — 从头到脚，撸一个社交聊天系统（vue + node + mongodb）](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
 
-欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有海量前端大佬优质文章，致力于成为推动前端成长的引擎。
+欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有各类前端优质文章，希望在未来的前端路上，与你一同成长。
   
 ![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
