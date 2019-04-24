@@ -7,7 +7,7 @@
 
 **源码地址 [webrtc-stream](https://github.com/wuyawei/webrtc-stream)**
 
-**线上预览 [https://github.com/wuyawei/webrtc-stream](https://github.com/wuyawei/webrtc-stream)**
+**线上预览 [https://webrtc-stream-depaadjmes.now.sh](https://webrtc-stream-depaadjmes.now.sh)**
 ## 三种模式
 > 简单介绍一下 WebRTC 多人通信的几种架构模式。
 
@@ -284,5 +284,6 @@ app._io.on('disconnect', (sock) => { // 断开连接时，删除对应的客户�
 * [【从头到脚】撸一个多人视频聊天 — 前端 WebRTC 实战（一）](https://juejin.im/post/5c3acfa56fb9a049f36254be)
 * [【从头到脚】撸一个社交聊天系统（vue + node + mongodb）- 💘🍦🙈Vchat ](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
 
-
-**[Agora SDK 使用体验征文大赛 | 掘金技术征文，征文活动正在进行中](https://juejin.im/post/5ca1fa9ff265da30b6219179)**
+欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有海量前端大佬优质文章，致力于成为推动前端成长的引擎。
+  
+![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
