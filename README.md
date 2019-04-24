@@ -9,6 +9,7 @@
 ### 【从头到脚撸】系列
 * [【从头到脚】撸一个多人视频聊天 — WebRTC 实战（一）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc1.md)
 * [【从头到脚】WebRTC + Canvas 实现一个双人协作的共享画板](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc2.md)
+* [【从头到脚】前端实现多人视频聊天— WebRTC 实战（多人篇）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc3.md)
 ## 学习和写作方向
 ### 【前端进阶之路】系列写作方向
 #### JavaScript
