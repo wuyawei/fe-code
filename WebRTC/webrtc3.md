@@ -9,7 +9,7 @@
 
 **线上预览 [https://webrtc-stream-depaadjmes.now.sh](https://webrtc-stream-depaadjmes.now.sh)**
 ## 三种模式
-> 简单介绍一下 WebRTC 多人通信的几种架构模式。
+> 简单介绍一下基于 WebRTC 的多人通信的几种架构模式。
 
 * Mesh 架构
 
@@ -35,7 +35,7 @@
 Router 模式和 Mixer 很类似，比较来说，它只是单纯的进行数据流的转发，而不用合成、转码等操作。
 ![](https://user-gold-cdn.xitu.io/2019/4/24/16a4ed4d53fb54a1?w=443&h=283&f=png&s=5136)
 
-所以，在实际运用中，使用哪种方式来处理，需要结合项目需求、成本等因素综合考量。
+因此，在实际运用中，使用哪种方式来处理，需要结合项目需求、成本等因素综合考量。
 
 ## 多人视频
 ### 1 v 1
@@ -56,15 +56,15 @@ A 拿到 answer 后，再次调用 setRemoteDescription 设置远端 answer 描�
 这一步也是在创建 Peer 之后，但与 offer 的发送没有先后关系。
 ```
 ### 1 v 多
-我们平时观看直播实际上就是 1 v 多，也就是只有一端输出视频流，其他观看端只需要接收就好了。但是这种形式，一般不会采用点对点连接，而是用传统的直播方式，服务端进行媒体流的转发。有些直播可以和主播进行互动，这里的原理大致和上篇共享画板的文章类似。
+我们平时观看直播实际上就是 1 v 多，也就是只有一端输出视频流，其他观看端只需要接收就好了。但是这种形式，一般不会采用点对点连接，而是用传统的直播方式，服务端进行媒体流的转发。有些直播可以和主播进行互动，这里的原理大致和上篇文章中的共享画板类似。
 
 ![](https://user-gold-cdn.xitu.io/2019/4/24/16a4ff29b574750d?w=432&h=388&f=png&s=6966)
 
 这里只是给大家介绍一下这种直播模式，所以具体的就不细说了。
 ### 多路通话
-其实这种模式，普遍用于视频会议或者多人视频通话，类似于微信的视频通话一样。
+其实这种情况，主要用于视频会议或者多人视频通话，类似于微信的视频通话一样。
 #### 注意事项
-我们刚刚回忆过 1 v 1 的连接流程，也知道要基于 Mesh 架构来做，那么到底该如何去做呢？我们先提炼几个要点：
+我们刚刚回忆过 1 v 1 的连接流程，也知道要基于 Mesh 架构来做，那么到底该如何去做呢？这里先提炼两个要点：
 * 如何给每个客户端创建多个点对点连接？
 * 如何确认连接的顺序？
 
@@ -87,7 +87,7 @@ this.PeerList[id] = Peer; // 将创建的 peer 以键值对形式都存放到 Pe
 #### 代码写起来
 其实实现多人通信的主要思路刚刚已经讲完了，我习惯于先将思路理清楚，再讲代码实现。个人觉得这样比大家直接看代码注释效果要好，大家有什么好的意见也可以在评论区提出，我们一起讨论。
 
-我们先做一个加入房间的过渡页。
+我们先做一个加入房间的过渡页，简单的 Vue 写法，没啥好说的。
 ``` html
 <div class="center">
     登录名：<input type="text" v-model="account"> <br>
@@ -102,11 +102,12 @@ methods: {
             this.$router.push({name: 'room',
             params: {roomid: this.roomid, account: this.account}})
         }
+        // 参数是路由形式的，如 room/id/account
     }
 }
 
 ```
-初始化步骤和前两期 1 v 1 的栗子没有区别。
+初始化步骤和前两期 1 v 1 的栗子没有区别，视频通话首先当然是获取视频流。
 ``` javascript
 getUserMedia() { // 获取媒体流
     let myVideo = this.$refs['video-mine']; // 默认播放自己视频流的 video
@@ -132,6 +133,7 @@ getUserMedia() { // 获取媒体流
     })
 }
 ```
+大家还记不记得，在 1 v 1 中，我们创建 Peer 实例的时机是： **接收端** 点击同意通话后，初始化自己的 Peer 实例；**呼叫端** 收到对方同意申请的通知后，初始化 Peer 实例，并向其发送 Offer。刚刚分析过，多人通信思路有些不一样，但是 初始化方法是差不多的，我们先写个初始化方法。
 ``` javascript
 getPeerConnection(v) {
     let videoBox = this.$refs['video-box']; // 用于向 box 中添加新加入的成员视频
@@ -161,35 +163,21 @@ getPeerConnection(v) {
             video.controls = true;
             video.autoplay = 'autoplay';
             video.srcObject = event.stream;
-            video.id = v.account;
+            video.id = v.account; 
+            // video加上对应标识，这样在对应客户端断开连接后，可以移除相应的video
             videoBox.append(video);
         }
     };
     // 发送ICE候选到其他客户端
     peer.onicecandidate = (event) => {
         if (event.candidate) {
-            socket.emit('__ice_candidate',
-                {candidate: event.candidate,
-                roomid: this.$route.params.roomid,
-                account: v.account});
-                // 将标识也放进数据中转发给对方，用于匹配对应的 Peer
+            // ··· 发送 ICE
         }
     };
-    this.peerList[v.account] = peer; 
+    this.peerList[v.account] = peer; // 存储 Peer
 }
 ```
-创建 Peer 的时候用到了 account 标识，这里也涉及到我们建立点对点连接的时机问题。顺便以 ICE 接收为例，看一下这种加了唯一标识的处理和之前有什么区别。
-``` javascipt
-socket.on('__ice_candidate', v => {
-    //如果是一个ICE的候选，则将其加入到PeerConnection中
-    if (v.candidate) {
-        // 利用传过来的唯一标识匹配对应的 Peer，并添加 Ice
-        this.peerList[v.account] && this.peerList[v.account].addIceCandidate(v.candidate).catch((e) => {                    console.log('err', e)
-        });
-    }
-});
-```
-我们之前分析的第二个问题如何体现在代码上呢？
+创建 Peer 的时候用到了 account 标识来做保存，这里也涉及到我们建立点对点连接的时机问题。现在我们来看看，之前分析的第二个问题如何体现在代码上呢？
 ``` javascript
 // data 是后端返回的房间内所有成员列表
 // account 是本次新加入成员 loginname
@@ -216,7 +204,35 @@ socket.on('joined', (data, account) => {
     }
 });
 ```
-后端代码比较简单，看一下需要注意的点就好。
+我们在初始化 Peer 实例的时候，还做了一个发送 ICE 的操作。那我们就以 ICE 接收为例，看一下这种加了唯一标识的处理和之前有什么区别。
+``` javascipt
+getPeerConnection(v) {
+    // ··· 部分代码省略
+    // 发送ICE候选到其他客户端
+    peer.onicecandidate = (event) => {
+        if (event.candidate) {
+            socket.emit('__ice_candidate',
+            {candidate: event.candidate,
+            roomid: this.$route.params.roomid,
+            account: v.account});
+            // 将标识 v.account 也放进数据中转发给对方，用于匹配对应的 Peer
+        }
+    };
+}
+
+// 在mounted 方法中接收
+socket.on('__ice_candidate', v => {
+    //如果是一个ICE的候选，则将其加入到PeerConnection中
+    if (v.candidate) {
+        // 利用传过来的唯一标识匹配对应的 Peer，并添加 Ice
+        this.peerList[v.account] && this.peerList[v.account].addIceCandidate(v.candidate).catch((e) => {                    console.log('err', e)
+        });
+    }
+});
+```
+其实区别就是，我们把标识（A-B）也放进了信令交互的数据中，这样才能在两端之前匹配到对应的 Peer 实例，而不至于混乱。
+
+最后，后端代码比较简单，看一下需要注意的点就好。
 ``` javascript
 const users = {};
 app._io.on( 'connection', sock => {
@@ -284,6 +300,5 @@ app._io.on('disconnect', (sock) => { // 断开连接时，删除对应的客户�
 * [【从头到脚】撸一个多人视频聊天 — 前端 WebRTC 实战（一）](https://juejin.im/post/5c3acfa56fb9a049f36254be)
 * [【从头到脚】撸一个社交聊天系统（vue + node + mongodb）- 💘🍦🙈Vchat ](https://juejin.im/post/5c0a00fb6fb9a049d4419d3a)
 
-欢迎关注公众号 **前端发动机**，第一时间获得作者文章推送，还有海量前端大佬优质文章，致力于成为推动前端成长的引擎。
-  
-![](https://user-gold-cdn.xitu.io/2019/3/16/1698668bd914d63f?w=258&h=258&f=jpeg&s=27979)
+
+**[Agora SDK 使用体验征文大赛 | 掘金技术征文，征文活动正在进行中](https://juejin.im/post/5ca1fa9ff265da30b6219179)**
