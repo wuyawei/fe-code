@@ -143,3 +143,24 @@
 //         }
 //     }
 // }
+
+// 替换一段文本中指定字符的方法
+// 将 good 替换成 [good]
+// let text = 'Good morning, and in case I don\'t see you, good afternoon, good evening, and good night!';
+// let str = '';
+// let key = 'good';
+// *
+// while (~text.indexOf(key)) {
+//     let s = text.slice(0, text.indexOf(key) + 4);
+//     text = text.replace(s, '');
+//     str += s.replace(key, (v) => '[' + v + ']');
+// }
+// text = str + text;
+// console.log(text);
+// *
+// text = text.replace(new RegExp(key, 'g'), (v) => '[' + v + ']');
+// console.log(text);
+// *
+// text = text.split(key).join('['+ key +']');
+// console.log(text);
+
