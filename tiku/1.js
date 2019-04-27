@@ -1,5 +1,5 @@
 // 实现一个forEach
-let arr = [3, 2, 1];
+let arr = [3,2,1];
 let obj = {name: 'a'};
 // Array.prototype.myforeach = function (fn, context = null) {
 //     let index = 0;
@@ -203,8 +203,55 @@ let obj = {name: 'a'};
 // });
 // console.log(a);
 
-let a = arr.reduce((pre, cur, i, a) => {
-    console.log([1] + 1);
-    return pre + i;
-}, []);
+// Array.prototype.myreduce = function (...arg) {
+//     let arr = this;
+//     let len = arr.length;
+//     let index = 0;
+//     let fn = arg[0], result;
+//     if (arg.length >= 2) {
+//         result = arg[1];
+//     } else {
+//         while (index < len && !(index in arr)) {
+//             index++;
+//         }
+//         console.log('index', index);
+//         if (index >= len) {
+//             throw new TypeError( 'Reduce of empty array ' +
+//                 'with no initial value' );
+//         }
+//         result = arr[index++];
+//     }
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     while (index < len) {
+//         if (index in arr) {
+//             result = fn(result, arr[index], index, arr);
+//         }
+//         index ++;
+//     }
+//     return result;
+// };
+
+// let a = arr.myreduce((pre, cur, i, a) => {
+//     console.log('r', pre, i);
+//     return pre + i;
+// });
+// console.log(a);
+
+Array.prototype.mapByreduce = function (fn, context = null) {
+    let arr = this;
+    if (typeof fn !== 'function') {
+         throw new TypeError(fn + ' is not a function');
+    }
+    return arr.reduce((pre, cur, index, array) => {
+        let res = fn.call(context, cur, index, array);
+        return [...pre, res];
+    }, []);
+};
+
+let a = arr.mapByreduce((v, i) => {
+    console.log(v, i);
+    return v * i;
+});
 console.log(a);
