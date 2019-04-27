@@ -1,21 +1,27 @@
 // 实现一个forEach
-// let arr = [3, 2, 1];
-// Array.prototype.foreach = function (callback) {
+let arr = [3, 2, 1];
+let obj = {name: 'a'};
+// Array.prototype.myforeach = function (fn, context = null) {
 //     let index = 0;
-//     let arr = this.valueOf();
+//     let arr = this;
+//     if (typeof fn !== 'function') {
+//          throw new TypeError(fn + ' is not a function');
+//     }
 //     while (index < arr.length) {
-//         callback(arr[index], index);
+//         if (index in arr) {
+//             fn.call(context, arr[index], index, arr);
+//         }
 //         index ++;
 //     }
 // };
-// arr.foreach((v, i) => {
-//     console.log(v, i);
-// });
+// arr.myforeach(function (v, i, array) {
+//     console.log(v, i, array, this.name);
+// }, obj);
 // 支持异步的forEach
 // let arr = [3, 2, 1];
 // Array.prototype.foreach = async function (callback) {
 //     let index = 0;
-//     let arr = this.valueOf();
+//     let arr = this;
 //     let values = this.values();
 //     for (let o of values) {
 //         await callback(arr[index], index);
@@ -24,11 +30,20 @@
 // };
 
 // 或者
-// Array.prototype.foreach = async function (callback) {
+// Array.prototype.myforeach = async function (fn, context = null) {
 //     let index = 0;
-//     let arr = this.valueOf();
+//     let arr = this;
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
 //     while (index < arr.length) {
-//         await callback(arr[index], index);
+//         if (index in arr) {
+//             try {
+//                 await fn.call(context, arr[index], index, arr);
+//             } catch (e) {
+//                 console.log(e);
+//             }
+//         }
 //         index ++;
 //     }
 // };
@@ -37,13 +52,14 @@
 //     return new Promise((resolve, reject) => {
 //         setTimeout(_ => {
 //             console.log(t);
-//             resolve(t);
+//             // resolve(t);
+//             reject('err')
 //         }, t * 1000)
 //     })
 // }
-// arr.foreach(async v => {
-//     // await fetch(v);
-//     console.log(v);
+// arr.myforeach(async v => {
+//     await fetch(v);
+//     // console.log(v);
 // });
 
 //实现一个sleep
@@ -164,3 +180,31 @@
 // text = text.split(key).join('['+ key +']');
 // console.log(text);
 
+// Array.prototype.mymap = function (fn, context = null) {
+//     let arr = this;
+//     let len = arr.length;
+//     let index = 0;
+//     let newArr = [];
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     while (index < len) {
+//         if (index in arr) {
+//             let result = fn.call(context, arr[index], index, arr);
+//             newArr[index] = result;
+//         }
+//         index ++;
+//     }
+//     return newArr;
+// };
+//
+// let a = arr.mymap((v, i) => {
+//     console.log(i);
+// });
+// console.log(a);
+
+let a = arr.reduce((pre, cur, i, a) => {
+    console.log([1] + 1);
+    return pre + i;
+}, []);
+console.log(a);
