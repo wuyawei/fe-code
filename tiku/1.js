@@ -1,5 +1,5 @@
 // 实现一个forEach
-let arr = [3,2,1];
+let arr = [3,2,1,NaN];
 let obj = {name: 'a'};
 // Array.prototype.myforeach = function (fn, context = null) {
 //     let index = 0;
@@ -239,19 +239,141 @@ let obj = {name: 'a'};
 // });
 // console.log(a);
 
-Array.prototype.mapByreduce = function (fn, context = null) {
+// Array.prototype.mapByreduce = function (fn, context = null) {
+//     let arr = this;
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     return arr.reduce((pre, cur, index, array) => {
+//         let res = fn.call(context, cur, index, array);
+//         return [...pre, res];
+//     }, []);
+// };
+//
+// let a = arr.mapByreduce((v, i) => {
+//     console.log(v, i);
+//     return v * i;
+// });
+// console.log(a);
+
+// Array.prototype.myfilter = function (fn, context = null) {
+//     let arr = this;
+//     let len = arr.length;
+//     let index = 0, k = 0;
+//     let newArr = [];
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     while (index < len) {
+//         if (index in arr) {
+//             let result = fn.call(context, arr[index], index, arr);
+//             if (result) {
+//                 newArr[k++] = arr[index];
+//             }
+//         }
+//         index ++;
+//     }
+//     return newArr;
+// };
+
+// Array.prototype.myfind = function (fn, context = null) {
+//     let arr = this;
+//     let len = arr.length;
+//     let index = 0;
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     while (index < len) {
+//         if (index in arr) {
+//             let result = fn.call(context, arr[index], index, arr);
+//             if (result) {
+//                 return arr[index];
+//             }
+//         }
+//         index ++;
+//     }
+//     return undefined;
+// };
+
+// Array.prototype.mysome = function (fn, context = null) {
+//     let arr = this;
+//     let len = arr.length;
+//     let index = 0;
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     while (index < len) {
+//         if (index in arr) {
+//             let result = fn.call(context, arr[index], index, arr);
+//             if (result) return true;
+//         }
+//         index ++;
+//     }
+//     return false;
+// };
+
+// Array.prototype.myevery = function (fn, context = null) {
+//     let arr = this;
+//     let len = arr.length;
+//     let index = 0;
+//     if (typeof fn !== 'function') {
+//         throw new TypeError(fn + ' is not a function');
+//     }
+//     while (index < len) {
+//         if (index in arr) {
+//             let result = fn.call(context, arr[index], index, arr);
+//             if (!result) return false;
+//         }
+//         index ++;
+//     }
+//     return true;
+// };
+
+Array.prototype.myincludes = function (val, fromIndex = 0) {
     let arr = this;
-    if (typeof fn !== 'function') {
-         throw new TypeError(fn + ' is not a function');
+    let len = arr.length;
+    let k = Math.max(fromIndex >= 0 ? fromIndex : len - Math.abs(fromIndex), 0);
+    function check(x, y) {
+        return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
     }
-    return arr.reduce((pre, cur, index, array) => {
-        let res = fn.call(context, cur, index, array);
-        return [...pre, res];
-    }, []);
+    while (k < len) {
+        if (k in arr) {
+            if (check(val, arr[k])) return true;
+        }
+        k ++;
+    }
+    return false;
 };
 
-let a = arr.mapByreduce((v, i) => {
-    console.log(v, i);
-    return v * i;
-});
-console.log(a);
+// Array.prototype.myindexOf = function (val, fromIndex = 0) {
+//     let arr = this;
+//     let len = arr.length;
+//     let k = Math.max(fromIndex >= 0 ? fromIndex : len - Math.abs(fromIndex), 0);
+//     while (k < len) {
+//         if (k in arr) {
+//             if (val === arr[k]) return k;
+//         }
+//         k ++;
+//     }
+//     return -1;
+// };
+
+Array.prototype.myjoin = function (connector = ',') {
+    let arr = this;
+    let len = arr.length;
+    let str = '';
+    let k = 0;
+    while (k < len) {
+        if (k in arr) {
+            if (k === len -1) {
+                str += arr[k]
+            } else {
+                str += arr[k] + connector.toString();
+            }
+        }
+        k ++;
+    }
+    return str;
+};
+
+console.log([{}, {}].myjoin('-'));
