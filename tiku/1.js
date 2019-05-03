@@ -1,5 +1,5 @@
 // 实现一个forEach
-let arr = [3,2,1,NaN];
+let arr = [3,2,1,NaN,{}];
 let obj = {name: 'a'};
 // Array.prototype.myforeach = function (fn, context = null) {
 //     let index = 0;
@@ -358,22 +358,38 @@ Array.prototype.myincludes = function (val, fromIndex = 0) {
 //     return -1;
 // };
 
-Array.prototype.myjoin = function (connector = ',') {
+// Array.prototype.myjoin = function (connector = ',') {
+//     let arr = this;
+//     let len = arr.length;
+//     let str = '';
+//     let k = 0;
+//     while (k < len) {
+//         if (k in arr) {
+//             if (k === len -1) {
+//                 str += arr[k]
+//             } else {
+//                 str += arr[k] + connector.toString();
+//             }
+//         }
+//         k ++;
+//     }
+//     return str;
+// };
+
+Array.prototype.mypop = function () {
     let arr = this;
     let len = arr.length;
-    let str = '';
-    let k = 0;
-    while (k < len) {
-        if (k in arr) {
-            if (k === len -1) {
-                str += arr[k]
-            } else {
-                str += arr[k] + connector.toString();
-            }
-        }
-        k ++;
-    }
-    return str;
+    let res = arr[len -1];
+    delete arr[len -1];
+    arr.length = len - 1;
+    return res;
 };
 
-console.log([{}, {}].myjoin('-'));
+Array.prototype.mypush = function (val) {
+    let arr = this;
+    let len = arr.length;
+    arr[len+1] = val;
+    return arr;
+};
+
+console.log(arr.push({}), arr);
