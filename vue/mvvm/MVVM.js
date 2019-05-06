@@ -180,7 +180,7 @@ class MVVM {
         let that = this;
         if(this.$el){
             new Observer(this.$data);
-            for(let key in computed){ // 需要代理，不需要Observer
+            for(let key in computed){ // 需要代理到 this.$data，不需要Observer，因为此处已经劫持了
                 Object.defineProperty(this.$data, key, {
                     enumerable: true,
                     configurable: true,
