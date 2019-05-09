@@ -329,21 +329,21 @@ let obj = {name: 'a'};
 //     return true;
 // };
 
-Array.prototype.myincludes = function (val, fromIndex = 0) {
-    let arr = this;
-    let len = arr.length;
-    let k = Math.max(fromIndex >= 0 ? fromIndex : len - Math.abs(fromIndex), 0);
-    function check(x, y) {
-        return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
-    }
-    while (k < len) {
-        if (k in arr) {
-            if (check(val, arr[k])) return true;
-        }
-        k ++;
-    }
-    return false;
-};
+// Array.prototype.myincludes = function (val, fromIndex = 0) {
+//     let arr = this;
+//     let len = arr.length;
+//     let k = Math.max(fromIndex >= 0 ? fromIndex : len - Math.abs(fromIndex), 0);
+//     function check(x, y) {
+//         return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
+//     }
+//     while (k < len) {
+//         if (k in arr) {
+//             if (check(val, arr[k])) return true;
+//         }
+//         k ++;
+//     }
+//     return false;
+// };
 
 // Array.prototype.myindexOf = function (val, fromIndex = 0) {
 //     let arr = this;
@@ -376,20 +376,18 @@ Array.prototype.myincludes = function (val, fromIndex = 0) {
 //     return str;
 // };
 
-Array.prototype.mypop = function () {
-    let arr = this;
-    let len = arr.length;
-    let res = arr[len -1];
-    delete arr[len -1];
-    arr.length = len - 1;
-    return res;
-};
-
-Array.prototype.mypush = function (val) {
-    let arr = this;
-    let len = arr.length;
-    arr[len+1] = val;
-    return arr;
-};
-
-console.log(arr.push({}), arr);
+// Array.prototype.mypop = function () {
+//     let arr = this;
+//     let len = arr.length;
+//     let res = arr[len -1];
+//     delete arr[len -1];
+//     arr.length = len - 1;
+//     return res;
+// };
+//
+// Array.prototype.mypush = function (val) {
+//     let arr = this;
+//     let len = arr.length;
+//     arr[len+1] = val;
+//     return arr;
+// };
