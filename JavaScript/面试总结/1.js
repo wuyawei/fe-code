@@ -91,6 +91,9 @@
 //     console.timeEnd('改进后冒泡排序耗时');
 //     return arr;
 // }
+// let a = 1, b = 2;
+// [a, b] = [b, a];
+// console.log(a, b);
 
 // 选择
 // function selectSort(arr) {
