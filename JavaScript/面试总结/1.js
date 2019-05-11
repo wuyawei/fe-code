@@ -81,16 +81,18 @@
 //         for (var j= 0; j< i; j++) {
 //             if (arr[j]> arr[j+1]) {
 //                 pos= j; //记录交换的位置
-//                 var tmp = arr[j]; arr[j]=arr[j+1];arr[j+1]=tmp;
+//                 // var tmp = arr[j]; arr[j]=arr[j+1];arr[j+1]=tmp;
+//                 [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
 //             }
 //         }
-//         console.log(arr);
 //         // i--;
 //         i= pos; //为下一趟排序作准备
 //     }
 //     console.timeEnd('改进后冒泡排序耗时');
 //     return arr;
 // }
+// let arr=[5,1,2,3,4];
+// console.log(bubbleSort2(arr));
 // let a = 1, b = 2;
 // [a, b] = [b, a];
 // console.log(a, b);

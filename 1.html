@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    var result = document.getElementById("result");
+    var file = document.getElementById("file");
+
+    //判断浏览器是否支持FileReader接口
+    if (typeof FileReader == 'undefined') {
+        result.InnerHTML = "<p>你的浏览器不支持FileReader接口！</p>";
+        //使选择控件不可操作
+        file.setAttribute("disabled", "disabled");
+    }
+
+    function readAsDataURL() {
+        //检验是否为图像文件
+        var file = document.getElementById("file").files[0];
+        if (!/image\/\w+/.test(file.type)) {
+            alert("看清楚，这个需要图片！");
+            return false;
+        }
+        var reader = new FileReader();
+        //将文件以Data URL形式读入页面
+        reader.readAsDataURL(file);
+
+        reader.onload = function (e) {
+            var result = document.getElementById("result");
+            //显示文件
+            result.innerHTML = '<img src="' + this.result + '" alt="" />';
+        }
+    }
+
+    function readAsBinaryString() {
+        var file = document.getElementById("file").files[0];
+        var reader = new FileReader();
+        //将文件以二进制形式读入页面
+        reader.readAsBinaryString(file);
+
+        reader.onload = function (f) {
+            var result = document.getElementById("result");
+            //显示文件
+            result.innerHTML = this.result;
+        }
+    }
+
+    function readAsText() {
+        var file = document.getElementById("file").files[0];
+        var reader = new FileReader();
+        //将文件以文本形式读入页面
+        reader.readAsText(file);
+
+        reader.onload = function (f) {
+            var result = document.getElementById("result");
+            //显示文件
+            result.innerHTML = this.result;
+        }
+    }
+// 获取bloburl 的原始数据，再将blob 对象转成file对象
+//    var x = new XMLHttpRequest();
+//    x.open("get", res.tempFilePaths[0]);
+//    x.send();
+//    x.responseType = 'blob';
+//    x.onload = function(e) {
+//        console.log(x.response);
+//        let files = new window.File([x.response], '111.png', {type: 'image/png'});
+//        let formData = new FormData();
+//        formData.append('file', files);
+//        formData.append('name', '111.png');
+//        formData.append('code', '1000000');
+//        var request = new XMLHttpRequest();
+//        request.open("POST", "http://192.168.12.228/platform/api/circles/upload/file");
+//        request.send(formData);
+//    };
+</script>
+<p>
+    <label>请选择一个文件：</label>
+    <input type="file" id="file"/>
+    <input type="button" value="读取图像" onclick="readAsDataURL()"/>
+    <input type="button" value="读取二进制数据" onclick="readAsBinaryString()"/>
+    <input type="button" value="读取文本文件" onclick="readAsText()"/>
+</p>
+<div id="result" name="result"></div>
+</body>
+</html>
