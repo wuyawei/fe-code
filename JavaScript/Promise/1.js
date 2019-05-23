@@ -131,7 +131,33 @@ function resolvePromise(promise2, x, resolve, reject) {
         resolve(x);
     }
 }
+Promise.prototype.finally = function (callback) {
+    return this.then((value) => {
+        return Promise.resolve(callback()).then(() => {
+            console.log('value', value);
+            return value;
+        });
+    }, (err) => {
 
-let p = new Promise((resolve, reject) => {
-    resolve(1)
-}).then(r => console.log(r));
+
+
+        return Promise.resolve(callback()).then(() => {
+            throw err;
+        });
+    });
+}
+
+// let p = new Promise((resolve, reject) => {
+//     resolve(1)
+// }).then(r => console.log(r));
+
+new Promise((resolve, reject) => {
+    reject(1)
+}).then(r => {
+    return 2;
+}, err => {
+    return 3;
+}).finally(() => {
+}).then(c => {
+    console.log('22222', c);
+});
