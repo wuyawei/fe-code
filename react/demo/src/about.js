@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 
 function useMousePostion () {
     const [position, setPosition] = useState({x:0, y:0});
@@ -23,11 +24,28 @@ function useMousePostion () {
 
 function About() {
     const {x, y} = useMousePostion();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
         <div>
             <h2>about</h2>
-            <Link to="/">about</Link>
+            <Link to="/">game</Link>
             <div>{`现在的坐标是---> x: ${x}; y: ${y}`}</div>
+            <button onClick={() => setModalIsOpen(true)}>show Modal</button>
+            <Modal
+                isOpen={modalIsOpen}
+                aria={{
+                    labelledby: "heading",
+                    describedby: "full_description"
+                }}
+                shouldCloseOnOverlayClick={false}
+                onRequestClose={() => setModalIsOpen(false)}
+            >
+                <h1 id="heading">Alert</h1>
+                <div id="full_description">
+                    <p>Description goes here.</p>
+                </div>
+                <button onClick={() => setModalIsOpen(false)}>hide Modal</button>
+            </Modal>
         </div>
     )
 }
