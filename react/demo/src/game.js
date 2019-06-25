@@ -56,7 +56,6 @@ function Game() {
         <div>
             <div>
                 <h2>Game</h2>
-                <Link to="/about">about</Link>
             </div>
             <div className="Game">
                 <div className="game-board">

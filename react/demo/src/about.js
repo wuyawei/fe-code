@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 
 function useMousePostion () {
@@ -26,7 +25,6 @@ function About() {
     return (
         <div>
             <h2>about</h2>
-            <Link to="/">about</Link>
             <div>{`现在的坐标是---> x: ${x}; y: ${y}`}</div>
         </div>
     )
