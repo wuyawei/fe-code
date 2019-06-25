@@ -391,3 +391,10 @@ let obj = {name: 'a'};
 //     arr[len+1] = val;
 //     return arr;
 // };
+
+// 函数式
+// const {log} = console;
+// const compose = (...fns) => fns.reduce((f, g) => {
+//     return (...args) => g(f(...args));
+// });
+// compose(r => r + 1, r => r + 2, log)(5);
