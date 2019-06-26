@@ -398,3 +398,108 @@ let obj = {name: 'a'};
 //     return (...args) => g(f(...args));
 // });
 // compose(r => r + 1, r => r + 2, log)(5);
+
+// function findParent({
+//     key, data
+// }) { // 查找父级
+//     let parent = {};
+//     data.forEach((v) => {
+//         if (v.children) {
+//             if (v.children.some(k => k.id === key)) {
+//                 parent = v;
+//             } else {
+//                 parent = findParent({
+//                     key, data: v.children
+//                 });
+//             }
+//         }
+//     });
+//     console.log('parent22222', parent);
+//     return parent;
+// }
+
+function findParent({
+    key, data, callback = function() {}, id = 'id'
+}) { // 查找父级
+    let parent = {};
+    data.forEach((v) => {
+        if (v.children) {
+            if (v.children.some(k => k[id] === key)) {
+                parent = v;
+                callback(v.children);
+            } else {
+                parent = findParent({
+                    key, data: v.children, callback, id
+                });
+            }
+        }
+    });
+    return parent;
+}
+
+function findId({
+    key, data, callback = function() {}, id = 'id'
+}) { // 查找id对应的数据
+    let item = {};
+    data.forEach((v) => {
+        if (key === v[id]) {
+            callback(v);
+            item = v;
+        } else if (v.children) {
+            item = findId({
+                key, data: v.children, callback, id
+            });
+        }
+    });
+    return item;
+}
+
+const data = [
+    {
+        id: '1',
+        name: '题目树1',
+        children: [
+            {
+                id: '2',
+                name: '题目1-1',
+                children: [
+                    {
+                        id: '24',
+                        name: '题目1-24'
+                    },
+                    {
+                        id: '6',
+                        name: '题目1-6'
+                    }
+                ]
+            },
+            {
+                id: '3',
+                name: '题目1-2',
+                children: [
+                    {
+                        id: '28',
+                        name: '题目1-28',
+                        children: [
+                            {
+                                id: '243',
+                                name: '题目1-243'
+                            },
+                            {
+                                id: '64',
+                                name: '题目1-64'
+                            }
+                        ]
+                    },
+                    {
+                        id: '35',
+                        name: '题目1-35'
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+
+console.log('1111', findId({ key: '64',  data: JSON.parse(JSON.stringify(data))}).id); // 查找父级

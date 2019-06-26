@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 
 function useMousePostion () {
     const [position, setPosition] = useState({x:0, y:0});
@@ -29,7 +29,7 @@ function About() {
             <h2>about</h2>
             <div>{`现在的坐标是---> x: ${x}; y: ${y}`}</div>
             <button onClick={() => setModalIsOpen(true)}>show Modal</button>
-            <Modal
+            {/* <Modal
                 isOpen={modalIsOpen}
                 aria={{
                     labelledby: "heading",
@@ -43,7 +43,7 @@ function About() {
                     <p>Description goes here.</p>
                 </div>
                 <button onClick={() => setModalIsOpen(false)}>hide Modal</button>
-            </Modal>
+            </Modal> */}
         </div>
     )
 }

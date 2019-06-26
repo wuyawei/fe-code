@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 const {log} = console;
 const WEEKS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const MONTH_STATE = [
+    ''
+]
 const DATA = {
     year: '',
     month: '',
@@ -90,20 +93,17 @@ function Calendar() {
     };
 
     const {
-        year,
         month,
         daysList
     } = calendarData;
 
     return (
-        <>
-          <h2>
-            { year }年,{ month }月
-          </h2>
-          <div>
-            <button onClick={ handlePrevMonth }>上月</button>
-            <button onClick={ handleNextMonth }>下月</button>
-          </div>
+        <div className='kool-Calendar'>
+          <header>
+                <span onClick={ handlePrevMonth }>{'<'}</span>
+                <span>{month}</span>
+                <span onClick={ handleNextMonth }>></span>
+          </header>
           <table>
             <tbody>
               <tr>
@@ -120,7 +120,7 @@ function Calendar() {
               })}
             </tbody>
           </table>
-        </>
+        </div>
     );
 }
 
