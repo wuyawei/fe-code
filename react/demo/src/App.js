@@ -1,8 +1,8 @@
-import React from "react";
-import About from './about';
-import Game from './game';
-import Calendar from './Calendar';
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+const About = lazy(() => import('./about'));
+const Game = lazy(() => import('./game'));
+const Calendar = lazy(() => import('./Calendar'));
 
 function AppRouter() {
   return (
@@ -13,11 +13,13 @@ function AppRouter() {
         <Link to="/calendar">calendar</Link>
         <br/>
         <Link to="/game">game</Link>
-        <Switch>
-            <Route path="/about" component={About} />
-            <Route path="/calendar" component={Calendar} />
-            <Route path="/game" component={Game} />
-        </Switch>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+              <Route path="/about" component={About} />
+              <Route path="/calendar" component={Calendar} />
+              <Route path="/game" component={Game} />
+          </Switch>
+        </Suspense>
     </Router>
   );
 }
