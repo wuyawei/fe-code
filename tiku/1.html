@@ -2,20 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content=" width=device-width, initial-scale=1, minimum-scale=0.3, maximum-scale=3, user-scalable=no">
     <title>Title</title>
 </head>
+<style>
+    html,body{
+        margin: 0;
+        padding: 0;
+    }
+    html{
+        font-size: 50px;
+    }
+    .app{
+        width: 7.5rem;
+        height: 3rem;
+        background-color: #ff6000;
+        color: #fff;
+        font-size: 0.24rem;
+    }
+</style>
 <body>
-
+    <div class="app">
+        啥时候实施
+    </div>
 </body>
+<!-- 100/(750/414) 414屏幕下的font-size； 那么 1rem = 100/(750/414)；-->
+<!-- 所以各宽高的rem值对应的实际像素，也做了相应的缩放，与dpr值无关，只是设计稿对应到设备上的一个缩放比例 -->
+<!--  -->
 <script src="1.js"></script>
 <script>
-//     function debounce(fn, delay) {
-//         console.log('111', arguments);
-//         return function() {
-//             let args = arguments;
-//             console.log(args)
-//         }
-//     }
-//     document.onmousemove = debounce(1,2);
 </script>
 </html>
