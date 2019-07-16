@@ -131,33 +131,69 @@ function resolvePromise(promise2, x, resolve, reject) {
         resolve(x);
     }
 }
+
+Promise.resolve = function (param) {
+    if (param instanceof Promise) {
+        return param;
+    }
+    return new Promise((resolve, reject) => {
+        if (param && param.then && typeof param.then === 'function') {
+            setTimeout(() => {
+                param.then(resolve, reject);
+            });
+        } else {
+            resolve(param);
+        }
+    });
+}
+
+Promise.reject = function (reason) {
+    return new Promise((resolve, reject) => {
+        reject(reason);
+    });
+}
+
 Promise.prototype.finally = function (callback) {
     return this.then((value) => {
         return Promise.resolve(callback()).then(() => {
-            console.log('value', value);
             return value;
         });
     }, (err) => {
-
-
-
         return Promise.resolve(callback()).then(() => {
             throw err;
         });
     });
 }
 
+Promise.prototype.catch = function (onRejected) {
+    return this.then(null, onRejected);
+}
+
 // let p = new Promise((resolve, reject) => {
 //     resolve(1)
 // }).then(r => console.log(r));
 
-new Promise((resolve, reject) => {
-    reject(1)
-}).then(r => {
-    return 2;
-}, err => {
-    return 3;
-}).finally(() => {
-}).then(c => {
-    console.log('22222', c);
-});
+// new Promise((resolve, reject) => {
+//     reject(1)
+// }).then(r => {
+//     return 2;
+// }, err => {
+//     return 3;
+// }).finally(() => {
+//     console.log(3333)
+// }).then(c => {
+//     console.log('22222', c);
+// });
+
+// 和原生promise表现不一致  原生只输出 hehe
+// new Promise((resolve, reject) => {
+//     resolve(new Promise((resolve, reject) => {
+//         reject('hehe');
+//     }));
+// }).then(r => {
+//     console.log(1111)
+// }).then(r => {
+//     console.log(r);
+// }).catch(err => {
+//     console.log(err);
+// })
