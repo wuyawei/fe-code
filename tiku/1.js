@@ -122,7 +122,7 @@ let obj = {name: 'a'};
 //     };
 //     return ret;
 // }
-// add(1,2)(3)(5) // 10
+// console.log(add(1,2)(3)(5)) // 11
 
 // 函数防抖
 // function debounce(fn, delay, imadiate) { // imadiate 是否立即执行
