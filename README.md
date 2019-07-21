@@ -2,10 +2,10 @@
 主要是平时学习的代码、及心得文章。目前分为两个系列，前端进阶之路：旨在夯实基础，稳中求进；从头到脚：主打实战，在项目中实际应用。感兴趣的朋友，我们可以互相交流，一起学习。
 ## 文章列表
 ### 【前端进阶之路】
-* [【前端进阶之路】 站住，你这promise！](https://github.com/wuyawei/fe-code/blob/master/JavaScript/Promise/promise.md)
 * [【前端进阶之路】 js原型和原型链 及 canvas验证码实践](https://github.com/wuyawei/fe-code/blob/master/JavaScript/js%E5%9F%BA%E7%A1%80/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE.md)
 * [【前端进阶之路】 Vue 组件间通信方式完整版](https://github.com/wuyawei/fe-code/blob/master/vue/%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1/1.md)
 * [【前端进阶之路】 深入 Vue 响应式原理，活捉一个 MVVM](https://github.com/wuyawei/fe-code/blob/master/vue/mvvm/1.md)
+* [「前端发动机」从 bind 聊到 curry （柯里化）](https://github.com/wuyawei/fe-code/blob/master/JavaScript/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0/1.md)
 ### 【从头到脚】
 * [【从头到脚】撸一个多人视频聊天 — WebRTC 实战（一）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc1.md)
 * [【从头到脚】WebRTC + Canvas 实现一个双人协作的共享画板](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc2.md)
@@ -54,6 +54,6 @@
 
 ![](https://user-gold-cdn.xitu.io/2018/12/9/16792b974b1355eb?w=240&h=328&f=jpeg&s=41198)
 ## 公众号
-感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。也可加我好友，大家一起学习交流 ^_^。
+感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。
 
-![](https://user-gold-cdn.xitu.io/2019/4/29/16a66acdf79af4e4?w=600&h=301&f=jpeg&s=82455)
+![](https://user-gold-cdn.xitu.io/2019/7/21/16c14d1d0f3be11e?w=400&h=400&f=jpeg&s=34646)
