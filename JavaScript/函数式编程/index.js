@@ -152,18 +152,21 @@ Function.prototype.mybind = function() {
 // getData('params').then(r => log(r));
 // setData('params').then(r => log(r));
 
-[1,2,3].map(x => 2 * x);
+// [1,2,3].map(x => 2 * x);
 
-function multiply2(x) {
-    return 2 * x;
-}
+// function multiply2(x) {
+//     return 2 * x;
+// }
 
-function mapMultiply2(arr) {
-    return arr.map(multiply2);
-}
+// function mapMultiply2(arr) {
+//     return arr.map(multiply2);
+// }
 
-function map(fn, arr) {
-    return arr.map(fn);
-}
+// function map(fn, arr) {
+//     return arr.map(fn);
+// }
 
-const mapMultiply2 = curry(map, multiply2);
+// const mapMultiply2 = curry(map, multiply2);
+
+const a = {a: 1}
+log(a)
