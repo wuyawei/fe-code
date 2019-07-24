@@ -12,31 +12,31 @@ const {log} = console;
 //         }
 //     }
 // }
-function add(a, b) {
-    return a + b
-}
+// function add(a, b) {
+//     return a + b
+// }
 // const curryAdd = curry(add);
 // log(curryAdd(1)(2))
 //
-function _curry(fn, ...p) {
-    const len = fn.length;
-    function warp (..._arguments) {
-        let _arg = [...p,..._arguments];
-        if (_arg.length >= len) {
-            return fn(..._arg);
-        }
-        function fnc(...args) {
-            _arg = [..._arg, ...args];
-            if (_arg.length < len) {
-                return fnc;
-            } else {
-                return fn(..._arg);
-            }
-        }
-        return fnc;
-    }
-    return warp;
-}
+// function _curry(fn, ...p) {
+//     const len = fn.length;
+//     function warp (..._arguments) {
+//         let _arg = [...p,..._arguments];
+//         if (_arg.length >= len) {
+//             return fn(..._arg);
+//         }
+//         function fnc(...args) {
+//             _arg = [..._arg, ...args];
+//             if (_arg.length < len) {
+//                 return fnc;
+//             } else {
+//                 return fn(..._arg);
+//             }
+//         }
+//         return fnc;
+//     }
+//     return warp;
+// }
 //
 // function simCurry(fn) {
 //     const len = fn.length;
@@ -101,23 +101,23 @@ function _curry(fn, ...p) {
 // }
 
 
-Function.prototype.mybind = function() {
-    const [context, ...args] = arguments;
-    const f = this;
-    const fNOP = function() {};
-    const fBound = function(..._arg) {
-        // fNOP.prototype.isPrototypeOf(this)  判断是否是 new 调用的 fBound
-        return f.apply(fNOP.prototype.isPrototypeOf(this)
-                ? this
-                : context,
-                [...args, ..._arg]);
-    };
-    if (this.prototype) {
-        fNOP.prototype = this.prototype;
-    }
-    fBound.prototype = new fNOP();
-    return fBound;
-};
+// Function.prototype.mybind = function() {
+//     const [context, ...args] = arguments;
+//     const f = this;
+//     const fNOP = function() {};
+//     const fBound = function(..._arg) {
+//         // fNOP.prototype.isPrototypeOf(this)  判断是否是 new 调用的 fBound
+//         return f.apply(fNOP.prototype.isPrototypeOf(this)
+//                 ? this
+//                 : context,
+//                 [...args, ..._arg]);
+//     };
+//     if (this.prototype) {
+//         fNOP.prototype = this.prototype;
+//     }
+//     fBound.prototype = new fNOP();
+//     return fBound;
+// };
 
 // function add(a, b) {
 //     return a + b;
@@ -168,5 +168,8 @@ Function.prototype.mybind = function() {
 
 // const mapMultiply2 = curry(map, multiply2);
 
-const a = {a: 1}
-log(a)
+// 组合
+const compose = (...fns) => fns.reverse().reduce((f, g) => {
+    return (...args) => g(f(...args));
+});
+compose(log,r => r + 1, r => r + 2)(5);
