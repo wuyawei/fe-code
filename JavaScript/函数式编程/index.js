@@ -169,7 +169,7 @@ const {log} = console;
 // const mapMultiply2 = curry(map, multiply2);
 
 // 组合
-const compose = (...fns) => fns.reverse().reduce((f, g) => {
-    return (...args) => g(f(...args));
-});
-compose(log,r => r + 1, r => r + 2)(5);
+// const compose = (...fns) => fns.reverse().reduce((f, g) => {
+//     return (...args) => g(f(...args));
+// });
+// compose(log,r => r + 1, r => r + 2)(5);
