@@ -1,0 +1,30 @@
+.one{
+    display:inline-block;
+    position:relative;
+    width: 100px;
+    height: 20px;
+}
+.one::before {
+    content:'';
+    position:absolute;
+    border-radius: 5px 5px 0 0;
+    top:0; right:0; bottom:0; left:0;
+    background:#F6DEE9;
+    z-index:-1;
+    transform: scaleY(1.95) perspective(12px) rotateX(25deg);;
+    transform-origin: bottom;
+}
+.two{
+    width: 250px;
+    height: 55px;
+    background-color: #F6DEE9;
+    border-radius: 8px;
+}
+.box{
+    width: 250px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100px;
+}
