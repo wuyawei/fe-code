@@ -1,6 +1,7 @@
-# 前端进阶 & 面试必备，优质资源、博客整理分享！
 ## 前言
-前端技术日新月异，随着**大前端**的趋势，想要成为一名合格的前端工程师，需要学习掌握的东西更是宽泛。所以我们在寻求进阶的过程中，既要不断夯实前端基础，也要快速响应技术的更新迭代。闲话少说，这次给大家整理整理分享一些前端进阶的优质学习资源，希望对大家有所帮助！
+前端技术日新月异，随着 **大前端** 的趋势，想要成为一名合格的前端工程师，需要学习掌握的东西更是宽泛。所以我们在寻求进阶的过程中，既要不断夯实前端基础，也要快速响应技术的更新迭代。闲话少说，这次给大家整理分享一些前端进阶的优质学习资源，希望对大家有所帮助！
+
+**个人博客地址 [🍹🍰 fe-code](https://github.com/wuyawei/fe-code)**
 ## github 优质项目
 
 ### frontend-tech-list
@@ -64,15 +65,14 @@
 
 | &nbsp;算法&nbsp; | 操作系统 | &nbsp;网络&nbsp;|面向对象| &nbsp;&nbsp;数据库&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Java&nbsp;&nbsp;&nbsp;|         系统设计| &nbsp;&nbsp;&nbsp;工具&nbsp;&nbsp;&nbsp; |编码实践| &nbsp;&nbsp;&nbsp;后记&nbsp;&nbsp;&nbsp; |
 | :---: | :----: | :---: | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
-| [:pencil2:](#pencil2-算法) | [:computer:](#computer-操作系统) | [:cloud:](#cloud-网络) | [:art:](#art-面向对象) | [:floppy_disk:](#floppy_disk-数据库) |[:coffee:](#coffee-java)| [:bulb:](#bulb-系统设计) |[:wrench:](#wrench-工具)| [:watermelon:](#watermelon-编码实践) |[:memo:](#memo-后记)|
-
-:pencil2: **算法**
+| ✏️ | 💻|☁️|🎨|💾| ☕️️ |💡|🔧|🍉|📝|
+✏️ **算法**
 
 - [剑指 Offer 题解](https://github.com/CyC2018/CS-Notes/blob/master/notes/剑指%20Offer%20题解%20-%20目录.md)
 - [Leetcode 题解](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20题解%20-%20目录.md)
 - [算法](https://github.com/CyC2018/CS-Notes/blob/master/notes/算法%20-%20目录.md)
 
-:cloud: **网络** 
+☁️ **网络** 
 
 - [计算机网络](https://github.com/CyC2018/CS-Notes/blob/master/notes/计算机网络%20-%20目录.md)
 - [HTTP](https://github.com/CyC2018/CS-Notes/blob/master/notes/HTTP.md)
@@ -108,63 +108,63 @@
 * <img src="https://img.shields.io/github/stars/30-seconds/30-seconds-of-code.svg"/>
 * **摘要**
 
-📚 **Array**
-<details>
-<summary>View contents</summary>
-
-* [`all`](#all)
-* [`allEqual`](#allequal)
-* [`any`](#any)
-* [`arrayToCSV`](#arraytocsv)
-* [`bifurcate`](#bifurcate)
-* [`bifurcateBy`](#bifurcateby)
-* [`chunk`](#chunk)
-* [`compact`](#compact)
-* [`countBy`](#countby)
-* [`countOccurrences`](#countoccurrences)
-* [`deepFlatten`](#deepflatten)
-* [`difference`](#difference)
-* [`differenceBy`](#differenceby)
-* [`differenceWith`](#differencewith)
-* [`drop`](#drop)
-* [`dropRight`](#dropright)
-* [`dropRightWhile`](#droprightwhile)
-* [`dropWhile`](#dropwhile)
-* [`everyNth`](#everynth)
-* [`filterFalsy`](#filterfalsy)
-* [`filterNonUnique`](#filternonunique)
-* [`filterNonUniqueBy`](#filternonuniqueby)
-* [`findLast`](#findlast)
-* [`findLastIndex`](#findlastindex)
-* [`mapObject`](#mapobject-)
-* [`maxN`](#maxn)
-* [`minN`](#minn)
-* [`none`](#none)
-</details>
-
- 🌐 **Browser**
-<details>
-<summary>View contents</summary>
-
-* [`arrayToHtmlList`](#arraytohtmllist)
-* [`bottomVisible`](#bottomvisible)
-* [`copyToClipboard`](#copytoclipboard-)
-* [`counter`](#counter-)
-* [`createElement`](#createelement)
-* [`createEventHub`](#createeventhub-)
-* [`currentURL`](#currenturl)
-* [`detectDeviceType`](#detectdevicetype)
-* [`elementContains`](#elementcontains)
-* [`elementIsVisibleInViewport`](#elementisvisibleinviewport-)
-* [`formToObject`](#formtoobject)
-* [`getImages`](#getimages)
-* [`getScrollPosition`](#getscrollposition)
-* [`getStyle`](#getstyle)
-* [`hasClass`](#hasclass)
-* [`hashBrowser`](#hashbrowser-)
-* [`hide`](#hide)
-
-</details>
+    📚 **Array**
+    <details>
+    <summary>View contents</summary>
+    
+    * [`all`](#all)
+    * [`allEqual`](#allequal)
+    * [`any`](#any)
+    * [`arrayToCSV`](#arraytocsv)
+    * [`bifurcate`](#bifurcate)
+    * [`bifurcateBy`](#bifurcateby)
+    * [`chunk`](#chunk)
+    * [`compact`](#compact)
+    * [`countBy`](#countby)
+    * [`countOccurrences`](#countoccurrences)
+    * [`deepFlatten`](#deepflatten)
+    * [`difference`](#difference)
+    * [`differenceBy`](#differenceby)
+    * [`differenceWith`](#differencewith)
+    * [`drop`](#drop)
+    * [`dropRight`](#dropright)
+    * [`dropRightWhile`](#droprightwhile)
+    * [`dropWhile`](#dropwhile)
+    * [`everyNth`](#everynth)
+    * [`filterFalsy`](#filterfalsy)
+    * [`filterNonUnique`](#filternonunique)
+    * [`filterNonUniqueBy`](#filternonuniqueby)
+    * [`findLast`](#findlast)
+    * [`findLastIndex`](#findlastindex)
+    * [`mapObject`](#mapobject-)
+    * [`maxN`](#maxn)
+    * [`minN`](#minn)
+    * [`none`](#none)
+    </details>
+    
+     🌐 **Browser**
+    <details>
+    <summary>View contents</summary>
+    
+    * [`arrayToHtmlList`](#arraytohtmllist)
+    * [`bottomVisible`](#bottomvisible)
+    * [`copyToClipboard`](#copytoclipboard-)
+    * [`counter`](#counter-)
+    * [`createElement`](#createelement)
+    * [`createEventHub`](#createeventhub-)
+    * [`currentURL`](#currenturl)
+    * [`detectDeviceType`](#detectdevicetype)
+    * [`elementContains`](#elementcontains)
+    * [`elementIsVisibleInViewport`](#elementisvisibleinviewport-)
+    * [`formToObject`](#formtoobject)
+    * [`getImages`](#getimages)
+    * [`getScrollPosition`](#getscrollposition)
+    * [`getStyle`](#getstyle)
+    * [`hasClass`](#hasclass)
+    * [`hashBrowser`](#hashbrowser-)
+    * [`hide`](#hide)
+    
+    </details>
 
 ### javascript-questions
 > JavaScript 进阶问题列表，从基础到进阶，测试你有多了解 JavaScript，刷新你的知识，或者帮助你的 coding 面试！ 💪 🚀 我每周都会在这个仓库下更新新的问题。
@@ -266,7 +266,7 @@
 <br/>
 
 ### learnVue
-> :octocat:Vue.js 源码解析 
+> Vue.js 源码解析 
 * [github](https://github.com/answershuto/learnVue)
 * <img src="https://img.shields.io/github/stars/answershuto/learnVue.svg"/>
 
@@ -438,3 +438,27 @@
 * 《代码整洁之道》
 * 《忍者秘籍》
 * 《剑指 offer》
+### 视频
+> 更多视频资料大家可以关注公众号 — 前端发动机，回复 “学习”，即可获得丰富视频类学习资料。
+
+## 交流群
+> qq前端交流群：960807765，欢迎各种技术交流，期待你的加入；
+
+>微信群：有需要的同学可以加我好友（q1324210213），我拉你入群。
+
+## 后记
+  如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。好了，又耽误大家的时间了，感谢阅读，下次再见！
+
+* **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
+* **[社交聊天系统（vue + node + mongodb）- 💘🍦🙈Vchat](https://github.com/wuyawei/Vchat)**
+
+往期文章：
+
+* [【从头到脚】前端实现多人视频聊天— WebRTC 实战（多人篇）](https://juejin.im/post/5cbdc145e51d456e541b4cec)
+* [【从头到脚】WebRTC + Canvas 实现一个双人协作的共享画板 | 掘金技术征文](https://juejin.im/post/5c9cbbb85188251c3a2f36e8)
+* [【2019 前端进阶之路】深入 Vue 响应式原理，从源码分析](https://juejin.im/post/5ca15e29f265da30a3303351)
+* [【2019 前端进阶之路】Vue 组件间通信方式完整版](https://juejin.im/post/5c7b524ee51d453ee81877a7)
+
+感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。
+
+![](https://user-gold-cdn.xitu.io/2019/7/21/16c14d1d0f3be11e?w=400&h=400&f=jpeg&s=34646)
