@@ -1,4 +1,4 @@
-# 前端进阶&面试必备，优质资源、博客整理分享！
+# 前端进阶 & 面试必备，优质资源、博客整理分享！
 ## 前言
 前端技术日新月异，随着**大前端**的趋势，想要成为一名合格的前端工程师，需要学习掌握的东西更是宽泛。所以我们在寻求进阶的过程中，既要不断夯实前端基础，也要快速响应技术的更新迭代。闲话少说，这次给大家整理整理分享一些前端进阶的优质学习资源，希望对大家有所帮助！
 ## github 优质项目
@@ -265,33 +265,10 @@
 
 <br/>
 
-### libpku
-> github 上大学系列
-* [github](https://github.com/lib-pku/libpku)
-* <img src="https://img.shields.io/github/stars/lib-pku/libpku.svg"/>
-* **摘要**
-    - [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
-    - [气垫船计划——免费、去中心化的北京大学往年题资料库](https://github.com/martinwu42/project-hover)
-    - [北京大学信科学生会学术部资料库](https://github.com/EECS-PKU-XSB/Shared-learning-materials)
-    - [北大计算机课程大作业](https://github.com/tongtzeho/PKUCourse)
-    - [清华大学计算机系课程攻略](https://github.com/PKUanonym/REKCARC-TSC-UHT)
-    - [东南大学课程共享计划](https://github.com/zjdx1998/seucourseshare)
-    - [中国科学技术大学计算机学院课程资源](https://github.com/USTC-Resource/USTC-Course)
-    - [上海交通大学课程资料分享](https://github.com/CoolPhilChen/SJTU-Courses/)
-    - [中山大学课程资料分享](https://github.com/sysuexam/SYSU-Exam)
-    - [南京大学课程复习资料](https://github.com/idealclover/NJU-Review-Materials)
-    - [郑州大学课程复习资料](https://github.com/CooperNiu/ZZU-Courses-Resource)
-
-### weekly
-> 前端精读周刊
-* [github](https://github.com/dt-fe/weekly)
-* <img src="https://img.shields.io/github/stars/dt-fe/weekly.svg"/>
-* **摘要**
-    * 精读 js 模块化发展
-    * 精读模态框的最佳实践
-    * 精读《编写有弹性的组件》
-    * 精读《React Hooks》
-    * 精读《React 代码整洁之道》
+### learnVue
+> :octocat:Vue.js 源码解析 
+* [github](https://github.com/answershuto/learnVue)
+* <img src="https://img.shields.io/github/stars/answershuto/learnVue.svg"/>
 
 ### vue-design
 > 渲染器，仓库内还有一个针对 Vue 的逐行级别的源码分析，都是干货。
@@ -322,14 +299,14 @@
 * [github](https://github.com/paddingme/Front-end-Web-Development-Interview-Question)
 * <img src="https://img.shields.io/github/stars/paddingme/Front-end-Web-Development-Interview-Question.svg"/>
 * **摘要**
+
 |试题链接|原题概述|标签分类|更新状态|
 | :---: | :---: | :---: | :---: |
-|[1.md](/questions/1.md) |<a href="http://davidshariff.com/quiz/" target="_blank">Front End Web Development Quiz</a> CSS部分| CSS |已完结 :v: |
-|[2.md](/questions/2.md)|<a href="http://davidshariff.com/quiz/" target="_blank">Front End Web Development Quiz</a> HTML部分| HTML |已完结 :v: |
+|[1.md](/questions/1.md) | <a href="http://davidshariff.com/quiz/" target="_blank">Front End Web Development Quiz</a> CSS部分| CSS | 已完结 :v: |
+| [2.md](/questions/2.md) | <a href="http://davidshariff.com/quiz/" target="_blank">Front End Web Development Quiz</a> HTML部分| HTML | 已完结 :v: |
 |[3.md](/questions/3.md)|<a href="https://github.com/fex-team/interview-questions" target="_blank">FEX 面试题</a>| General|待完善 :punch: |
 |[4.md](/questions/4.md)|<a href="https://github.com/darcyclarke/Front-end-Developer-Interview-Questions#general" target="_blank">前端面试常见问题</a>| General|待完善 :punch: |
 |[5.md](/questions/5.md)|<a href="https://github.com/darcyclarke/Front-end-Developer-Interview-Questions#html" target="_blank">前端面试HTML 相关问题</a>| HTML|已完结 :v: |
-
 ### 高级前端进阶
 > 每周重点攻克一个前端面试重难点
 * [github](https://github.com/yygmind/blog)
@@ -356,6 +333,35 @@
     2.[九种跨域方式实现原理（完整版）](https://github.com/ljianshu/Blog/issues/55)
     4.[JavaScript数据类型转换](https://github.com/ljianshu/Blog/issues/1)
     5.[深入理解JavaScript作用域和作用域链](https://github.com/ljianshu/Blog/issues/59)
+
+
+### libpku
+> github 上大学系列
+* [github](https://github.com/lib-pku/libpku)
+* <img src="https://img.shields.io/github/stars/lib-pku/libpku.svg"/>
+* **摘要**
+    - [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
+    - [气垫船计划——免费、去中心化的北京大学往年题资料库](https://github.com/martinwu42/project-hover)
+    - [北京大学信科学生会学术部资料库](https://github.com/EECS-PKU-XSB/Shared-learning-materials)
+    - [北大计算机课程大作业](https://github.com/tongtzeho/PKUCourse)
+    - [清华大学计算机系课程攻略](https://github.com/PKUanonym/REKCARC-TSC-UHT)
+    - [东南大学课程共享计划](https://github.com/zjdx1998/seucourseshare)
+    - [中国科学技术大学计算机学院课程资源](https://github.com/USTC-Resource/USTC-Course)
+    - [上海交通大学课程资料分享](https://github.com/CoolPhilChen/SJTU-Courses/)
+    - [中山大学课程资料分享](https://github.com/sysuexam/SYSU-Exam)
+    - [南京大学课程复习资料](https://github.com/idealclover/NJU-Review-Materials)
+    - [郑州大学课程复习资料](https://github.com/CooperNiu/ZZU-Courses-Resource)
+
+### weekly
+> 前端精读周刊
+* [github](https://github.com/dt-fe/weekly)
+* <img src="https://img.shields.io/github/stars/dt-fe/weekly.svg"/>
+* **摘要**
+    * 精读 js 模块化发展
+    * 精读模态框的最佳实践
+    * 精读《编写有弹性的组件》
+    * 精读《React Hooks》
+    * 精读《React 代码整洁之道》
 
 ### mobileHack
 > 这里收集了许多移动端上遇到的各种坑
@@ -394,14 +400,26 @@
 
 ## 其他推荐
 
-### 好文
-* [冴羽的 JavaScript 系列](https://github.com/mqyqingfeng/Blog)
+### 文章
 * [CSS 规范中文翻译](http://www.ayqy.net/doc/css2-1/cover.html)
 * [CSS3 教程](https://waylau.gitbooks.io/css3-tutorial/)
 * [iCSS - 不止于 CSS](https://github.com/chokcoco/iCSS)
-
-### 好书
 * [图说设计模式](https://github.com/me115/design_patterns)
+* [浏览器渲染原理](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/?hl=zh-cn)
+* [手把手教你撸一个简易的 webpack](https://juejin.im/post/5b192afde51d45069c2efe5a)
+* [带你走进webpack世界，成为webpack头号玩家。](https://juejin.im/post/5ac9dc9af265da23884d5543)
+* [webpack4-用之初体验，一起敲它十一遍](https://juejin.im/post/5adea0106fb9a07a9d6ff6de)
+* [基于Webpack搭建React开发环境](https://juejin.im/post/5d387f696fb9a07eeb13ea60#heading-8)
+* [[译] JavaScript 如何工作：对引擎、运行时、调用堆栈的概述](https://juejin.im/post/5a05b4576fb9a04519690d42)
+* [深度剖析：如何实现一个 Virtual DOM 算法 ](https://github.com/livoras/blog/issues/13)
+* [大型项目前端架构浅谈（8000字原创）](https://juejin.im/post/5cea1f705188250640005472)
+* [网站性能优化实战——从12.67s到1.06s的故事](https://juejin.im/post/5b6fa8c86fb9a0099910ac91)
+* [前端 100 问：能搞懂 80% 的请把简历给我](https://juejin.im/post/5d23e750f265da1b855c7bbe)
+* [手摸手，带你用vue撸后台 系列](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+* [剖析Vue实现原理 - 如何实现双向绑定mvvm](https://github.com/DMQ/mvvm)
+* [冴羽的 JavaScript 系列](https://github.com/mqyqingfeng/Blog)
+
+### 书籍
 * [JS 函数式编程指南](https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/)
 * [你不知道的 JS](https://github.com/getify/You-Dont-Know-JS/tree/1ed-zh-CN)
 * [ECMAScript 6 入门](http://es6.ruanyifeng.com/)
