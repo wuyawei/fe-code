@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'antd/lib/button';
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import './game.css';
+import './index.css';
 
 function Square(props) {
     return (

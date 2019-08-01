@@ -27,8 +27,13 @@ function About() {
     return (
         <div>
             <h2>about</h2>
-            <div>{`现在的坐标是---> x: ${x}; y: ${y}`}</div>
-            <button onClick={() => setModalIsOpen(true)}>show Modal</button>
+            <div className='box'>
+                <div className='one'></div>
+                <div className='two'>
+                    {`现在的坐标是---> x: ${x}; y: ${y}`}
+                </div>
+            </div>
+            {/* <button onClick={() => setModalIsOpen(true)}>show Modal</button> */}
             {/* <Modal
                 isOpen={modalIsOpen}
                 aria={{
