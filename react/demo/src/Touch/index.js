@@ -11,27 +11,34 @@ function Touch() {
     useEffect(() => {
         // 设置touchmove，为了禁用部分方向的默认事件
         ref.current.addEventListener('touchmove', onTouchMove, { passive: true });
+        ref.current.addEventListener('contextmenu', onContextMenu, { passive: true });
         return () => {
             ref.current.removeEventListener('touchmove', onTouchMove, { passive: true });
+            ref.current.removeEventListener('contextmenu', onContextMenu, { passive: true });
         };
     }, [])
-    async function onContextmenu(e) {
-        for (let i = 0; i< 10000; i++) {
-            console.log(i)
+    function onContextMenu(e) {
+        console.time();
+        let index = 0;
+        for (let i = 0; i< 1000000000; i++) {
+            index++;
         }
-        e.preventDefault();
+        console.timeEnd();
+        // e.preventDefault();
     }
     function onTouchMove(e) {
-        // for (let i = 0; i< 10000; i++) {
-        //     console.log(i)
-        // }
+        console.time();
+        let index = 0;
+        for (let i = 0; i< 100000000; i++) {
+            index++;
+        }
         // e.preventDefault();
-        console.log(321);
+        console.timeEnd();
     }
     return (
         // touchAction:'pan-x'
         <div style={{height: 500, padding: '20px', overflow: 'auto',color: '#fff', fontSize: 38, textAlign: 'center'}} ref={ref}>
-            <div style={{height: 200, backgroundColor: 'red', marginBottom: 20}} onContextMenu={onContextmenu}>1</div>
+            <div style={{height: 200, backgroundColor: 'red', marginBottom: 20}}>1</div>
             <div style={{height: 200, backgroundColor: '#25b25e', marginBottom: 20}}>2</div>
             <div style={{height: 200, backgroundColor: '#ff6000', marginBottom: 20, overflow:'auto'}}>
                 <div style={{width: 1200, display: 'flex', alignItems: 'center', height: '100%'}}>
