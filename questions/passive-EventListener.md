@@ -1,4 +1,4 @@
-# Touchmove 禁止默认滚动带来的思考
+# Touchmove 禁止默认滚动的几种方案
 
 ## 前言
 分享一些实际开发过程中遇到的问题和解决方案，文中如有不对之处，也欢迎大家指出，共勉。！
@@ -122,12 +122,14 @@ someElement.addEventListener("mouseup", handleMouseUp, passiveSupported
 
 其他属性，大家可以去 MDN 自行查阅。结合我们的需求，使用 pan-y 只开启垂直方向的操作，也能做到类似的效果。需要注意的是，设置 touch-action，和我们设置 `passive: false` 再调用 preventDefault 效果是一样的，不会再对允许操作方向上的滑动效果进行优化。
 
+![11122.gif](https://i.loli.net/2019/08/05/JQTAg4ziW9oCuUG.gif)
+
 另外，这个属性也有兼容性问题，在 Safari 上的支持效果并不好，具体查看 [can i use](https://www.caniuse.com/#search=touch-action)。
 
 ### overflow
 对于元素的禁止滚动，其实我们给他的父元素添加 `overflow: hidden` 也能达到想要的效果。对于整个页面来说，就需要给 html 标签添加 overflow: hidden。但是，基于当前这个需求场景，因为只是希望在水平滑动时不触发垂直方向的滚动，所以需要判断什么时候设置属性，什么时候移除属性。
 
-这里我没有具体去做这个测试，只是给大家提供一种思路。
+这里我没有具体去做这个测试，只是提供一种思路。
 
 ## 交流群
 > qq前端交流群：960807765，欢迎各种技术交流，期待你的加入；
