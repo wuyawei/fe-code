@@ -112,3 +112,34 @@ someElement.addEventListener("mouseup", handleMouseUp, passiveSupported
                                ? { passive: true } : false);
 ```
 ### touch-action
+>  用于设置触摸屏用户如何操纵元素的区域(例如，浏览器内置的缩放功能)。 — [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/touch-action)
+
+这是一个 css 属性，简单来说，就是可以通过 css 指定**允许**用户使用的手势操作。
+
+* pan-x 启用单指水平平移手势
+* pan-y 启用单指垂直平移手势
+* none 禁止操作
+
+其他属性，大家可以去 MDN 自行查阅。结合我们的需求，使用 pan-y 只开启垂直方向的操作，也能做到类似的效果。需要注意的是，设置 touch-action，和我们设置 `passive: false` 再调用 preventDefault 效果是一样的，不会再对允许操作方向上的滑动效果进行优化。
+
+另外，这个属性也有兼容性问题，在 Safari 上的支持效果并不好，具体查看 [can i use](https://www.caniuse.com/#search=touch-action)。
+
+### overflow
+对于元素的禁止滚动，其实我们给他的父元素添加 `overflow: hidden` 也能达到想要的效果。对于整个页面来说，就需要给 html 标签添加 overflow: hidden。但是，基于当前这个需求场景，因为只是希望在水平滑动时不触发垂直方向的滚动，所以需要判断什么时候设置属性，什么时候移除属性。
+
+这里我没有具体去做这个测试，只是给大家提供一种思路。
+
+## 交流群
+> qq前端交流群：960807765，欢迎各种技术交流，期待你的加入；
+
+>微信群：有需要的同学可以加我好友（q1324210213），我拉你入群。
+
+## 后记
+  如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。好了，又耽误大家的时间了，感谢阅读，下次再见！
+
+* **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
+* **[社交聊天系统（vue + node + mongodb）- 💘🍦🙈Vchat](https://github.com/wuyawei/Vchat)**
+
+感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。
+
+![](https://user-gold-cdn.xitu.io/2019/7/21/16c14d1d0f3be11e?w=400&h=400&f=jpeg&s=34646)
