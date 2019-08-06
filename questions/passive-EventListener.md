@@ -50,7 +50,7 @@ function Touch() {
 
 真是人性化的报错，让我们去查看 [https://www.chromestatus.com/features/5093566007214080](https://www.chromestatus.com/features/5093566007214080) 这个 url。
 
-![image.png](https://i.loli.net/2019/08/05/5kL679RbMyixpoh.png)
+![1www.png](https://i.loli.net/2019/08/05/jwmeZyPtKuOA4dr.png)
 
 大意是说：addEventListener 有一个参数 passive 默认是 false，但是在 Chrome 56 的时候 把 touchstart 和 touchmove 的改成了默认 `passive: true`。这样，touchmove 事件就不会阻塞页面的滚动。因为在 `passive: false` 的状态下，不管是否需要调用 `e.preventDefault()` 来阻止页面滚动，都需要等到 touchmove 函数执行完毕，页面才会做出反应。
 
