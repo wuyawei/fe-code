@@ -1,77 +1,74 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
 
-function useTouchMove(carouselRef, startTouchRef) {
+function Carousel(props) {
+    const { width = 6.9, height = 6.63, autoPlay = false } = props;
+    const startTouchRef = useRef({ startX: 0, startY: 0 }); // 保存触摸坐标
+    const position = useRef(0); // 当前步进下标
+    const startTransform = useRef(0); // 每次滑动要加的初始值
+    const time = useRef(null);
+    const fontSize = useRef(50);
+    useEffect(() => {
+        fontSize.current = document.documentElement.style.fontSize.slice(0, -2);
+    }, []);
+    const [movePosition, setMovePosition] = useState(0);
+    const [transition, setTransition] = useState('');
     function onTouchMove(e) {
         // 限制垂直方向上的滚动
-        const y = Math.abs(e.touches[0].pageY - startTouchRef.current.startY);
-        const x = Math.abs(e.touches[0].pageX - startTouchRef.current.startX);
-        if (y < x) {
+        const y = e.touches[0].pageY - startTouchRef.current.startY;
+        const x = e.touches[0].pageX - startTouchRef.current.startX;
+        if (Math.abs(y) < Math.abs(x)) {
             e.preventDefault();
         }
+        setMovePosition(startTransform.current + x/fontSize.current);
+        setTransition('ease 0s');
     }
-
-    useEffect(() => {
-        // 设置touchmove，为了禁用部分方向的默认事件
-        carouselRef.current.addEventListener('touchmove', onTouchMove, { passive: false });
-        return () => {
-            carouselRef.current.removeEventListener('touchmove', onTouchMove, { passive: false });
-        };
-    }, [carouselRef, onTouchMove]);
-}
-
-function Carousel(props) {
-    const { width = 6.9, height = 6.63, afterChange } = props;
-    const carouselRef = useRef(null);
-    const startTouchRef = useRef({ startX: 0, startY: 0 }); // 保存触摸坐标
-
-    // 处理TouchMove事件，左右滑动时禁止纵向滚动
-    useTouchMove(carouselRef, startTouchRef);
-
-    const [active, setActive] = useState(0); // 当前展示
-    const [prev, setPrev] = useState(''); // 上一张
-    const [next, setNext] = useState(1); // 下一张
-    const [direction, setDirection] = useState('left'); // 滑动方向
-    function handleSwipe(endX) {
-        // 左滑右滑设置走马灯动画
-        if (endX - startTouchRef.current.startX > 30) {
-            if (active === 0) {
-                return;
-            }
-            setActive(active - 1);
-            setPrev(active);
-            setNext(active - 2);
-            setDirection('right');
-        } else if (endX - startTouchRef.current.startX < -30) {
-            if (active === props.children.length - 1) {
-                return;
-            }
-            setActive(active + 1);
-            setPrev(active);
-            setNext(active + 2);
-            setDirection('left');
+    
+    function onTouchEnd(e) {
+        document.removeEventListener('touchmove', onTouchMove, { passive: false });
+        document.removeEventListener('touchend', onTouchEnd);
+        
+        position.current = - (Math.round(- position.current + (e.changedTouches[0].clientX - startTouchRef.current.startX) / fontSize.current / width));
+        position.current = Math.max(0, Math.min(position.current, props.children.length - 1));
+        setMovePosition(- position.current * width);
+        setTransition('');
+        if (autoPlay) {
+            time.current = setTimeout(autoPlayFun, 1000);
         }
     }
     function onTouchStart(e) {
-        // 保存初始位置
+        clearInterval(time.current); // 清除定时器
+        // 保存触摸初始位置
         startTouchRef.current = { startX: e.touches[0].pageX, startY: e.touches[0].pageY };
+        // translate 初始位置
+        startTransform.current = - position.current * width;
+        // 处理TouchMove事件，左右滑动时禁止纵向滚动
+        document.addEventListener('touchmove', onTouchMove, { passive: false });
+        document.addEventListener('touchend', onTouchEnd);
     }
-    function onTouchEnd(e) {
-        // 离开时，设置动画
-        handleSwipe(e.changedTouches[0].pageX);
+
+    function autoPlayFun() {
+        if (position.current >= props.children.length - 1) {
+            position.current = -1;
+        }
+        position.current ++;
+        setMovePosition(- position.current * width);
+        time.current = setTimeout(autoPlayFun, 1000);
     }
-    afterChange && afterChange(active);
+    useEffect(() => {
+        if (autoPlay) {
+            time.current = setTimeout(autoPlayFun, 1000);
+        }
+    }, [])
     return (
-        <div className='kool-carousel' onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} ref={carouselRef}>
-            <div className='kool-carousel-item-wrapper' style={{ width: `${width}rem`, height: `${height}rem` }}>
+        <div className='kool-carousel'>
+            <div className='kool-carousel-item-wrapper' style={{ width: `${width}rem`, height: `${height}rem` }} onTouchStart={onTouchStart}>
                 {props.children.map((carousel, i) => (
                     <div
                         className={
-                            `kool-carousel-item
-                            ${prev === i && 'prev-'+direction}
-                            ${active === i && 'active-'+direction}
-                            ${next === i && 'next-'+direction}`}
+                            `kool-carousel-item`}
+                        style={{transform: `translate(${movePosition}rem)`, transition: transition}}
                         key={i}
                     >
                         {carousel}
@@ -80,7 +77,7 @@ function Carousel(props) {
             </div>
             <div className='kool-carousel-slider-wrapper'>
                 {props.children.map((v, i) => (
-                    <div className={`kool-carousel-slider-item ${active === i && 'active'}`} key={i}></div>
+                    <div className={`kool-carousel-slider-item ${position.current === i ? 'active' : ''}`} key={i}></div>
                 ))}
             </div>
         </div>
@@ -90,8 +87,7 @@ function Carousel(props) {
 Carousel.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
-    children: PropTypes.node,
-    afterChange: PropTypes.func
+    children: PropTypes.node
 };
 
 export default function CarouselDemo() {

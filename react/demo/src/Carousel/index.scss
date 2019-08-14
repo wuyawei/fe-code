@@ -6,113 +6,14 @@
 .kool-carousel-item-wrapper {
     position: relative;
     margin: 0 auto;
+    white-space: nowrap;
 }
 .kool-carousel-item {
     width: 100%;
     height: 100%;
     color: #fff;
-    position: absolute;
-    transform: translateX(0);
-    transition: transform 0.3s;
-    opacity: 0;
-}
-
-.kool-carousel-item.prev-left {
-    animation: prev-left 0.5s forwards;
-    // transform: translateX(calc(-100% - 0.24rem));
-    opacity: 1;
-}
-.kool-carousel-item.active-left {
-    animation: active-left 0.5s forwards;
-    // transform: translateX(0);
-    z-index: 1;
-    opacity: 1;
-}
-
-.kool-carousel-item.next-left {
-    animation: next-left 0.5s forwards;
-    // transform: translateX(calc(100% + 0.24rem));
-    opacity: 1;
-}
-
-.kool-carousel-item.active-right {
-    animation: active-right 0.5s forwards;
-    // transform: translateX(0);
-    z-index: 1;
-    opacity: 1;
-}
-
-.kool-carousel-item.prev-right {
-    animation: prev-right 0.5s forwards;
-    // transform: translateX(calc(100% + 0.24rem));
-    opacity: 1;
-}
-
-.kool-carousel-item.next-right {
-    animation: next-right 0.5s forwards;
-    // transform: translateX(calc(-100% - 0.24rem));
-    opacity: 1;
-}
-
-@keyframes prev-left {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(calc(-100%));
-    }
-}
-
-@keyframes active-left {
-    from {
-        transform: translateX(calc(100%));
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes next-left {
-    from {
-        transform: translateX(300%);
-    }
-    to {
-        transform: translateX(calc(100%));
-    }
-}
-
-@keyframes next-right {
-    from {
-        transform: translateX(-300%);
-    }
-    to {
-        transform: translateX(calc(-100%));
-    }
-}
-
-@keyframes active-right {
-    from {
-        transform: translateX(calc(-100%));
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes prev-right {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(calc(100%));
-    }
-}
-
-.kool-carousel-item {
-    width: 100%;
-    height: 100%;
-    color: #fff;
-    position: absolute;
+    display: inline-block;
+    transition:ease 0.5s;
 }
 
 .kool-carousel-slider-wrapper {
