@@ -1,0 +1,110 @@
+<style>
+    .carousel{
+        width:500px;
+        height:300px;
+        overflow:hidden;
+        white-space: nowrap;
+        outline: solid 1px blue;
+    }
+    .carousel>img{
+        width:100%;
+        height:100%;
+        display:inline-block;
+        transition:ease 0.5s;
+    }
+    </style>
+    <div id="container">
+    
+    </div>
+    <script>
+    let data = [
+    "https://static001.geekbang.org/resource/image/bb/21/bb38fb7c1073eaee1755f81131f11d21.jpg",
+    ];
+    
+    class Carousel {
+        constructor(container){
+            this._container = container;
+            this._container.classList.add("carousel");
+            this._handler = null;
+            this.data = null;
+        }
+        render(){
+            for(let d of this.data) {
+                let e = document.createElement("img");
+                e.src = d;
+                this._container.appendChild(e);
+            }
+            let children = Array.prototype.slice.call(container.children);
+            let position = 0;
+            let nextFrame = ()=>{
+                let nextPosition = position + 1;
+                
+                
+                nextPosition = nextPosition % children.length;
+    
+                let current = children[position],
+                    next = children[nextPosition];
+                //把next摆到正确的位置
+                next.style.transition = "ease 0s";
+                next.style.transform = `translate(${100 - 100 * nextPosition}%)`
+                
+                requestAnimationFrame(()=>{
+                    requestAnimationFrame(()=>{
+                        //把current挪出视口
+                        current.style.transition = ""; //transition置空，css中的属性就会生效
+                        current.style.transform = `translate(${- 100 - 100 * position}%)`
+                        //把next挪进视口
+                        next.style.transition = "";
+                        next.style.transform = `translate(${- 100 * nextPosition}%)`
+                        position = nextPosition;
+                    });
+                })
+                
+                //for(let child of children) {
+                //    child.style.transform = `translate(${-100 * position}%)`;
+                //}
+                setTimeout(nextFrame, 3000);
+            }
+            //setTimeout(nextFrame,3000);
+            let startX;
+            let startTransform;
+            let start = event =>{
+                event.preventDefault();
+                startX = event.clientX;
+                startTransform = - position * 500;
+                document.addEventListener("mousemove", move);
+                document.addEventListener("mouseup", end);
+            }
+            let move = event =>{
+                event.preventDefault();
+                for(let child of children) {
+                    child.style.transition = "ease 0s";
+                    child.style.transform = `translate(${startTransform + event.clientX - startX}px)`;
+                }
+            }
+    
+            let end = ()=>{
+                document.removeEventListener("mousemove", move);
+                document.removeEventListener("mouseup", end);
+    
+                position = - (Math.round((startTransform + event.clientX - startX) / 500)); 
+    
+    
+                position = Math.max(0, Math.min(position, children.length - 1));
+    
+                for(let child of children) {
+                    child.style.transition = "";
+                    child.style.transform = `translate(${ - position * 500}px)`;
+                }
+            }
+    
+            document.addEventListener("mousedown",start);
+    
+    
+        }
+    }
+    let carousel = new Carousel(document.getElementById("container"));
+    carousel.data = data;
+    carousel.render();
+    
+    </script>

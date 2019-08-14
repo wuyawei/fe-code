@@ -5,6 +5,7 @@ const About = lazy(() => import('./About'));
 const Game = lazy(() => import('./Game'));
 const Calendar = lazy(() => import('./Calendar/index'));
 const Touch = lazy(() => import('./Touch'))
+const Carousel = lazy(() => import('./Carousel'))
 
 function AppRouter() {
   return (
@@ -16,12 +17,15 @@ function AppRouter() {
         <Link to="/game">game</Link>
         <br/>
         <Link to="/touch">touch</Link>
+        <br/>
+        <Link to="/carousel">carousel</Link>
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
               <Route path="/about" component={About} />
               <Route path="/calendar" component={Calendar} />
               <Route path="/game" component={Game} />
               <Route path="/touch" component={Touch} />
+              <Route path="/carousel" component={Carousel} />
           </Switch>
         </Suspense>
     </Router>
