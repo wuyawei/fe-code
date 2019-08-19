@@ -16,13 +16,12 @@
 * `symbol`
 
 ```javascript
-let foo = 1;
+const foo = 1;
 let bar = foo;
 
-foo = 9;
+bar = 9;
 
-console.log(foo, bar); // => 9, 1
-// bar还是1，不会出现期望的变化
+console.log(foo, bar); // => 9,1
 ```
 
 *  复杂类型
@@ -39,13 +38,15 @@ const bar = foo;
 bar[0] = 9;
 
 console.log(foo[0], bar[0]); // => 9, 9
+// const 只能阻止引用类型地址的重新赋值
+// 并不能保证引用类型的属性等不变
 ```
 
-## References
+## 状态的使用（原文为 Reference）
 
-- [2.1](#references--prefer-const) 所有的赋值都用`const`，避免使用`var`. eslint: [`prefer-const`](http://eslint.org/docs/rules/prefer-const.html), [`no-const-assign`](http://eslint.org/docs/rules/no-const-assign.html)
+* 2.1 所有的赋值都用`const`，避免使用`var`. eslint: [`prefer-const`](http://eslint.org/docs/rules/prefer-const.html), [`no-const-assign`](http://eslint.org/docs/rules/no-const-assign.html)
 
-> Why? 因为这个确保你不会改变你的初始值，重复引用会导致bug和代码难以理解
+> 尽量确保你的代码中的状态是可控范围内的，重复引用会出现难以理解的 bug 和代码。
 
 ```javascript
 // bad
@@ -57,9 +58,9 @@ const a = 1;
 const b = 2;
 ```
 
-- [2.2](#references--disallow-var) 如果你一定要对参数重新赋值，那就用`let`，而不是`var`. eslint: [`no-var`](http://eslint.org/docs/rules/no-var.html)
+* 2.2 如果你一定要对参数重新赋值，那就用`let`，而不是`var`. eslint: [`no-var`](http://eslint.org/docs/rules/no-var.html)
 
-> Why? 因为`let`是块级作用域，而`var`是函数级作用域
+> `let`是块级作用域，`var`是函数级作用域，同样是为了减少代码的不可控，减少 “意外”
 
 ```javascript
 // bad
@@ -75,7 +76,7 @@ if (true) {
 }
 ```
 
-- [2.3](#references--block-scope) 注意： `let`、`const`都是块级作用域
+* 2.3 `let`、`const`都是块级作用域
 
 ```javascript
 // const 和 let 都只存在于它定义的那个块级作用域
@@ -89,9 +90,9 @@ console.log(b); // ReferenceError
 
 
 
-## Objects
+## 对象
 
-- [3.1](#objects--no-new) 使用字面值创建对象. eslint: [`no-new-object`](http://eslint.org/docs/rules/no-new-object.html)
+* 3.1 使用字面值创建对象. eslint: [`no-new-object`](http://eslint.org/docs/rules/no-new-object.html)
 
 ```javascript
 // bad
@@ -101,9 +102,7 @@ const item = new Object();
 const item = {};
 ```
 
-- [3.2](#es6-computed-properties) 当创建一个带有动态属性名的对象时，用计算后属性名
-
-> Why? 这可以使你将定义的所有属性放在对象的一个地方.
+* 3.2 当创建一个带有动态属性名的对象时，将定义的所有属性放在对象的一个地方。
 
 ```javascript
 
@@ -126,7 +125,7 @@ const obj = {
 };
 ```
 
-- [3.3](#es6-object-shorthand) 用对象方法简写. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html)
+* 3.3 方法简写. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html)
 
 ```javascript
 // bad
@@ -148,10 +147,7 @@ const atom = {
   },
 };
 ```
-
-- [3.4](#es6-object-concise) 用属性值缩写. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html)
-
-> Why? 这样写的更少且更可读
+* 3.4 属性值缩写. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html)
 
 ```javascript
 const lukeSkywalker = 'Luke Skywalker';
@@ -163,13 +159,11 @@ const obj = {
 
 // good
 const obj = {
-  lukeSkywalker,
+  lukeSkywalker
 };
 ```
 
-- [3.5](#objects--grouped-shorthand) 将你的所有缩写放在对象声明的开始.
-
-> Why? 这样也是为了更方便的知道有哪些属性用了缩写.
+* 3.5 将属性的缩写放在对象声明的开头。
 
 ```javascript
 const anakinSkywalker = 'Anakin Skywalker';
@@ -196,9 +190,9 @@ const obj = {
 };
 ```
 
-- [3.6](#objects--quoted-props) 只对那些无效的标示使用引号 `''`. eslint: [`quote-props`](http://eslint.org/docs/rules/quote-props.html)
+* 3.6 只对那些无效的标示使用引号 `''`. eslint: [`quote-props`](http://eslint.org/docs/rules/quote-props.html)
 
-> Why? 通常我们认为这种方式主观上易读。他优化了代码高亮，并且页更容易被许多JS引擎压缩。
+> 一般来说，我们认为它在主观上更容易阅读。它改进了语法突出显示，并且更容易被JS引擎优化。
 
 ```javascript
 // bad
@@ -216,9 +210,9 @@ const good = {
 };
 ```
 
-- [3.7](#objects--prototype-builtins) 不要直接调用`Object.prototype`上的方法，如`hasOwnProperty`, `propertyIsEnumerable`, `isPrototypeOf`。
+* 3.7 不要直接调用`Object.prototype`上的方法，如`hasOwnProperty`, `propertyIsEnumerable`, `isPrototypeOf`。
 
-> Why? 在一些有问题的对象上， 这些方法可能会被屏蔽掉 - 如：`{ hasOwnProperty: false }` - 或这是一个空对象`Object.create(null)`
+> 在一些有问题的对象上， 这些方法可能会被屏蔽掉 - 如：`{ hasOwnProperty: false }` - 或这是一个空对象`Object.create(null)`
 
 ```javascript
 // bad
@@ -235,33 +229,30 @@ import has from 'has'; // https://www.npmjs.com/package/has
 console.log(has.call(object, key));
 ```
 
-- [3.8](#objects--rest-spread) 对象浅拷贝时，更推荐使用扩展运算符[就是`...`运算符]，而不是[`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)。获取对象指定的几个属性时，用对象的rest解构运算符[也是`...`运算符]更好。
-* 这一段不太好翻译出来， 大家看下面的例子就懂了。^.^
+* 3.8 对象浅拷贝时，更推荐使用扩展运算符 `...`，而不是[`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)。解构赋值获取对象指定的几个属性时，推荐用 rest 运算符，也是 `...`。
 
 ```javascript
 // very bad
 const original = { a: 1, b: 2 };
-const copy = Object.assign(original, { c: 3 }); // this mutates `original` ಠ_ಠ
-delete copy.a; // so does this
+const copy = Object.assign(original, { c: 3 }); 
+delete copy.a; // so does this  改变了 original
 
 // bad
 const original = { a: 1, b: 2 };
 const copy = Object.assign({}, original, { c: 3 }); // copy => { a: 1, b: 2, c: 3 }
 
-// good es6扩展运算符 ...
+// good
 const original = { a: 1, b: 2 };
-// 浅拷贝
 const copy = { ...original, c: 3 }; // copy => { a: 1, b: 2, c: 3 }
 
-// rest 赋值运算符
 const { a, ...noA } = copy; // noA => { b: 2, c: 3 }
 ```
 
 
 
-## Arrays
+## 数组
 
-- [4.1](#arrays--literals) 用字面量赋值。 eslint: [`no-array-constructor`](http://eslint.org/docs/rules/no-array-constructor.html)
+* 4.1 用字面量赋值。 eslint: [`no-array-constructor`](http://eslint.org/docs/rules/no-array-constructor.html)
 
 ```javascript
 // bad
@@ -271,7 +262,7 @@ const items = new Array();
 const items = [];
 ```
 
-- [4.2](#arrays--push) 用[Array#push](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push) 代替直接向数组中添加一个值。
+* 4.2 用[Array#push](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push) 向数组中添加一个值而不是直接用下标。
 
 ```javascript
 const someStack = [];
@@ -283,7 +274,7 @@ someStack[someStack.length] = 'abracadabra';
 someStack.push('abracadabra');
 ```
 
-- [4.3](#es6-array-spreads) 用扩展运算符做数组浅拷贝，类似上面的对象浅拷贝
+* 4.3 用扩展运算符做数组浅拷贝，类似上面的对象浅拷贝
 
 ```javascript
 // bad
@@ -301,7 +292,7 @@ const itemsCopy = [...items];
 
 
 
-- [4.4](#arrays--from-iterable) 用 `...` 运算符而不是[`Array.from`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from)来将一个可迭代的对象转换成数组。
+* 4.4 推荐用 `...` 运算符而不是[`Array.from`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from)来将一个类数组转换成数组。
 
 ```javascript
 const foo = document.querySelectorAll('.foo');
@@ -313,9 +304,7 @@ const nodes = Array.from(foo);
 const nodes = [...foo];
 ```
 
-
-
-- [4.5](#arrays--from-array-like) 用 [`Array.from`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from) 去将一个类数组对象转成一个数组。
+* 4.5 用 [`Array.from`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from) 去将一个类数组对象转成一个数组。
 
 ```javascript
 const arrLike = { 0: 'foo', 1: 'bar', 2: 'baz', length: 3 };
@@ -327,9 +316,7 @@ const arr = Array.prototype.slice.call(arrLike);
 const arr = Array.from(arrLike);
 ```
 
-
-
-- [4.6](#arrays--mapping) 用 [`Array.from`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from) 而不是 `...` 运算符去做map遍历。 因为这样可以避免创建一个临时数组。
+* 4.6 用 [`Array.from`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from) 而不是 `...` 运算符去迭代。 这样可以避免创建一个中间数组。
 
 ```javascript
 // bad
@@ -339,7 +326,7 @@ const baz = [...foo].map(bar);
 const baz = Array.from(foo, bar);
 ```
 
-- [4.7](#arrays--callback-return) 在数组方法的回调函数中使用 return 语句。 如果函数体由一条返回一个表达式的语句组成， 并且这个表达式没有副作用， 这个时候可以忽略return，详见 [8.2](#arrows--implicit-return). eslint: [`array-callback-return`](http://eslint.org/docs/rules/array-callback-return)
+* 4.7 在数组方法的回调函数中使用 return 语句。 如果函数体由一条返回一个表达式的语句组成， 并且这个表达式没有副作用， 这个时候可以忽略return，详见 [8.2](#arrows--implicit-return). eslint: [`array-callback-return`](http://eslint.org/docs/rules/array-callback-return)
 
 ```javascript
 // good
@@ -351,7 +338,7 @@ const baz = Array.from(foo, bar);
 // good 函数只有一个语句
 [1, 2, 3].map(x => x + 1);
 
-// bad - 没有返回值， 因为在第一次迭代后acc 就变成undefined了
+// bad 没有返回值， 导致在第一次迭代后acc 就变成undefined了
 [[0, 1], [2, 3], [4, 5]].reduce((acc, item, index) => {
   const flatten = acc.concat(item);
   acc[index] = flatten;
@@ -385,9 +372,7 @@ inbox.filter((msg) => {
 });
 ```
 
-
-
-- [4.8](#arrays--bracket-newline) 如果一个数组有很多行，在数组的 `[` 后和 `]` 前断行。 请看下面示例
+* 4.8 如果一个数组有很多行，在数组的 `[` 后和 `]` 前换行。
 
 ```javascript
 // bad
@@ -423,15 +408,11 @@ const numberInArray = [
 ];
 ```
 
+## 解构
 
+* 5.1 用对象的解构赋值来获取和使用对象某个或多个属性值。 eslint: [`prefer-destructuring`](https://eslint.org/docs/rules/prefer-destructuring)
 
-## Destructuring
-
-
-
-- [5.1](#destructuring--object) 用对象的解构赋值来获取和使用对象某个或多个属性值。 eslint: [`prefer-destructuring`](https://eslint.org/docs/rules/prefer-destructuring)
-
-> Why? 解构保存了这些属性的临时值/引用
+> 这样就不需要给这些属性创建临时/引用
 
 ```javascript
 // bad
@@ -456,7 +437,7 @@ function getFullName({ firstName, lastName }) {
 
 
 
-- [5.2](#destructuring--array) 用数组解构.
+* 5.2 数组解构.
 
 ```javascript
 const arr = [1, 2, 3, 4];
@@ -469,11 +450,9 @@ const second = arr[1];
 const [first, second] = arr;
 ```
 
+* 5.3 多个返回值用对象的解构，而不是数组解构。
 
-
-- [5.3](#destructuring--object-over-array) 多个返回值用对象的解构，而不是数据解构。
-
-> Why? 你可以在后期添加新的属性或者变换变量的顺序而不会打破原有的调用
+> 不依赖于返回值的顺序，更可读
 
 ```javascript
 // bad
@@ -482,23 +461,20 @@ function processInput(input) {
   return [left, right, top, bottom];
 }
 
-// 调用者需要想一想返回值的顺序
 const [left, __, top] = processInput(input);
 
 // good
 function processInput(input) {
-  // oops， 奇迹又发生了
   return { left, right, top, bottom };
 }
 
-// 调用者只需要选择他想用的值就好了
 const { left, top } = processInput(input);
 ```
 
 
 
 
-## Strings
+## 字符串
 
 
 
