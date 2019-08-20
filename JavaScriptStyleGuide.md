@@ -471,30 +471,23 @@ function processInput(input) {
 const { left, top } = processInput(input);
 ```
 
-
-
-
 ## 字符串
 
-
-
-- [6.1](#strings--quotes) 对string用单引号 `''` 。 eslint: [`quotes`](https://eslint.org/docs/rules/quotes.html)
+* 6.1 string 统一用单引号 `''` 。 eslint: [`quotes`](https://eslint.org/docs/rules/quotes.html)
 
 ```javascript
 // bad
 const name = "Capt. Janeway";
 
-// bad - 样例应该包含插入文字或换行
+// bad - 模板应该包含插入文字或换行
 const name = `Capt. Janeway`;
 
 // good
 const name = 'Capt. Janeway';
 ```
 
-
-
-- [6.2](#strings--line-length) 超过100个字符的字符串不应该用string串联成多行。
-> Why? 被折断的字符串工作起来是糟糕的而且使得代码更不易被搜索。
+* 6.2 不应该用 `+` 连接换行字符串。
+> 不好用，且可读性差
 
 ```javascript
 // bad
@@ -512,11 +505,9 @@ const errorMessage = 'This is a super long error that was thrown because ' +
 const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
 ```
 
+* 6.3 用字符串模板而不是 `+` 来拼接字符串。 eslint: [`prefer-template`](https://eslint.org/docs/rules/prefer-template.html) [`template-curly-spacing`](https://eslint.org/docs/rules/template-curly-spacing)
 
-
-- [6.3](#es6-template-literals) 用字符串模板而不是字符串拼接来组织可编程字符串。 eslint: [`prefer-template`](https://eslint.org/docs/rules/prefer-template.html) [`template-curly-spacing`](https://eslint.org/docs/rules/template-curly-spacing)
-
-> Why? 模板字符串更具可读性、语法简洁、字符串插入参数。
+> 模板字符串更具可读性、语法简洁、字符串插入参数。
 
 ```javascript
 // bad
@@ -540,15 +531,13 @@ function sayHi(name) {
 }
 ```
 
-
-
-- [6.4](#strings--eval) 永远不要在字符串中用`eval()`，他就是潘多拉盒子。 eslint: [`no-eval`](https://eslint.org/docs/rules/no-eval)
+* 6.4 永远不要在字符串中用`eval()`，漏洞太多。 eslint: [`no-eval`](https://eslint.org/docs/rules/no-eval)
 
 
 
 - [6.5](#strings--escaping) 不要使用不必要的转义字符。eslint: [`no-useless-escape`](http://eslint.org/docs/rules/no-useless-escape)
 
-> Why? 反斜线可读性差，所以他们只在必须使用时才出现哦
+> 反斜线可读性差，只在必要时使用
 
 ```javascript
 // bad
@@ -561,23 +550,11 @@ const foo = '\'this\' is "quoted"';
 const foo = `my name is '${name}'`;
 ```
 
+## 函数
 
+* 7.1 用命名函数表达式而不是函数声明。eslint: [`func-style`](http://eslint.org/docs/rules/func-style)
 
-
-## Functions
-
-
-
-- [7.1](#functions--declarations) 用命名函数表达式而不是函数声明。eslint: [`func-style`](http://eslint.org/docs/rules/func-style)
-
-> 函数表达式： const func = function () {}
-
-> 函数声明： function func() {}
-
-> Why? 函数声明时作用域被提前了，这意味着在一个文件里函数很容易（太容易了）在其定义之前被引用。这样伤害了代码可读性和可维护性。如果你发现一个函数有大又复杂，这个函数妨碍这个文件其他部分的理解性，这可能就是时候把这个函数单独抽成一个模块了。别忘了给表达式显示的命名，不用管这个名字是不是由一个确定的变量推断出来的，这消除了由匿名函数在错误调用栈产生的所有假设，这在现代浏览器和类似babel编译器中很常见 ([Discussion](https://github.com/airbnb/javascript/issues/794))
-
-> Why? 这一段还不理解这种错误发生的场景，所以只能直译过来了， 另附[原文](https://github.com/airbnb/javascript#functions--declarations)
-> Why? Function declarations are hoisted, which means that it’s easy - too easy - to reference the function before it is defined in the file. This harms readability and maintainability. If you find that a function’s definition is large or complex enough that it is interfering with understanding the rest of the file, then perhaps it’s time to extract it to its own module! Don’t forget to explicitly name the expression, regardless of whether or not the name is inferred from the containing variable (which is often the case in modern browsers or when using compilers such as Babel). This eliminates any assumptions made about the Error’s call stack. ([Discussion](https://github.com/airbnb/javascript/issues/794))
+> 函数声明作用域会提升，降低了代码可读性和可维护性。如果你发现一个函数又大又复杂，这个函数妨碍这个文件其他部分的理解性，这可能就是时候把这个函数单独抽成一个模块了。([Discussion](https://github.com/airbnb/javascript/issues/794))
 
 ```javascript
 // bad
@@ -591,20 +568,15 @@ const foo = function () {
 };
 
 // good
-// lexical name distinguished from the variable-referenced invocation(s)
-// 函数表达式名和声明的函数名是不一样的
+
 const short = function longUniqueMoreDescriptiveLexicalFoo() {
   // ...
 };
 ```
 
+* 7.2 把立即执行函数包裹在圆括号里。 eslint: [`wrap-iife`](http://eslint.org/docs/rules/wrap-iife.html)
 
-
-- [7.2](#functions--iife) 把立即执行函数包裹在圆括号里。 eslint: [`wrap-iife`](http://eslint.org/docs/rules/wrap-iife.html)
-
-> Why? immediately invoked function expression = IIFE
-> Why? 一个立即调用的函数表达式是一个单元 - 把它和他的调用者（圆括号）包裹起来，在括号中可以清晰的地表达这些。
-> Why? 注意：在模块化世界里，你几乎用不着 IIFE
+> 一个立即调用的函数表达式是一个单元 - 把它和他的调用者（圆括号）包裹起来。当然，现代模块开发中，你基本用不到。
 
 ```javascript
 // immediately-invoked function expression (IIFE)
@@ -613,13 +585,9 @@ const short = function longUniqueMoreDescriptiveLexicalFoo() {
 }());
 ```
 
+* 7.3 不要在非函数块（if、while等等）内声明函数。而是把这个函数分配给一个变量。浏览器会允许你这样做，但浏览器解析方式不同，结果也许会有差异。【详见`no-loop-func`】 eslint: [`no-loop-func`](http://eslint.org/docs/rules/no-loop-func.html)
 
-
-- [7.3](#functions--in-blocks) 不要在非函数块（if、while等等）内声明函数。把这个函数分配给一个变量。浏览器会允许你这样做，但浏览器解析方式不同，这是一个坏消息。【详见`no-loop-func`】 eslint: [`no-loop-func`](http://eslint.org/docs/rules/no-loop-func.html)
-
-
-
-- [7.4](#functions--note-on-blocks) **Note:** 在ECMA-262中 [块 `block`] 的定义是： 一系列的语句； 但是函数声明不是一个语句。 函数表达式是一个语句。
+* 7.4 **注意:** 在ECMA-262中 [块 `block`] 的定义是： 一系列的语句； 但是函数声明不是一个语句。 函数表达式是一个语句。
 
 ```javascript
 // bad
@@ -638,9 +606,7 @@ if (currentUser) {
 }
 ```
 
-
-
-- [7.5](#functions--arguments-shadow) 不要用`arguments`命名参数。他的优先级高于每个函数作用域自带的 `arguments` 对象， 这会导致函数自带的 `arguments` 值被覆盖
+* 7.5 永远不要用`arguments`命名参数。它的优先级高于每个函数作用域自带的 `arguments` 对象， 所以会导致函数自带的 `arguments` 值被覆盖。
 
 ```javascript
 // bad
@@ -654,11 +620,9 @@ function foo(name, options, args) {
 }
 ```
 
+* 7.6 优先使用rest语法`...`，而不是 `arguments`。 eslint: [`prefer-rest-params`](http://eslint.org/docs/rules/prefer-rest-params)
 
-
-- [7.6](#es6-rest) 不要使用`arguments`，用rest语法`...`代替。 eslint: [`prefer-rest-params`](http://eslint.org/docs/rules/prefer-rest-params)
-
-> Why? `...`明确你想用那个参数。而且rest参数是真数组，而不是类似数组的`arguments`
+> `...` 更明确你想用哪些参数。
 
 ```javascript
 // bad
@@ -673,16 +637,13 @@ function concatenateAll(...args) {
 }
 ```
 
-
-
-- [7.7](#es6-default-parameters) 用默认参数语法而不是在函数里对参数重新赋值。
+* 7.8 使用默认参数语法，而不是在函数里对参数重新赋值。
 
 ```javascript
 // really bad
 function handleThings(opts) {
-  // 不， 我们不该改arguments
-  // 第二： 如果 opts 的值为 false, 它会被赋值为 {}
   // 虽然你想这么写， 但是这个会带来一些细微的bug
+  // 如果 opts 的值为 false, 它会被赋值为 {}
   opts = opts || {};
   // ...
 }
@@ -701,11 +662,7 @@ function handleThings(opts = {}) {
 }
 ```
 
-
-
-- [7.8](#functions--default-side-effects) 默认参数避免副作用
-
-> Why? 他会令人迷惑不解， 比如下面这个， a到底等于几， 这个需要想一下。
+* 7.8 使用默认参数时，需要避免副作用
 
 ```javascript
 var b = 1;
@@ -717,11 +674,10 @@ count();  // 1
 count();  // 2
 count(3); // 3
 count();  // 3
+// 很容易让人懵逼
 ```
 
-
-
-- [7.9](#functions--defaults-last) 把默认参数赋值放在最后
+* 7.9 把默认参数赋值放在最后
 
 ```javascript
 // bad
@@ -735,11 +691,7 @@ function handleThings(name, opts = {}) {
 }
 ```
 
-
-
-- [7.10](#functions--constructor) 不要用函数构造器创建函数。 eslint: [`no-new-func`](http://eslint.org/docs/rules/no-new-func)
-
-> Why? 以这种方式创建函数将类似于字符串 eval()，这会打开漏洞。
+* 7.10 不要用 Function 创建函数。 eslint: [`no-new-func`](http://eslint.org/docs/rules/no-new-func)
 
 ```javascript
 // bad
@@ -749,11 +701,7 @@ var add = new Function('a', 'b', 'return a + b');
 var subtract = Function('a', 'b', 'return a - b');
 ```
 
-
-
-- [7.11](#functions--signature-spacing) 函数签名部分要有空格。eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren) [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks)
-
-> Why? 统一性好，而且在你添加/删除一个名字的时候不需要添加/删除空格
+* 7.11 函数签名部分要有空格。eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren) [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks)
 
 ```javascript
 // bad
@@ -766,11 +714,9 @@ const x = function () {};
 const y = function a() {};
 ```
 
+* 7.12 永远不要改参数. eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
 
-
-- [7.12](#functions--mutate-params) 不要改参数. eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
-
-> Why? 操作参数对象对原始调用者会导致意想不到的副作用。 就是不要改参数的数据结构，保留参数原始值和数据结构。
+> 特别注意引用类型的操作，保证数据的不可变性
 
 ```javascript
 // bad
@@ -784,11 +730,7 @@ function f2(obj) {
 };
 ```
 
-
-
-- [7.13](#functions--reassign-params) 不要对参数重新赋值。 eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
-
-> Why? 参数重新赋值会导致意外行为，尤其是对 `arguments`。这也会导致优化问题，特别是在V8里
+* 7.13 不要对参数重新赋值。 eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
 
 ```javascript
 // bad
@@ -813,9 +755,7 @@ function f4(a = 1) {
 }
 ```
 
-
-
-- [7.14](#functions--spread-vs-apply) 用`spread`操作符`...`去调用多变的函数更好。 eslint: [`prefer-spread`](http://eslint.org/docs/rules/prefer-spread)
+* 7.14 活用 `...`。 eslint: [`prefer-spread`](http://eslint.org/docs/rules/prefer-spread)
 
 > Why? 这样更清晰，你不必提供上下文，而且你不能轻易地用`apply`来组成`new`
 
@@ -835,9 +775,7 @@ new (Function.prototype.bind.apply(Date, [null, 2016, 8, 5]));
 new Date(...[2016, 8, 5]);
 ```
 
-
-
-- [7.15](#functions--signature-invocation-indentation) 调用或者书写一个包含多个参数的函数应该像这个指南里的其他多行代码写法一样： 每行值包含一个参数，每行逗号结尾。
+* 7.15 多个参数的函数应该像这个指南里的其他多行代码写法一样： 每行只有一个参数，每行逗号结尾。
 
 ```javascript
 // bad
@@ -847,7 +785,7 @@ function foo(bar,
   // ...
 }
 
-// good 缩进不要太过分
+// good
 function foo(
   bar,
   baz,
@@ -869,17 +807,11 @@ console.log(
 );
 ```
 
+## 箭头函数
 
+* 8.1 如果要用匿名函数做回调，最好使用箭头函数 eslint: [`prefer-arrow-callback`](http://eslint.org/docs/rules/prefer-arrow-callback.html), [`arrow-spacing`](http://eslint.org/docs/rules/arrow-spacing.html)
 
-## Arrow Functions
-
-
-
-- [8.1](#arrows--use-them) 当你一定要用函数表达式（在回调函数里）的时候就用箭头表达式吧。 eslint: [`prefer-arrow-callback`](http://eslint.org/docs/rules/prefer-arrow-callback.html), [`arrow-spacing`](http://eslint.org/docs/rules/arrow-spacing.html)
-
-> Why? 他创建了一个`this`的当前执行上下文的函数的版本，这通常就是你想要的；而且箭头函数是更简洁的语法
-
-> Why? 什么时候不用箭头函数： 如果你有一个相当复杂的函数，你可能会把这个逻辑移出到他自己的函数声明里。
+> 它创建了一个在上下文中执行的函数，这通常是您想要的，并且是一种更简洁的语法。
 
 ```javascript
 // bad
@@ -895,11 +827,7 @@ console.log(
 });
 ```
 
-
-
-- [8.2](#arrows--implicit-return) 如果函数体由一个没有副作用的[表达式](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Expressions)语句组成，删除大括号和return。否则，继续用大括号和 `return` 语句。 eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html), [`arrow-body-style`](https://eslint.org/docs/rules/arrow-body-style.html)
-
-> Why? 语法糖，当多个函数链在一起的时候好读
+* 8.2 如果函数体由一个没有副作用的[表达式](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Expressions)的单个语句组成，去掉大括号和 return。否则，保留大括号且使用 `return` 语句。 eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html), [`arrow-body-style`](https://eslint.org/docs/rules/arrow-body-style.html)
 
 ```javascript
 // bad
@@ -922,7 +850,7 @@ console.log(
   [index]: number
 }));
 
-// 表达式有副作用就不要用隐式return
+// 表达式有副作用就不要用隐式返回
 function foo(callback) {
   const val = callback();
   if (val === true) {
@@ -933,7 +861,6 @@ function foo(callback) {
 let bool = false;
 
 // bad
-// 这种情况会return bool = true, 不好
 foo(() => bool = true);
 
 // good
@@ -942,11 +869,7 @@ foo(() => {
 });
 ```
 
-
-
-- [8.3](#arrows--paren-wrap) 万一表达式涉及多行，把他包裹在圆括号里更可读。
-
-> Why? 这样清晰的显示函数的开始和结束
+* 8.3 如果表达式有多行，首尾放在圆括号里更可读。
 
 ```js
 // bad
@@ -965,11 +888,7 @@ foo(() => {
 ));
 ```
 
-
-
-- [8.4](#arrows--one-arg-parens) 如果你的函数只有一个参数并且函数体没有大括号，就删除圆括号。否则，参数总是放在圆括号里。 注意： 一直用圆括号也是没问题，只需要配置 [“always” option](https://eslint.org/docs/rules/arrow-parens#always) for eslint. eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html)
-
-> Why? 这样少一些混乱， 其实没啥语法上的讲究，就保持一个风格。
+* 8.4 为了清晰和一致，始终在参数周围加上括号 eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html)
 
 ```js
 // bad
@@ -998,7 +917,7 @@ foo(() => {
 
 
 
-- [8.5](#arrows--confusing) 避免箭头函数(`=>`)和比较操作符（`<=, >=`）混淆. eslint: [`no-confusing-arrow`](http://eslint.org/docs/rules/no-confusing-arrow)
+- [8.5](#arrows--confusing) 避免箭头函数语法 `=>` 和比较操作符 `<=, >=` 混淆. eslint: [`no-confusing-arrow`](http://eslint.org/docs/rules/no-confusing-arrow)
 
 ```js
 // bad
@@ -1017,9 +936,7 @@ const itemHeight = (item) => {
 };
 ```
 
-
-
-- [8.6](#whitespace--implicit-arrow-linebreak) 在隐式return中强制约束函数体的位置， 就写在箭头后面。 eslint: [`implicit-arrow-linebreak`](https://eslint.org/docs/rules/implicit-arrow-linebreak)
+* 8.6 使用隐式返回时强制约束函数体在箭头后面。 eslint: [`implicit-arrow-linebreak`](https://eslint.org/docs/rules/implicit-arrow-linebreak)
 
 ```javascript
 // bad
@@ -1037,12 +954,7 @@ const itemHeight = (item) => {
 )
 ```
 
-
-
-
-## Classes & Constructors
-
-
+## 类和构造函数
 
 - [9.1](#constructors--use-class) 常用`class`，避免直接操作`prototype`
 
