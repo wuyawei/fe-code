@@ -1253,11 +1253,11 @@ import barCss from 'bar.css';
 
 ## 迭代器和生成器
 
-- [11.1](#iterators--nope) 不要用遍历器。用JavaScript高级函数代替`for-in`、 `for-of`。 eslint: [`no-iterator`](http://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](http://eslint.org/docs/rules/no-restricted-syntax)
+* 11.1 不要用迭代器。用 JavaScript 高阶函数代替`for-in`、 `for-of`。 eslint: [`no-iterator`](http://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](http://eslint.org/docs/rules/no-restricted-syntax)
 
-> Why? 这强调了我们不可变的规则。 处理返回值的纯函数比副作用更容易。
+> 不可变原则，处理纯函数的返回值比处理副作用更容易。
 
-> Why? 用数组的这些迭代方法： `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... , 用对象的这些方法 `Object.keys()` / `Object.values()` / `Object.entries()`  去产生一个数组， 这样你就能去遍历对象了。
+> 数组的迭代方法： `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... , 对象的处理方法 ：`Object.keys()` / `Object.values()` / `Object.entries()`  去产生一个数组， 这样你就能去遍历对象了。
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
@@ -1292,17 +1292,13 @@ numbers.forEach(num => increasedByOne.push(num + 1));
 const increasedByOne = numbers.map(num => num + 1);
 ```
 
+* 11.2 现在不要用 generator
 
+> 兼容性不好
 
-- [11.2](#generators--nope) 现在不要用generator
+* 11.3 如果你一定要用，或者你忽略[我们的建议](#generators--nope), 请确保它们的函数签名之间的空格是正确的。 eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
 
-> Why? 它在es5上支持的不好
-
-
-
-- [11.3](#generators--spacing) 如果你一定要用，或者你忽略[我们的建议](#generators--nope), 请确保它们的函数签名空格是得当的。 eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
-
-> Why? `function` 和 `*` 是同一概念关键字 - `*`不是`function`的修饰符，`function*`是一个和`function`不一样的独特结构
+> `function` 和 `*` 是同一概念，关键字 `*`不是`function`的修饰符，`function*`是一个和`function`不一样的独特结构
 
 ```js
 // bad
@@ -1360,14 +1356,9 @@ const foo = function* () {
 }
 ```
 
+## 属性
 
-
-
-## Properties
-
-
-
-- [12.1](#properties--dot) 访问属性时使用点符号. eslint: [`dot-notation`](http://eslint.org/docs/rules/dot-notation.html)
+* 12.1 访问属性时使用点符号. eslint: [`dot-notation`](http://eslint.org/docs/rules/dot-notation.html)
 
 ```javascript
 const luke = {
@@ -1382,9 +1373,7 @@ const isJedi = luke['jedi'];
 const isJedi = luke.jedi;
 ```
 
-
-
-- [12.2](#properties--bracket) 当获取的属性是变量时用方括号`[]`取
+* 12.2 获取的属性是变量时用方括号`[]`
 
 ```javascript
 const luke = {
@@ -1399,9 +1388,7 @@ function getProp(prop) {
 const isJedi = getProp('jedi');
 ```
 
-
-
-- [12.3](#es2016-properties--exponentiation-operator) 做幂运算时用幂操作符 `**` 。 eslint: [`no-restricted-properties`](https://eslint.org/docs/rules/no-restricted-properties).
+* 12.3 做幂运算时用幂操作符 `**` 。 eslint: [`no-restricted-properties`](https://eslint.org/docs/rules/no-restricted-properties).
 
 ```javascript
 // bad
@@ -1411,14 +1398,9 @@ const binary = Math.pow(2, 10);
 const binary = 2 ** 10;
 ```
 
+## 变量
 
-
-
-## Variables
-
-
-
-- [13.1](#variables--const)  用`const`或`let`声明变量。不这样做会导致全局变量。 我们想要避免污染全局命名空间。首长这样警告我们。 eslint: [`no-undef`](http://eslint.org/docs/rules/no-undef) [`prefer-const`](http://eslint.org/docs/rules/prefer-const)
+* 13.1  始终用 `const` 或 `let` 声明变量。如果你不想遇到一对变量提升、全局变量的 bug 的话。 eslint: [`no-undef`](http://eslint.org/docs/rules/no-undef) [`prefer-const`](http://eslint.org/docs/rules/prefer-const)
 
 ```javascript
 // bad
@@ -1428,11 +1410,7 @@ superPower = new SuperPower();
 const superPower = new SuperPower();
 ```
 
-
-
-- [13.2](#variables--one-const) 每个变量都用一个 `const` 或 `let `。 eslint: [`one-var`](http://eslint.org/docs/rules/one-var.html)
-
-> Why? 这种方式很容易去声明新的变量，你不用去考虑把`;`调换成`,`，或者引入一个只有标点的不同的变化。这种做法也可以是你在调试的时候单步每个声明语句，而不是一下跳过所有声明。
+* 13.2 每个变量单独用一个 `const` 或 `let `。 eslint: [`one-var`](http://eslint.org/docs/rules/one-var.html)
 
 ```javascript
 // bad
@@ -1452,11 +1430,9 @@ const goSportsTeam = true;
 const dragonball = 'z';
 ```
 
+* 13.3 `const`放一起，`let`放一起
 
-
-- [13.3](#variables--const-let-group) `const`放一起，`let`放一起
-
-> Why? 在你需要分配一个新的变量， 而这个变量依赖之前分配过的变量的时候，这种做法是有帮助的
+> 新变量依赖之前的变量或常量时，是有帮助的
 
 ```javascript
 // bad
@@ -1479,11 +1455,7 @@ let i;
 let length;
 ```
 
-
-
-- [13.4](#variables--define-where-used) 在你需要的地方声明变量，但是要放在合理的位置
-
-> Why? `let` 和 `const` 都是块级作用域而不是函数级作用域
+* 13.4 变量声明放在合理的位置
 
 ```javascript
 // bad - unnecessary function call
@@ -1520,15 +1492,14 @@ function checkName(hasName) {
 }
 ```
 
-
-- [13.5](#variables--no-chain-assignment) 不要使用链接变量分配。 eslint: [`no-multi-assign`](https://eslint.org/docs/rules/no-multi-assign)
+* 13.5 不要使用连续变量分配。 eslint: [`no-multi-assign`](https://eslint.org/docs/rules/no-multi-assign)
 
 > Why? 链接变量分配创建隐式全局变量。
 
 ```javascript
 // bad
 (function example() {
-  // JavaScript 将这一段解释为
+  // JavaScript 将其解释为
   // let a = ( b = ( c = 1 ) );
   // let 只对变量 a 起作用; 变量 b 和 c 都变成了全局变量
   let a = b = c = 1;
@@ -1549,14 +1520,12 @@ console.log(a); // undefined
 console.log(b); // undefined
 console.log(c); // undefined
 
-// `const` 也是如此
+// `const` 也一样
 ```
 
+* 13.6 不要使用一元递增递减运算符（`++`， `--`）. eslint [`no-plusplus`](http://eslint.org/docs/rules/no-plusplus)
 
-
-- [13.6](#variables--unary-increment-decrement) 不要使用一元自增自减运算符（`++`， `--`）. eslint [`no-plusplus`](http://eslint.org/docs/rules/no-plusplus)
-
-> Why? 根据eslint文档，一元增量和减量语句受到自动分号插入的影响，并且可能会导致应用程序中的值递增或递减的无声错误。 使用`num + = 1`而不是`num ++`或`num ++`语句来表达你的值也是更有表现力的。 禁止一元增量和减量语句还会阻止您无意地预增/预减值，这也会导致程序出现意外行为。
+> 根据 eslint 文档，一元递增和递减语句受到自动分号插入的影响，并且可能会导致应用程序中的值递增或递减的静默错误。 使用num += 1 而不是 num++ 或代替语句来改变你的值也更具表现力。禁止一元递增和递减语句也会阻止您无意中预先递增/预递减值，从而减少程序出现意外行为。
 
 ```javascript
   // bad
@@ -1587,11 +1556,7 @@ console.log(c); // undefined
   const truthyCount = array.filter(Boolean).length;
 ```
 
-
-
-- [13.7](#variables--linebreak) 在赋值的时候避免在 `=` 前/后换行。 如果你的赋值语句超出 [`max-len`](https://eslint.org/docs/rules/max-len.html)， 那就用小括号把这个值包起来再换行。 eslint [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak.html).
-
-> Why? 在 `=` 附近换行容易混淆这个赋值语句。
+* 13.7 避免在 `=` 前/后换行。 如果你的语句超出 [`max-len`](https://eslint.org/docs/rules/max-len.html)， 那就用`()`把这个值包起来再换行。 eslint [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak.html).
 
 ```javascript
 // bad
@@ -1611,22 +1576,18 @@ const foo = (
 const foo = 'superLongLongLongLongLongLongLongLongString';
 ```
 
-
-
-- [13.8](#variables--no-unused-vars) 不允许有未使用的变量。 eslint: [`no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars)
-
-> Why? 一个声明了但未使用的变量更像是由于重构未完成产生的错误。这种在代码中出现的变量会使阅读者迷惑。
+* 13.8 不允许有未使用的变量。 eslint: [`no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars)
 
 ```javascript
 // bad
 
 var some_unused_var = 42;
 
-// 写了没用
+// 定义了没有使用
 var y = 10;
 y = 5;
 
-// 变量改了自己的值，也没有用这个变量
+// 不会将用于修改自身的读取视为已使用
 var z = 0;
 z = z + 1;
 
@@ -1645,42 +1606,36 @@ var y = a + 2;
 
 alert(getXPlusY(x, y));
 
-// 'type' 即使没有使用也可以可以被忽略， 因为这个有一个 rest 取值的属性。
+// 'type' 即使没有使用也可以被忽略， 因为这个有一个 rest 取值的属性。
 // 这是从对象中抽取一个忽略特殊字段的对象的一种形式
 var { type, ...coords } = data;
 // 'coords' 现在就是一个没有 'type' 属性的 'data' 对象
 ```
 
+## 提升
 
-
-## Hoisting
-
-
-
-- [14.1](#hoisting--about) `var`声明会被提前到他的作用域的最前面，它分配的值还没有提前。`const` 和 `let`被赋予了新的调用概念[时效区 —— Temporal Dead Zones (TDZ)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let)。  重要的是要知道为什么 [typeof不再安全](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15).
+* 14.1 var 声明被提升。const 和 let 声明被赋予一个所谓的新概念[Temporal Dead Zones (TDZ)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let)。  重要的是要知道为什么 [typeof不再安全](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15).
 
 ```javascript
-// 我们知道这个不会工作，假设没有定义全局的notDefined
+
 function example() {
   console.log(notDefined); // => throws a ReferenceError
 }
 
-// 在你引用的地方之后声明一个变量，他会正常输出是因为变量作用域上升。
-// 注意： declaredButNotAssigned的值没有上升
+// 在变量声明之前使用会正常输出，是因为变量声明提升，值没有。
 function example() {
   console.log(declaredButNotAssigned); // => undefined
   var declaredButNotAssigned = true;
 }
 
-// 解释器把变量声明提升到作用域最前面，
-// 可以重写成如下例子， 二者意义相同
+// 表现同上
 function example() {
   let declaredButNotAssigned;
   console.log(declaredButNotAssigned); // => undefined
   declaredButNotAssigned = true;
 }
 
-// 用 const， let就不一样了
+// 用 const， let 不会发生提升
 function example() {
   console.log(declaredButNotAssigned); // => throws a ReferenceError
   console.log(typeof declaredButNotAssigned); // => throws a ReferenceError
@@ -1688,9 +1643,7 @@ function example() {
 }
 ```
 
-
-
-- [14.2](#hoisting--anon-expressions) 匿名函数表达式和 `var` 情况相同
+* 14.2 匿名函数表达式和 `var` 情况相同
 
 ```javascript
 function example() {
@@ -1704,9 +1657,7 @@ function example() {
 }
 ```
 
-
-
-- [14.3](#hoisting--named-expresions) 已命名函数表达式提升他的变量名，不是函数名或函数体
+* 14.3 已命名的函数表达式提升他的变量名，而不是函数名或函数体
 
 ```javascript
 function example() {
@@ -1721,7 +1672,7 @@ function example() {
   };
 }
 
-// 函数名和变量名一样是也如此
+// 函数名和变量名相同也是一样
 function example() {
   console.log(named); // => undefined
 
@@ -1733,9 +1684,7 @@ function example() {
 }
 ```
 
-
-
-- [14.4](#hoisting--declarations) 函数声明则提升了函数名和函数体
+* 14.4 函数声明则提升了函数名和函数体
 
 ```javascript
 function example() {
@@ -1747,18 +1696,11 @@ function example() {
 }
 ```
 
-- 详情请见[JavaScript Scoping & Hoisting](http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting/) by [Ben Cherry](http://www.adequatelygood.com/).
-
-
-
+* 更多信息前往[JavaScript Scoping & Hoisting](http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting/) by [Ben Cherry](http://www.adequatelygood.com/).
 
 ## Comparison Operators & Equality
 
-
-
 - [15.1](#comparison--eqeqeq) 用 `===` 和 `!==` 而不是 `==` 和 `!=`. eslint: [`eqeqeq`](http://eslint.org/docs/rules/eqeqeq.html)
-
-
 
 - [15.2](#comparison--if) 条件语句如'if'语句使用强制`ToBoolean'抽象方法来评估它们的表达式，并且始终遵循以下简单规则：
 
@@ -1779,8 +1721,6 @@ if ([0] && []) {
   // 数组（即使是空数组）是对象，对象会计算成true
 }
 ```
-
-
 
 - [15.3](#comparison--shortcuts) 布尔值用缩写，而字符串和数字要明确比较对象
 
@@ -1816,11 +1756,7 @@ if (collection.length > 0) {
 }
 ```
 
-
-
 - [15.4](#comparison--moreinfo) 更多信息请见Angus Croll的[真理、平等和JavaScript —— Truth Equality and JavaScript](https://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/#more-2108)
-
-
 
 - [15.5](#comparison--switch-blocks) 在`case`和`default`分句里用大括号创建一块包含语法声明的区域(e.g. `let`, `const`, `function`, and `class`). eslint rules: [`no-case-declarations`](http://eslint.org/docs/rules/no-case-declarations.html).
 
@@ -1869,8 +1805,6 @@ switch (foo) {
 }
 ```
 
-
-
 - [15.6](#comparison--nested-ternaries) 三元表达式不应该嵌套，通常是单行表达式。
 
 eslint rules: [`no-nested-ternary`](http://eslint.org/docs/rules/no-nested-ternary.html).
@@ -1894,8 +1828,6 @@ const maybeNull = value1 > value2 ? 'baz' : null;
 const foo = maybe1 > maybe2 ? 'bar' : maybeNull;
 ```
 
-
-
 - [15.7](#comparison--unneeded-ternary) 避免不需要的三元表达式
 
 eslint rules: [`no-unneeded-ternary`](http://eslint.org/docs/rules/no-unneeded-ternary.html).
@@ -1911,8 +1843,6 @@ const foo = a || b;
 const bar = !!c;
 const baz = !c;
 ```
-
-
 
 - [15.8](#comparison--no-mixed-operators) 用圆括号来混合这些操作符。 只有当标准的算术运算符(`+`, `-`, `*`, & `/`)， 并且它们的优先级显而易见时，可以不用圆括号括起来。 eslint: [`no-mixed-operators`](https://eslint.org/docs/rules/no-mixed-operators.html)
 
@@ -1946,12 +1876,7 @@ if (a || (b && c)) {
 const bar = a + b / c * d;
 ```
 
-
-
-
 ## Blocks
-
-
 
 - [16.1](#blocks--braces) 用大括号包裹多行代码块。  eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
 
@@ -1977,8 +1902,6 @@ function bar() {
 }
 ```
 
-
-
 - [16.2](#blocks--cuddled-elses) `if`表达式的`else`和`if`的关闭大括号在一行。 eslint: [`brace-style`](http://eslint.org/docs/rules/brace-style.html)
 
 ```javascript
@@ -1999,8 +1922,6 @@ if (test) {
   thing3();
 }
 ```
-
-
 
 - [16.3](#blocks--no-else-return) 如果 `if` 语句中总是需要用 `return` 返回， 那后续的 `else` 就不需要写了。 `if` 块中包含 `return`， 它后面的 `else if` 块中也包含了 `return`， 这个时候就可以把 `return` 分到多个 `if` 语句块中。 eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
 
@@ -2066,11 +1987,7 @@ function dogs(x) {
 }
 ```
 
-
-
 ## Control Statements
-
-
 
 - [17.1](#control-statements) 当你的控制语句(`if`, `while` 等)太长或者超过最大长度限制的时候， 把每一个(组)判断条件放在单独一行里。 逻辑操作符放在行首。
 
@@ -2125,8 +2042,6 @@ if (foo === 123 && bar === 'abc') {
 }
 ```
 
-
-
 - [17.2](#control-statements--value-selection) 不要用选择操作符代替控制语句。
 
 ```javascript
@@ -2142,8 +2057,6 @@ if (!isRunning) {
 **[⬆ back to top](#table-of-contents)**
 
 ## Comments
-
-
 
 - [18.1](#comments--multiline) 多行注释用 `/** ... */`
 
@@ -2173,8 +2086,6 @@ function make(tag) {
   return element;
 }
 ```
-
-
 
 - [18.2](#comments--singleline) 单行注释用`//`，将单行注释放在被注释区域上面。如果注释不是在第一行，那么注释前面就空一行
 
@@ -2214,8 +2125,6 @@ function getType() {
 }
 ```
 
-
-
 - [18.3](#comments--spaces) 所有注释开头空一个，方便阅读。 eslint: [`spaced-comment`](http://eslint.org/docs/rules/spaced-comment)
 
 ```javascript
@@ -2252,11 +2161,7 @@ function make(tag) {
 }
 ```
 
-
-
 - [18.4](#comments--actionitems) 在你的注释前使用`FIXME'或`TODO'前缀， 这有助于其他开发人员快速理解你指出的需要重新访问的问题， 或者您建议需要实现的问题的解决方案。 这些不同于常规注释，因为它们是可操作的。 动作是`FIXME： - 需要计算出来`或`TODO： - 需要实现`。
-
-
 
 - [18.5](#comments--fixme) 用`// FIXME:`给问题做注释
 
@@ -2271,8 +2176,6 @@ class Calculator extends Abacus {
 }
 ```
 
-
-
 - [18.6](#comments--todo) 用`// TODO:`去注释问题的解决方案
 
 ```javascript
@@ -2286,12 +2189,7 @@ class Calculator extends Abacus {
 }
 ```
 
-
-
-
 ## Whitespace
-
-
 
 - [19.1](#whitespace--spaces) tab用两个空格. eslint: [`indent`](http://eslint.org/docs/rules/indent.html)
 
@@ -2311,8 +2209,6 @@ function baz() {
 ∙∙const name;
 }
 ```
-
-
 
 - [19.2](#whitespace--before-blocks) 在大括号前空一格。 eslint: [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks.html)
 
@@ -2340,8 +2236,6 @@ dog.set('attr', {
 });
 ```
 
-
-
 - [19.3](#whitespace--around-keywords) 在控制语句(`if`, `while` 等)的圆括号前空一格。在函数调用和定义时，参数列表和函数名之间不空格。 eslint: [`keyword-spacing`](http://eslint.org/docs/rules/keyword-spacing.html)
 
 ```javascript
@@ -2366,8 +2260,6 @@ function fight() {
 }
 ```
 
-
-
 - [19.4](#whitespace--infix-ops) 用空格来隔开运算符。 eslint: [`space-infix-ops`](http://eslint.org/docs/rules/space-infix-ops.html)
 
 ```javascript
@@ -2377,8 +2269,6 @@ const x=y+5;
 // good
 const x = y + 5;
 ```
-
-
 
 - [19.5](#whitespace--newline-at-end) 文件结尾空一行. eslint: [`eol-last`](https://github.com/eslint/eslint/blob/master/docs/rules/eol-last.md)
 
@@ -2403,8 +2293,6 @@ import { es6 } from './AirbnbStyleGuide';
   // ...
 export default es6;↵
 ```
-
-
 
 - [19.6](#whitespace--chains) 当出现长的方法链（>2个）时用缩进。用点开头强调该行是一个方法调用，而不是一个新的语句。eslint: [`newline-per-chained-call`](http://eslint.org/docs/rules/newline-per-chained-call) [`no-whitespace-before-property`](http://eslint.org/docs/rules/no-whitespace-before-property)
 
@@ -2447,8 +2335,6 @@ const leds = stage.selectAll('.led')
 // good
 const leds = stage.selectAll('.led').data(data);
 ```
-
-
 
 - [19.7](#whitespace--after-blocks) 在一个代码块后下一条语句前空一行。
 
@@ -2507,8 +2393,6 @@ const arr = [
 return arr;
 ```
 
-
-
 - [19.8](#whitespace--padded-blocks) 不要用空白行填充块。 eslint: [`padded-blocks`](http://eslint.org/docs/rules/padded-blocks.html)
 
 ```javascript
@@ -2540,7 +2424,6 @@ if (baz) {
   console.log(foo);
 }
 ```
-
 
 - [19.9](#whitespace--no-multiple-blanks)不要在代码之间使用多个空白行填充。 eslint: [`no-multiple-empty-lines`](https://eslint.org/docs/rules/no-multiple-empty-lines)
 
@@ -2594,8 +2477,6 @@ class Person {
 }
 ```
 
-
-
 - [19.10](#whitespace--in-parens) 圆括号里不要加空格。 eslint: [`space-in-parens`](http://eslint.org/docs/rules/space-in-parens.html)
 
 ```javascript
@@ -2620,8 +2501,6 @@ if (foo) {
 }
 ```
 
-
-
 - [19.11](#whitespace--in-brackets) 方括号里不要加空格。看示例。 eslint: [`array-bracket-spacing`](http://eslint.org/docs/rules/array-bracket-spacing.html)
 
 ```javascript
@@ -2634,8 +2513,6 @@ const foo = [1, 2, 3];
 console.log(foo[0]);
 ```
 
-
-
 - [19.12](#whitespace--in-braces) 花括号里加空格。 eslint: [`object-curly-spacing`](http://eslint.org/docs/rules/object-curly-spacing.html)
 
 ```javascript
@@ -2645,8 +2522,6 @@ const foo = {clark: 'kent'};
 // good
 const foo = { clark: 'kent' };
 ```
-
-
 
 - [19.13](#whitespace--max-len) 避免一行代码超过100个字符（包含空格）。
 - 注意： 对于[上面——strings--line-length](#strings--line-length)，长字符串不受此规则限制，不应分解。 eslint: [`max-len`](http://eslint.org/docs/rules/max-len.html)
@@ -2678,8 +2553,6 @@ $.ajax({
   .fail(() => console.log('You have failed this city.'));
 ```
 
-
-
 - [19.14](#whitespace--block-spacing) 作为语句的花括号内也要加空格 —— `{` 后和 `}` 前都需要空格。 eslint: [`block-spacing`](https://eslint.org/docs/rules/block-spacing)
 
 ```javascript
@@ -2692,8 +2565,6 @@ function foo() { return true; }
 if (foo) { bar = 0; }
 ```
 
-
-
 - [19.15](#whitespace--comma-spacing) `,` 前不要空格， `,` 后需要空格。 eslint: [`comma-spacing`](https://eslint.org/docs/rules/comma-spacing)
 
 ```javascript
@@ -2705,8 +2576,6 @@ var arr = [1 , 2];
 var foo = 1, bar = 2;
 var arr = [1, 2];
 ```
-
-
 
 - [19.16](#whitespace--computed-property-spacing) 计算属性内要空格。参考上述花括号和中括号的规则。  eslint: [`computed-property-spacing`](https://eslint.org/docs/rules/computed-property-spacing)
 
@@ -2724,8 +2593,6 @@ var x = { [b]: a }
 obj[foo[bar]]
 ```
 
-
-
 - [19.17](#whitespace--func-call-spacing) 调用函数时，函数名和小括号之间不要空格。 eslint: [`func-call-spacing`](https://eslint.org/docs/rules/func-call-spacing)
 
 ```javascript
@@ -2739,8 +2606,6 @@ func
 func();
 ```
 
-
-
 - [19.18](#whitespace--key-spacing) 在对象的字面量属性中， `key` `value` 之间要有空格。 eslint: [`key-spacing`](https://eslint.org/docs/rules/key-spacing)
 
 ```javascript
@@ -2752,11 +2617,7 @@ var obj2 = { "foo":42 };
 var obj = { "foo": 42 };
 ```
 
-
-
 - [19.19](#whitespace--no-trailing-spaces) 行末不要空格。 eslint: [`no-trailing-spaces`](https://eslint.org/docs/rules/no-trailing-spaces)
-
-
 
 - [19.20](#whitespace--no-multiple-empty-lines) 避免出现多个空行。 在文件末尾只允许空一行。 eslint: [`no-multiple-empty-lines`](https://eslint.org/docs/rules/no-multiple-empty-lines)
 
@@ -2764,8 +2625,6 @@ var obj = { "foo": 42 };
 ```javascript
 // bad
 var x = 1;
-
-
 
 var y = 2;
 
@@ -2776,11 +2635,7 @@ var y = 2;
 ```
 <!-- markdownlint-enable MD012 -->
 
-
-
 ## Commas
-
-
 
 - [20.1](#commas--leading-trailing) 不要前置逗号。 eslint: [`comma-style`](http://eslint.org/docs/rules/comma-style.html)
 
@@ -2815,8 +2670,6 @@ const hero = {
   superPower: 'computers',
 };
 ```
-
-
 
 - [20.2](#commas--dangling) 额外结尾逗号: **要** eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html)
 
@@ -2913,11 +2766,7 @@ createHero(
 )
 ```
 
-
-
-
 ## Semicolons
-
 
 - [21.1](#21.1) **Yup.** eslint: [`semi`](http://eslint.org/docs/rules/semi.html)
 
@@ -2945,16 +2794,9 @@ createHero(
 
 [Read more](https://stackoverflow.com/questions/7365172/semicolon-before-self-invoking-function/7365214%237365214).
 
-
-
-
 ## Type Casting & Coercion
 
-
-
 - [22.1](#coercion--explicit) 在语句开始执行强制类型转换。
-
-
 
 - [22.2](#coercion--strings)  Strings: eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -2973,8 +2815,6 @@ const totalScore = this.reviewScore.toString(); // 不保证返回string
 // good
 const totalScore = String(this.reviewScore);
 ```
-
-
 
 - [22.3](#coercion--numbers) Numbers: 用 `Number` 做类型转换，`parseInt`转换string常需要带上基数。 eslint: [`radix`](http://eslint.org/docs/rules/radix)
 
@@ -3000,8 +2840,6 @@ const val = Number(inputValue);
 const val = parseInt(inputValue, 10);
 ```
 
-
-
 - [22.4](#coercion--comment-deviations) 请在注释中解释为什么要用移位运算和你在做什么。无论你做什么狂野的事，比如由于 `parseInt` 是你的性能瓶颈导致你一定要用移位运算。 请说明这个是因为[性能原因](https://jsperf.com/coercion-vs-casting/3),
 
 ```javascript
@@ -3013,8 +2851,6 @@ const val = parseInt(inputValue, 10);
 const val = inputValue >> 0;
 ```
 
-
-
 - [22.5](#coercion--bitwise) **注意:** 用移位运算要小心. 数字使用[64-位](https://es5.github.io/#x4.3.19)表示的，但移位运算常常返回的是32为整形[source](https://es5.github.io/#x11.7))。移位运算对大于32位的整数会导致意外行为。[Discussion](https://github.com/airbnb/javascript/issues/109). 最大的32位整数是 2,147,483,647:
 
 ```javascript
@@ -3022,8 +2858,6 @@ const val = inputValue >> 0;
 2147483648 >> 0 //=> -2147483648
 2147483649 >> 0 //=> -2147483647
 ```
-
-
 
 - [22.6](#coercion--booleans) 布尔:
 
@@ -3040,12 +2874,7 @@ const hasAge = Boolean(age);
 const hasAge = !!age;
 ```
 
-
-
-
 ## Naming Conventions
-
-
 
 - [23.1](#naming--descriptive) 避免用一个字母命名，让你的命名可描述。 eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
 
@@ -3061,8 +2890,6 @@ function query() {
 }
 ```
 
-
-
 - [23.2](#naming--camelCase) 用小驼峰式命名你的对象、函数、实例。 eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html)
 
 ```javascript
@@ -3075,8 +2902,6 @@ function c() {}
 const thisIsMyObject = {};
 function thisIsMyFunction() {}
 ```
-
-
 
 - [23.3](#naming--PascalCase) 用大驼峰式命名类。 eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html)
 
@@ -3102,8 +2927,6 @@ const good = new User({
 });
 ```
 
-
-
 - [23.4](#naming--leading-underscore) 不要用前置或后置下划线。 eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html)
 
 > Why? JavaScript 没有私有属性或私有方法的概念。尽管前置下划线通常的概念上意味着“private”，事实上，这些属性是完全公有的，因此这部分也是你的API的内容。这一概念可能会导致开发者误以为更改这个不会导致崩溃或者不需要测试。 如果你想要什么东西变成“private”，那就不要让它在这里出现。
@@ -3117,8 +2940,6 @@ this._firstName = 'Panda';
 // good
 this.firstName = 'Panda';
 ```
-
-
 
 - [23.5](#naming--self-this) 不要保存引用`this`， 用箭头函数或[函数绑定——Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 
@@ -3146,8 +2967,6 @@ function foo() {
   };
 }
 ```
-
-
 
 - [23.6](#naming--filename-matches-export) export default导出模块A，则这个文件名也叫A.*， import 时候的参数也叫A。 大小写完全一致。
 
@@ -3184,8 +3003,6 @@ import insideDirectory from './insideDirectory'; // camelCase export/import/dire
 // ^ supports both insideDirectory.js and insideDirectory/index.js
 ```
 
-
-
 - [23.7](#naming--camelCase-default-export) 当你export-default一个函数时，函数名用小驼峰，文件名需要和函数名一致。
 
 ```javascript
@@ -3195,8 +3012,6 @@ function makeStyleGuide() {
 
 export default makeStyleGuide;
 ```
-
-
 
 - [23.8](#naming--PascalCase-singleton) 当你export一个结构体/类/单例/函数库/对象 时用大驼峰。
 
@@ -3208,8 +3023,6 @@ const AirbnbStyleGuide = {
 
 export default AirbnbStyleGuide;
 ```
-
-
 
 - [23.9](#naming--Acronyms-and-Initialisms) 简称和缩写应该全部大写或全部小写。
 
@@ -3240,8 +3053,6 @@ const Requests = [
   // ...
 ];
 ```
-
-
 
 - [23.10](#naming--uppercase) 你可以用全大写字母设置静态变量，他需要满足三个条件。
 1. 导出变量
@@ -3283,16 +3094,9 @@ export const MAPPING = {
 };
 ```
 
-
-
-
 ## Accessors
 
-
-
 - [24.1](#accessors--not-required) 不需要使用属性的访问器函数。
-
-
 
 - [24.2](#accessors--no-getters-setters) 不要使用JavaScript的getters/setters，因为他们会产生副作用，并且难以测试、维护和理解。相反的，你可以用 getVal()和setVal('hello')去创造你自己的accessor函数
 
@@ -3320,8 +3124,6 @@ class Dragon {
 }
 ```
 
-
-
 - [24.3](#accessors--boolean-prefix) 如果属性/方法是`boolean`， 用 `isVal()` 或 `hasVal()`
 
 ```javascript
@@ -3335,8 +3137,6 @@ if (!dragon.hasAge()) {
   return false;
 }
 ```
-
-
 
 - [24.4](#accessors--consistent) 用get()和set()函数是可以的，但是要一起用
 
@@ -3357,12 +3157,7 @@ class Jedi {
 }
 ```
 
-
-
-
 ## Events
-
-
 
 - [25.1](#events--hash) 通过哈希而不是原始值向事件装载数据时(不论是DOM事件还是像Backbone事件的很多属性)。 这使得后续的贡献者（程序员）向这个事件装载更多的数据时不用去找或者更新每个处理器。例如：
 
