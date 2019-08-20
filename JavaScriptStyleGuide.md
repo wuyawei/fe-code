@@ -956,9 +956,7 @@ const itemHeight = (item) => {
 
 ## 类和构造函数
 
-- [9.1](#constructors--use-class) 常用`class`，避免直接操作`prototype`
-
-> Why? `class`语法更简洁更易理解
+* 9.1 始终用`class`，避免直接操作`prototype`
 
 ```javascript
 // bad
@@ -985,11 +983,9 @@ class Queue {
 }
 ```
 
+* 9.2 使用`extends`实现继承
 
-
-- [9.2](#constructors--extends) 用`extends`实现继承
-
-> Why? 它是一种内置的方法来继承原型功能而不打破`instanceof`
+> 内置的方法来继承原型，而不会破坏 `instanceof`
 
 ```javascript
 // bad
@@ -1010,9 +1006,7 @@ class PeekableQueue extends Queue {
 }
 ```
 
-
-
-- [9.3](#constructors--chaining) 方法可以返回`this`来实现方法链
+* 9.3 方法可以返回`this`来实现方法链
 
 ```javascript
 // bad
@@ -1048,10 +1042,7 @@ luke.jump()
   .setHeight(20);
 ```
 
-
-
-
-- [9.4](#constructors--tostring) 写一个定制的toString()方法是可以的，只要保证它是可以正常工作且没有副作用的
+* 9.4 允许写一个自定义的 toString() 方法，但是要保证它是可以正常工作且没有副作用
 
 ```javascript
 class Jedi {
@@ -1069,9 +1060,7 @@ class Jedi {
 }
 ```
 
-
-
-- [9.5](#constructors--no-useless) 如果没有具体说明，类有默认的构造方法。一个空的构造函数或只是代表父类的构造函数是不需要写的。 eslint: [`no-useless-constructor`](http://eslint.org/docs/rules/no-useless-constructor)
+* 9.5 如果没有特殊说明，类有默认的构造方法。不用特意写一个空的构造函数或只是代表父类的构造函数。 eslint: [`no-useless-constructor`](http://eslint.org/docs/rules/no-useless-constructor)
 
 ```javascript
 // bad
@@ -1100,11 +1089,9 @@ class Rey extends Jedi {
 }
 ```
 
+* 9.6 避免重复类的成员。 eslint: [`no-dupe-class-members`](http://eslint.org/docs/rules/no-dupe-class-members)
 
-
-- [9.6](#classes--no-duplicate-members) 避免重复类成员。 eslint: [`no-dupe-class-members`](http://eslint.org/docs/rules/no-dupe-class-members)
-
-> Why? 重复类成员会默默的执行最后一个 —— 重复本身也是一个bug
+> 重复类成员会默默的执行最后一个，有重复肯定就是一个错误
 
 ```javascript
 // bad
@@ -1124,15 +1111,9 @@ class Foo {
 }
 ```
 
+## 模块
 
-
-## Modules
-
-
-
-- [10.1](#modules--use-them) 用(`import`/`export`) 模块而不是无标准的模块系统。你可以随时转到你喜欢的模块系统。
-
-> Why? 模块化是未来，让我们现在就开启未来吧。
+* 10.1 在非标准模块系统上使用(`import`/`export`)。或者随时换成其他的首选模块系统。
 
 ```javascript
 // bad
@@ -1148,11 +1129,7 @@ import { es6 } from './AirbnbStyleGuide';
 export default es6;
 ```
 
-
-
-- [10.2](#modules--no-wildcard) 不要用import通配符， 就是 `*` 这种方式
-
-> Why? 这确保你有单个默认的导出
+* 10.2 不要用 import * 这种通配符
 
 ```javascript
 // bad
@@ -1162,11 +1139,9 @@ import * as AirbnbStyleGuide from './AirbnbStyleGuide';
 import AirbnbStyleGuide from './AirbnbStyleGuide';
 ```
 
+* 10.3 不要直接从 import 中直接 export
 
-
-- [10.3](#modules--no-export-from-import) 不要直接从import中直接export
-
-> Why? 虽然一行是简洁的，有一个明确的方式进口和一个明确的出口方式来保证一致性。
+> 看起来简洁，但是影响可读性
 
 ```javascript
 // bad
@@ -1179,9 +1154,7 @@ import { es6 } from './AirbnbStyleGuide';
 export default es6;
 ```
 
-
-
-- [10.4](#modules--no-duplicate-imports) 一个路径只 import 一次。
+* 10.4 一个入口只 import 一次。
 eslint: [`no-duplicate-imports`](http://eslint.org/docs/rules/no-duplicate-imports)
 > Why? 从同一个路径下import多行会使代码难以维护
 
@@ -1201,11 +1174,9 @@ import foo, {
 } from 'foo';
 ```
 
-
-
-- [10.5](#modules--no-mutable-exports) 不要到处可变的东西
+* 10.5 不要导出可变的绑定
 eslint: [`import/no-mutable-exports`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
-> Why? 变化通常都是需要避免，特别是当你要输出可变的绑定。虽然在某些场景下可能需要这种技术，但总的来说应该导出常量。
+> 尽量减少状态，保证数据的不可变性。虽然在某些场景下可能需要这种技术，但总的来说应该导出常量。
 
 ```javascript
 // bad
@@ -1217,12 +1188,10 @@ const foo = 3;
 export { foo }
 ```
 
-
-
-- [10.6](#modules--prefer-default-export) 在一个单一导出模块里，用 `export default` 更好。
+* 10.6 在只有一个导出的模块里，用 `export default` 更好。
 eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
 
-> Why? 鼓励使用更多文件，每个文件只做一件事情并导出，这样可读性和可维护性更好。
+> 鼓励使用更多文件，每个文件只做一件事情并导出，这样可读性和可维护性更好。
 
 ```javascript
 // bad
@@ -1232,11 +1201,10 @@ export function foo() {}
 export default function foo() {}
 ```
 
-
-
-- [10.7](#modules--imports-first) `import` 放在其他所有语句之前。
+* 10.7 `import` 放在其他所有语句之前。
 eslint: [`import/first`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/first.md)
-> Why? 让`import`放在最前面防止意外行为。
+
+> 防止意外行为。
 
 ```javascript
 // bad
@@ -1252,11 +1220,7 @@ import bar from 'bar';
 foo.init();
 ```
 
-
-
-- [10.8](#modules--multiline-imports-over-newlines) 多行import应该缩进，就像多行数组和对象字面量
-
-> Why?  花括号与样式指南中每个其他花括号块遵循相同的缩进规则，逗号也是。
+* 10.8 多行 import 应该缩进，就像多行数组和对象字面量
 
 ```javascript
 // bad
@@ -1272,11 +1236,10 @@ import {
 } from 'path';
 ```
 
-
-
-- [10.9](#modules--no-webpack-loader-syntax) 在import语句里不允许Webpack loader语法
+* 10.9 在 import 语句里不允许 Webpack loader 语法
 eslint: [`import/no-webpack-loader-syntax`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md)
-> Why? 一旦用Webpack语法在import里会把代码耦合到模块绑定器。最好是在`webpack.config.js`里写webpack loader语法
+
+> 最好是在`webpack.config.js`里写
 
 ```javascript
 // bad
@@ -1288,11 +1251,7 @@ import fooSass from 'foo.scss';
 import barCss from 'bar.css';
 ```
 
-
-
-## Iterators and Generators
-
-
+## 迭代器和生成器
 
 - [11.1](#iterators--nope) 不要用遍历器。用JavaScript高级函数代替`for-in`、 `for-of`。 eslint: [`no-iterator`](http://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](http://eslint.org/docs/rules/no-restricted-syntax)
 
