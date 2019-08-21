@@ -6,6 +6,7 @@
 ## 类型
 
 * 1.1 基本类型
+
 > 基本类型赋值时，应该直接使用类型的值
 
 * `string`
@@ -25,6 +26,7 @@ console.log(foo, bar); // => 9,1
 ```
 
 *  复杂类型
+
 > 复杂类型赋值其实是地址的引用
 
 * `object`
@@ -487,6 +489,7 @@ const name = 'Capt. Janeway';
 ```
 
 * 6.2 不应该用 `+` 连接换行字符串。
+
 > 不好用，且可读性差
 
 ```javascript
@@ -2982,11 +2985,11 @@ export const MAPPING = {
 };
 ```
 
-## Accessors
+## 访问器
 
-- [24.1](#accessors--not-required) 不需要使用属性的访问器函数。
+* 24.1 不需要使用属性的访问器函数。
 
-- [24.2](#accessors--no-getters-setters) 不要使用JavaScript的getters/setters，因为他们会产生副作用，并且难以测试、维护和理解。相反的，你可以用 getVal()和setVal('hello')去创造你自己的accessor函数
+* 24.2 不要使用 JavaScript 的 getters/setters，因为他们会产生副作用，并且难以测试、维护和理解。如果必要，你可以用 getVal()和 setVal() 去构建。
 
 ```javascript
 // bad
@@ -3012,7 +3015,7 @@ class Dragon {
 }
 ```
 
-- [24.3](#accessors--boolean-prefix) 如果属性/方法是`boolean`， 用 `isVal()` 或 `hasVal()`
+* 24.3 如果属性/方法是一个 `boolean`， 请用 `isVal()` 或 `hasVal()`。
 
 ```javascript
 // bad
@@ -3026,7 +3029,7 @@ if (!dragon.hasAge()) {
 }
 ```
 
-- [24.4](#accessors--consistent) 用get()和set()函数是可以的，但是要一起用
+* 24.4 可以用 get() 和 set() 函数，但是要保持一致。
 
 ```javascript
 class Jedi {
@@ -3047,7 +3050,7 @@ class Jedi {
 
 ## Events
 
-- [25.1](#events--hash) 通过哈希而不是原始值向事件装载数据时(不论是DOM事件还是像Backbone事件的很多属性)。 这使得后续的贡献者（程序员）向这个事件装载更多的数据时不用去找或者更新每个处理器。例如：
+* 25.1 给事件或其他传递数据时，不直接使用原始值，而是通过对象包装。这样在未来需要增加或减少参数，不必找到每个使用中的处理器。
 
 ```javascript
 // bad
@@ -3072,3 +3075,18 @@ $(this).on('listingUpdated', (e, data) => {
   // do something with data.listingId
 });
 ```
+## 小结
+所谓规范，更多的还是为了代码的可读性，毕竟我们的代码更重要的是给人看。同时，合理的规范，也会帮助我们规避很多不必要的 bug。
+
+## 交流群
+> 关注微信公众号：前端发动机，回复：加群。
+
+## 后记
+  如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。好了，又耽误大家的时间了，感谢阅读，下次再见！
+
+* **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
+* **[社交聊天系统（vue + node + mongodb）- 💘🍦🙈Vchat](https://github.com/wuyawei/Vchat)**
+
+感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。
+
+![](https://user-gold-cdn.xitu.io/2019/7/21/16c14d1d0f3be11e?w=400&h=400&f=jpeg&s=34646)
