@@ -2735,7 +2735,7 @@ const val = Number(inputValue);
 const val = parseInt(inputValue, 10);
 ```
 
-* 22.4 请在注释中解释为什么要用移位运算和你在做什么。无论你在做什么，比如由于 `parseInt` 是你的性能瓶颈导致你一定要用移位运算。 请说明这个是因为[性能原因](https://jsperf.com/coercion-vs-casting/3),
+* 22.4 请在注释中解释为什么要用移位运算，无论你在做什么，比如由于 `parseInt` 是你的性能瓶颈导致你一定要用移位运算。 请说明这个是因为[性能原因](https://jsperf.com/coercion-vs-casting/3),
 
 ```javascript
 // good
@@ -2746,7 +2746,7 @@ const val = parseInt(inputValue, 10);
 const val = inputValue >> 0;
 ```
 
-- [22.5](#coercion--bitwise) **注意:** 用移位运算要小心. 数字使用[64-位](https://es5.github.io/#x4.3.19)表示的，但移位运算常常返回的是32为整形[source](https://es5.github.io/#x11.7))。移位运算对大于32位的整数会导致意外行为。[Discussion](https://github.com/airbnb/javascript/issues/109). 最大的32位整数是 2,147,483,647:
+* 22.5 **注意:** 使用 bitshift 操作时要小心。数字表示为 64 位值，但 bitshift 操作始终返回 32 位整数。对于大于32位的整数值，Bitshift可能会导致意外行为。
 
 ```javascript
 2147483647 >> 0 //=> 2147483647
@@ -2754,7 +2754,7 @@ const val = inputValue >> 0;
 2147483649 >> 0 //=> -2147483647
 ```
 
-- [22.6](#coercion--booleans) 布尔:
+* 22.6 Booleans
 
 ```javascript
 const age = 0;
@@ -2769,9 +2769,9 @@ const hasAge = Boolean(age);
 const hasAge = !!age;
 ```
 
-## Naming Conventions
+## 命名约定
 
-- [23.1](#naming--descriptive) 避免用一个字母命名，让你的命名可描述。 eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
+* 23.1 避免用一个字母命名，让你的命名更加语义化。 eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
 
 ```javascript
 // bad
@@ -2785,7 +2785,7 @@ function query() {
 }
 ```
 
-- [23.2](#naming--camelCase) 用小驼峰式命名你的对象、函数、实例。 eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html)
+* 23.2 用 camelCase 命名你的对象、函数、实例。 eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html)
 
 ```javascript
 // bad
@@ -2798,7 +2798,7 @@ const thisIsMyObject = {};
 function thisIsMyFunction() {}
 ```
 
-- [23.3](#naming--PascalCase) 用大驼峰式命名类。 eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html)
+* 23.3 用 PascalCase 命名类。 eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html)
 
 ```javascript
 // bad
@@ -2822,9 +2822,9 @@ const good = new User({
 });
 ```
 
-- [23.4](#naming--leading-underscore) 不要用前置或后置下划线。 eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html)
+* 23.4 不要用前置或后置下划线。 eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html)
 
-> Why? JavaScript 没有私有属性或私有方法的概念。尽管前置下划线通常的概念上意味着“private”，事实上，这些属性是完全公有的，因此这部分也是你的API的内容。这一概念可能会导致开发者误以为更改这个不会导致崩溃或者不需要测试。 如果你想要什么东西变成“private”，那就不要让它在这里出现。
+> JavaScript 没有私有属性或方法的概念。尽管前置下划线通常的概念上意味着 “private”，但其实，这些属性是完全公开的，因此这部分也是你的 API 的内容。这一概念可能会导致开发者误以为更改这个不会导致崩溃或者不需要测试。
 
 ```javascript
 // bad
@@ -2836,7 +2836,7 @@ this._firstName = 'Panda';
 this.firstName = 'Panda';
 ```
 
-- [23.5](#naming--self-this) 不要保存引用`this`， 用箭头函数或[函数绑定——Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+* 23.5 不要保存 `this` 的引用，使用箭头函数或硬绑定。
 
 ```javascript
 // bad
@@ -2863,7 +2863,7 @@ function foo() {
 }
 ```
 
-- [23.6](#naming--filename-matches-export) export default导出模块A，则这个文件名也叫A.*， import 时候的参数也叫A。 大小写完全一致。
+* 23.6 文件名应与默认导出（`export default`）的名称完全匹配
 
 ```javascript
 // file 1 contents
@@ -2898,7 +2898,7 @@ import insideDirectory from './insideDirectory'; // camelCase export/import/dire
 // ^ supports both insideDirectory.js and insideDirectory/index.js
 ```
 
-- [23.7](#naming--camelCase-default-export) 当你export-default一个函数时，函数名用小驼峰，文件名需要和函数名一致。
+* 23.7 默认导出（`export default`）一个函数时，函数名、文件名统一。
 
 ```javascript
 function makeStyleGuide() {
@@ -2908,7 +2908,7 @@ function makeStyleGuide() {
 export default makeStyleGuide;
 ```
 
-- [23.8](#naming--PascalCase-singleton) 当你export一个结构体/类/单例/函数库/对象 时用大驼峰。
+* 23.8 当你 export 一个构造函数/类/单例/函数库对象时用 PascalCase。
 
 ```javascript
 const AirbnbStyleGuide = {
@@ -2919,9 +2919,9 @@ const AirbnbStyleGuide = {
 export default AirbnbStyleGuide;
 ```
 
-- [23.9](#naming--Acronyms-and-Initialisms) 简称和缩写应该全部大写或全部小写。
+* 23.9 简称和首字母缩写应该全部大写或全部小写。
 
-> Why? 名字都是给人读的，不是为了适应电脑的算法的。
+> 名字是给人看的，不是给电脑看的。
 
 ```javascript
 // bad
@@ -2949,14 +2949,7 @@ const Requests = [
 ];
 ```
 
-- [23.10](#naming--uppercase) 你可以用全大写字母设置静态变量，他需要满足三个条件。
-1. 导出变量
-1. 是 `const` 定义的， 保证不能被改变
-1. 这个变量是可信的，他的子属性都是不能被改变的
-
-> Why? 这是一个附加工具，帮助开发者去辨识一个变量是不是不可变的。
-- 对于所有的 `const` 变量呢？ —— 这个是不必要的。大写变量不应该在同一个文件里定义并使用， 它只能用来作为导出变量。 赞同！
-- 那导出的对象呢？ —— 大写变量处在export的最高级(e.g. `EXPORTED_OBJECT.key`) 并且他包含的所有子属性都是不可变的。
+* 23.10 全大写字母定义用来导出的常量
 
 ```javascript
 // bad
