@@ -1698,31 +1698,31 @@ function example() {
 
 * 更多信息前往[JavaScript Scoping & Hoisting](http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting/) by [Ben Cherry](http://www.adequatelygood.com/).
 
-## Comparison Operators & Equality
+## 比较和相等
 
-- [15.1](#comparison--eqeqeq) 用 `===` 和 `!==` 而不是 `==` 和 `!=`. eslint: [`eqeqeq`](http://eslint.org/docs/rules/eqeqeq.html)
+* 15.1 使用 `===` 和 `!==` 而不是 `==` 和 `!=`. eslint: [`eqeqeq`](http://eslint.org/docs/rules/eqeqeq.html)
 
-- [15.2](#comparison--if) 条件语句如'if'语句使用强制`ToBoolean'抽象方法来评估它们的表达式，并且始终遵循以下简单规则：
+* 15.2 `if` 等条件语句使用强制 `ToBoolean` 抽象方法来评估它们的表达式，并且始终遵循以下简单规则：
 
-* **Objects**   计算成 **true**
-* **Undefined** 计算成 **false**
-* **Null**      计算成 **false**
-* **Booleans**  计算成 **the value of the boolean**
+* **Objects**   => **true**
+* **Undefined** => **false**
+* **Null**      => **false**
+* **Booleans**  => **the value of the boolean**
 * **Numbers**
-  * **+0, -0, or NaN** 计算成 **false**
-  * 其他 **true**
+  * **+0, -0, or NaN** => **false**
+  * 其他 => **true**
 * **Strings**
-  * `''` 计算成 **false**
-  * 其他 **true**
+  * `''` => **false**
+  * 其他 => **true**
 
 ```javascript
 if ([0] && []) {
   // true
-  // 数组（即使是空数组）是对象，对象会计算成true
+  // 数组（即使是空数组）是对象，对象会计算成 true
 }
 ```
 
-- [15.3](#comparison--shortcuts) 布尔值用缩写，而字符串和数字要明确比较对象
+* 15.3 布尔值比较可以省略，但是字符串和数字要显示比较
 
 ```javascript
 // bad
@@ -1756,11 +1756,9 @@ if (collection.length > 0) {
 }
 ```
 
-- [15.4](#comparison--moreinfo) 更多信息请见Angus Croll的[真理、平等和JavaScript —— Truth Equality and JavaScript](https://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/#more-2108)
+* 15.4 `switch case` 中，在 `case` 和 `default` 分句里用大括号创建一个块(如：`let`, `const`, `function`, and `class`). eslint rules: [`no-case-declarations`](http://eslint.org/docs/rules/no-case-declarations.html).
 
-- [15.5](#comparison--switch-blocks) 在`case`和`default`分句里用大括号创建一块包含语法声明的区域(e.g. `let`, `const`, `function`, and `class`). eslint rules: [`no-case-declarations`](http://eslint.org/docs/rules/no-case-declarations.html).
-
-> Why? 语法声明在整个`switch`的代码块里都可见，但是只有当其被分配后才会初始化，他的初始化时当这个`case`被执行时才产生。 当多个`case`分句试图定义同一个事情时就出问题了
+> 词汇声明在整个 switch 块中都是可见的，但只有在分配时才会被初始化，这只有在 case 达到时才会发生。当多个 case 子句尝试定义相同的事物时，会出现问题。
 
 ```javascript
 // bad
@@ -1805,7 +1803,7 @@ switch (foo) {
 }
 ```
 
-- [15.6](#comparison--nested-ternaries) 三元表达式不应该嵌套，通常是单行表达式。
+* 15.5 三元表达式不应该嵌套，通常是单行表达式。
 
 eslint rules: [`no-nested-ternary`](http://eslint.org/docs/rules/no-nested-ternary.html).
 
@@ -1828,7 +1826,7 @@ const maybeNull = value1 > value2 ? 'baz' : null;
 const foo = maybe1 > maybe2 ? 'bar' : maybeNull;
 ```
 
-- [15.7](#comparison--unneeded-ternary) 避免不需要的三元表达式
+* 15.7 避免不需要的三元表达式
 
 eslint rules: [`no-unneeded-ternary`](http://eslint.org/docs/rules/no-unneeded-ternary.html).
 
@@ -1844,9 +1842,7 @@ const bar = !!c;
 const baz = !c;
 ```
 
-- [15.8](#comparison--no-mixed-operators) 用圆括号来混合这些操作符。 只有当标准的算术运算符(`+`, `-`, `*`, & `/`)， 并且它们的优先级显而易见时，可以不用圆括号括起来。 eslint: [`no-mixed-operators`](https://eslint.org/docs/rules/no-mixed-operators.html)
-
-> Why? 这提高了可读性，并且明确了开发者的意图
+* 15.8 混合操作符时，要放在 `()` 里，只有当它们是标准的算术运算符(`+`, `-`, `*`, & `/`)， 并且它们的优先级显而易见时，可以不用。 eslint: [`no-mixed-operators`](https://eslint.org/docs/rules/no-mixed-operators.html)
 
 ```javascript
 // bad
@@ -1856,7 +1852,6 @@ const foo = a && b < 0 || c > 0 || d + 1 === 0;
 const bar = a ** b - 5 % d;
 
 // bad
-// 别人会陷入(a || b) && c 的迷惑中
 if (a || b && c) {
   return d;
 }
@@ -1876,9 +1871,9 @@ if (a || (b && c)) {
 const bar = a + b / c * d;
 ```
 
-## Blocks
+## 块
 
-- [16.1](#blocks--braces) 用大括号包裹多行代码块。  eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
+* 16.1 用大括号 `{}` 包裹多行代码块。  eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
 
 ```javascript
 // bad
@@ -1902,7 +1897,7 @@ function bar() {
 }
 ```
 
-- [16.2](#blocks--cuddled-elses) `if`表达式的`else`和`if`的关闭大括号在一行。 eslint: [`brace-style`](http://eslint.org/docs/rules/brace-style.html)
+* 16.2 `else` 和 `if` 的大括号保持在一行。 eslint: [`brace-style`](http://eslint.org/docs/rules/brace-style.html)
 
 ```javascript
 // bad
@@ -1923,7 +1918,7 @@ if (test) {
 }
 ```
 
-- [16.3](#blocks--no-else-return) 如果 `if` 语句中总是需要用 `return` 返回， 那后续的 `else` 就不需要写了。 `if` 块中包含 `return`， 它后面的 `else if` 块中也包含了 `return`， 这个时候就可以把 `return` 分到多个 `if` 语句块中。 eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
+* 16.3 如果 `if` 语句都要用 `return` 返回， 那后面的 `else` 就不用写了。 如果 `if` 块中包含 `return`， 它后面的 `else if` 块中也包含了 `return`， 这个时候就可以把 `else if` 拆开。 eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
 
 ```javascript
 // bad
@@ -1987,11 +1982,9 @@ function dogs(x) {
 }
 ```
 
-## Control Statements
+## 控制
 
-- [17.1](#control-statements) 当你的控制语句(`if`, `while` 等)太长或者超过最大长度限制的时候， 把每一个(组)判断条件放在单独一行里。 逻辑操作符放在行首。
-
-> Why? 把逻辑操作符放在行首是让操作符的对齐方式和链式函数保持一致。这提高了可读性，也让复杂逻辑更容易看清楚。
+* 17.1 当你的控制语句 `if`, `while` 等太长或者超过最大长度限制的时候，把每个判断条件放在单独一行里，逻辑运算符放在行首。
 
 ```javascript
 // bad
@@ -2042,7 +2035,7 @@ if (foo === 123 && bar === 'abc') {
 }
 ```
 
-- [17.2](#control-statements--value-selection) 不要用选择操作符代替控制语句。
+* 17.2 不要用选择操作符代替控制语句。
 
 ```javascript
 // bad
@@ -2054,11 +2047,9 @@ if (!isRunning) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+## 注释
 
-## Comments
-
-- [18.1](#comments--multiline) 多行注释用 `/** ... */`
+* 18.1 多行注释用 `/** ... */`
 
 ```javascript
 // bad
@@ -2087,7 +2078,7 @@ function make(tag) {
 }
 ```
 
-- [18.2](#comments--singleline) 单行注释用`//`，将单行注释放在被注释区域上面。如果注释不是在第一行，那么注释前面就空一行
+* 18.2 单行注释用`//`，将单行注释放在被注释区域上方。如果注释不是在第一行，就在注释前面加一个空行
 
 ```javascript
 // bad
@@ -2125,7 +2116,7 @@ function getType() {
 }
 ```
 
-- [18.3](#comments--spaces) 所有注释开头空一个，方便阅读。 eslint: [`spaced-comment`](http://eslint.org/docs/rules/spaced-comment)
+* 18.3 所有注释开头加一个空格，方便阅读。 eslint: [`spaced-comment`](http://eslint.org/docs/rules/spaced-comment)
 
 ```javascript
 // bad
@@ -2161,9 +2152,7 @@ function make(tag) {
 }
 ```
 
-- [18.4](#comments--actionitems) 在你的注释前使用`FIXME'或`TODO'前缀， 这有助于其他开发人员快速理解你指出的需要重新访问的问题， 或者您建议需要实现的问题的解决方案。 这些不同于常规注释，因为它们是可操作的。 动作是`FIXME： - 需要计算出来`或`TODO： - 需要实现`。
-
-- [18.5](#comments--fixme) 用`// FIXME:`给问题做注释
+* 18.4 在注释前加上 `FIXME' 或 `TODO` 前缀， 这有助于其他开发人员快速理解你指出的问题， 或者您建议的问题的解决方案。
 
 ```javascript
 class Calculator extends Abacus {
@@ -2176,8 +2165,6 @@ class Calculator extends Abacus {
 }
 ```
 
-- [18.6](#comments--todo) 用`// TODO:`去注释问题的解决方案
-
 ```javascript
 class Calculator extends Abacus {
   constructor() {
@@ -2189,9 +2176,9 @@ class Calculator extends Abacus {
 }
 ```
 
-## Whitespace
+## 空格
 
-- [19.1](#whitespace--spaces) tab用两个空格. eslint: [`indent`](http://eslint.org/docs/rules/indent.html)
+* 19.1  Tab 使用两个空格（或者 4 个，你开心就好，但是团队统一是必须的）。 eslint: [`indent`](http://eslint.org/docs/rules/indent.html)
 
 ```javascript
 // bad
@@ -2210,7 +2197,7 @@ function baz() {
 }
 ```
 
-- [19.2](#whitespace--before-blocks) 在大括号前空一格。 eslint: [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks.html)
+* 19.2 在大括号 `{}` 前空一格。 eslint: [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks.html)
 
 ```javascript
 // bad
@@ -2236,7 +2223,7 @@ dog.set('attr', {
 });
 ```
 
-- [19.3](#whitespace--around-keywords) 在控制语句(`if`, `while` 等)的圆括号前空一格。在函数调用和定义时，参数列表和函数名之间不空格。 eslint: [`keyword-spacing`](http://eslint.org/docs/rules/keyword-spacing.html)
+* 19.3 在控制语句 `if`, `while` 等的圆括号前空一格。在函数调用和定义时，函数名和圆括号之间不空格。 eslint: [`keyword-spacing`](http://eslint.org/docs/rules/keyword-spacing.html)
 
 ```javascript
 // bad
@@ -2260,7 +2247,7 @@ function fight() {
 }
 ```
 
-- [19.4](#whitespace--infix-ops) 用空格来隔开运算符。 eslint: [`space-infix-ops`](http://eslint.org/docs/rules/space-infix-ops.html)
+* 19.4 用空格来隔开运算符。 eslint: [`space-infix-ops`](http://eslint.org/docs/rules/space-infix-ops.html)
 
 ```javascript
 // bad
@@ -2270,7 +2257,7 @@ const x=y+5;
 const x = y + 5;
 ```
 
-- [19.5](#whitespace--newline-at-end) 文件结尾空一行. eslint: [`eol-last`](https://github.com/eslint/eslint/blob/master/docs/rules/eol-last.md)
+* 19.5 文件结尾空一行. eslint: [`eol-last`](https://github.com/eslint/eslint/blob/master/docs/rules/eol-last.md)
 
 ```javascript
 // bad
@@ -2294,7 +2281,7 @@ import { es6 } from './AirbnbStyleGuide';
 export default es6;↵
 ```
 
-- [19.6](#whitespace--chains) 当出现长的方法链（>2个）时用缩进。用点开头强调该行是一个方法调用，而不是一个新的语句。eslint: [`newline-per-chained-call`](http://eslint.org/docs/rules/newline-per-chained-call) [`no-whitespace-before-property`](http://eslint.org/docs/rules/no-whitespace-before-property)
+* 19.6 当出现长的方法链（一般超过两个的时候）时换行。用点开头强调该行是一个方法调用，而不是一个新的语句。eslint: [`newline-per-chained-call`](http://eslint.org/docs/rules/newline-per-chained-call) [`no-whitespace-before-property`](http://eslint.org/docs/rules/no-whitespace-before-property)
 
 ```javascript
 // bad
@@ -2336,7 +2323,7 @@ const leds = stage.selectAll('.led')
 const leds = stage.selectAll('.led').data(data);
 ```
 
-- [19.7](#whitespace--after-blocks) 在一个代码块后下一条语句前空一行。
+* 19.7 在一个代码块之后，下一条语句之前空一行。
 
 ```javascript
 // bad
@@ -2393,7 +2380,7 @@ const arr = [
 return arr;
 ```
 
-- [19.8](#whitespace--padded-blocks) 不要用空白行填充块。 eslint: [`padded-blocks`](http://eslint.org/docs/rules/padded-blocks.html)
+* 19.8 不要故意留一些没必要的空白行。 eslint: [`padded-blocks`](http://eslint.org/docs/rules/padded-blocks.html)
 
 ```javascript
 // bad
@@ -2425,59 +2412,7 @@ if (baz) {
 }
 ```
 
-- [19.9](#whitespace--no-multiple-blanks)不要在代码之间使用多个空白行填充。 eslint: [`no-multiple-empty-lines`](https://eslint.org/docs/rules/no-multiple-empty-lines)
-
-```javascript
-// bad
-class Person {
-  constructor(fullName, email, birthday) {
-    this.fullName = fullName;
-
-
-    this.email = email;
-
-
-    this.setAge(birthday);
-  }
-
-
-  setAge(birthday) {
-    const today = new Date();
-
-
-    const age = this.getAge(today, birthday);
-
-
-    this.age = age;
-  }
-
-
-  getAge(today, birthday) {
-    // ..
-  }
-}
-
-// good
-class Person {
-  constructor(fullName, email, birthday) {
-    this.fullName = fullName;
-    this.email = email;
-    this.setAge(birthday);
-  }
-
-  setAge(birthday) {
-    const today = new Date();
-    const age = getAge(today, birthday);
-    this.age = age;
-  }
-
-  getAge(today, birthday) {
-    // ..
-  }
-}
-```
-
-- [19.10](#whitespace--in-parens) 圆括号里不要加空格。 eslint: [`space-in-parens`](http://eslint.org/docs/rules/space-in-parens.html)
+* 19.9 圆括号里不要加空格。 eslint: [`space-in-parens`](http://eslint.org/docs/rules/space-in-parens.html)
 
 ```javascript
 // bad
@@ -2501,19 +2436,19 @@ if (foo) {
 }
 ```
 
-- [19.11](#whitespace--in-brackets) 方括号里不要加空格。看示例。 eslint: [`array-bracket-spacing`](http://eslint.org/docs/rules/array-bracket-spacing.html)
+* 19.10 方括号里不要加空格。看示例。 eslint: [`array-bracket-spacing`](http://eslint.org/docs/rules/array-bracket-spacing.html)
 
 ```javascript
 // bad
 const foo = [ 1, 2, 3 ];
 console.log(foo[ 0 ]);
 
-// good， 逗号分隔符还是要空格的
+// good， 逗号后面要加空格
 const foo = [1, 2, 3];
 console.log(foo[0]);
 ```
 
-- [19.12](#whitespace--in-braces) 花括号里加空格。 eslint: [`object-curly-spacing`](http://eslint.org/docs/rules/object-curly-spacing.html)
+* 19.11 花括号 `{}` 里加空格。 eslint: [`object-curly-spacing`](http://eslint.org/docs/rules/object-curly-spacing.html)
 
 ```javascript
 // bad
@@ -2521,12 +2456,18 @@ const foo = {clark: 'kent'};
 
 // good
 const foo = { clark: 'kent' };
+
+
+// bad
+function foo() {return true;}
+if (foo) { bar = 0;}
+
+// good
+function foo() { return true; }
+if (foo) { bar = 0; }
 ```
 
-- [19.13](#whitespace--max-len) 避免一行代码超过100个字符（包含空格）。
-- 注意： 对于[上面——strings--line-length](#strings--line-length)，长字符串不受此规则限制，不应分解。 eslint: [`max-len`](http://eslint.org/docs/rules/max-len.html)
-
-> Why? 这样确保可读性和可维护性
+* 19.12 避免一行代码超过 100 个字符（包含空格、纯字符串就不要换行了）。
 
 ```javascript
 // bad
@@ -2553,19 +2494,7 @@ $.ajax({
   .fail(() => console.log('You have failed this city.'));
 ```
 
-- [19.14](#whitespace--block-spacing) 作为语句的花括号内也要加空格 —— `{` 后和 `}` 前都需要空格。 eslint: [`block-spacing`](https://eslint.org/docs/rules/block-spacing)
-
-```javascript
-// bad
-function foo() {return true;}
-if (foo) { bar = 0;}
-
-// good
-function foo() { return true; }
-if (foo) { bar = 0; }
-```
-
-- [19.15](#whitespace--comma-spacing) `,` 前不要空格， `,` 后需要空格。 eslint: [`comma-spacing`](https://eslint.org/docs/rules/comma-spacing)
+* 19.13 `,` 前避免空格， `,` 后需要空格。 eslint: [`comma-spacing`](https://eslint.org/docs/rules/comma-spacing)
 
 ```javascript
 // bad
@@ -2577,36 +2506,7 @@ var foo = 1, bar = 2;
 var arr = [1, 2];
 ```
 
-- [19.16](#whitespace--computed-property-spacing) 计算属性内要空格。参考上述花括号和中括号的规则。  eslint: [`computed-property-spacing`](https://eslint.org/docs/rules/computed-property-spacing)
-
-```javascript
-// bad
-obj[foo ]
-obj[ 'foo']
-var x = {[ b ]: a}
-obj[foo[ bar ]]
-
-// good
-obj[foo]
-obj['foo']
-var x = { [b]: a }
-obj[foo[bar]]
-```
-
-- [19.17](#whitespace--func-call-spacing) 调用函数时，函数名和小括号之间不要空格。 eslint: [`func-call-spacing`](https://eslint.org/docs/rules/func-call-spacing)
-
-```javascript
-// bad
-func ();
-
-func
-();
-
-// good
-func();
-```
-
-- [19.18](#whitespace--key-spacing) 在对象的字面量属性中， `key` `value` 之间要有空格。 eslint: [`key-spacing`](https://eslint.org/docs/rules/key-spacing)
+* 19.14 在对象的属性中， 键值之间要有空格。 eslint: [`key-spacing`](https://eslint.org/docs/rules/key-spacing)
 
 ```javascript
 // bad
@@ -2617,9 +2517,9 @@ var obj2 = { "foo":42 };
 var obj = { "foo": 42 };
 ```
 
-- [19.19](#whitespace--no-trailing-spaces) 行末不要空格。 eslint: [`no-trailing-spaces`](https://eslint.org/docs/rules/no-trailing-spaces)
+* 19.15 行末不要空格。 eslint: [`no-trailing-spaces`](https://eslint.org/docs/rules/no-trailing-spaces)
 
-- [19.20](#whitespace--no-multiple-empty-lines) 避免出现多个空行。 在文件末尾只允许空一行。 eslint: [`no-multiple-empty-lines`](https://eslint.org/docs/rules/no-multiple-empty-lines)
+* 19.16 避免出现多个空行。 在文件末尾只允许空一行。 eslint: [`no-multiple-empty-lines`](https://eslint.org/docs/rules/no-multiple-empty-lines)
 
 <!-- markdownlint-disable MD012 -->
 ```javascript
@@ -2633,11 +2533,10 @@ var x = 1;
 
 var y = 2;
 ```
-<!-- markdownlint-enable MD012 -->
 
-## Commas
+## 逗号
 
-- [20.1](#commas--leading-trailing) 不要前置逗号。 eslint: [`comma-style`](http://eslint.org/docs/rules/comma-style.html)
+* 20.1 不要前置逗号。 eslint: [`comma-style`](http://eslint.org/docs/rules/comma-style.html)
 
 ```javascript
 // bad
@@ -2671,9 +2570,7 @@ const hero = {
 };
 ```
 
-- [20.2](#commas--dangling) 额外结尾逗号: **要** eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html)
-
-> Why? 这导致git diffs更清洁。 此外，像Babel这样的转换器会删除转换代码中的额外的逗号，这意味着你不必担心旧版浏览器中的[结尾逗号问题](https://github.com/airbnb/javascript/blob/es5-deprecated/es5/README.md#commas)。
+* 20.2 结尾额外加逗号，看团队习惯吧 eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html)
 
 ```diff
 // bad - 没有结尾逗号的 git diff
@@ -2766,11 +2663,9 @@ createHero(
 )
 ```
 
-## Semicolons
+## 分号
 
-- [21.1](#21.1) **Yup.** eslint: [`semi`](http://eslint.org/docs/rules/semi.html)
-
-> Why? 当 JavaScript 遇到没有分号结尾的一行，它会执行[自动插入分号 `Automatic Semicolon Insertion`](https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion)这一规则来决定行末是否加分号。如果JavaScript在你的断行里错误的插入了分号，就会出现一些古怪的行为。当新的功能加到JavaScript里后， 这些规则会变得更复杂难懂。显示的结束语句，并通过配置代码检查去捕获没有带分号的地方可以帮助你防止这种错误。
+* 21.1 当 JavaScript 遇到没有分号的换行符时，它会使用[`Automatic Semicolon Insertion`](https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion)这一规则来决定行末是否加分号。但是，ASI 包含一些古怪的行为，如果 JavaScript 弄错了你的换行符，你的代码就会破坏。所以明确地使用分号，会减少这种不确定性。
 
 ```javascript
 // bad
@@ -2785,20 +2680,20 @@ createHero(
   return name;
 }());
 
-// good, 行首加分号，避免文件被连接到一起时立即执行函数被当做变量来执行。
+// good
 ;(() => {
   const name = 'Skywalker';
   return name;
 }());
 ```
 
-[Read more](https://stackoverflow.com/questions/7365172/semicolon-before-self-invoking-function/7365214%237365214).
+[更多](https://stackoverflow.com/questions/7365172/semicolon-before-self-invoking-function/7365214%237365214).
 
-## Type Casting & Coercion
+## 类型
 
-- [22.1](#coercion--explicit) 在语句开始执行强制类型转换。
+* 22.1 在声明开头执行强制类型转换。
 
-- [22.2](#coercion--strings)  Strings: eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+* 22.2 String eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
 ```javascript
 // => this.reviewScore = 9;
@@ -2816,7 +2711,7 @@ const totalScore = this.reviewScore.toString(); // 不保证返回string
 const totalScore = String(this.reviewScore);
 ```
 
-- [22.3](#coercion--numbers) Numbers: 用 `Number` 做类型转换，`parseInt`转换string常需要带上基数。 eslint: [`radix`](http://eslint.org/docs/rules/radix)
+* 22.3 Number eslint: [`radix`](http://eslint.org/docs/rules/radix)
 
 ```javascript
 const inputValue = '4';
@@ -2840,13 +2735,13 @@ const val = Number(inputValue);
 const val = parseInt(inputValue, 10);
 ```
 
-- [22.4](#coercion--comment-deviations) 请在注释中解释为什么要用移位运算和你在做什么。无论你做什么狂野的事，比如由于 `parseInt` 是你的性能瓶颈导致你一定要用移位运算。 请说明这个是因为[性能原因](https://jsperf.com/coercion-vs-casting/3),
+* 22.4 请在注释中解释为什么要用移位运算和你在做什么。无论你在做什么，比如由于 `parseInt` 是你的性能瓶颈导致你一定要用移位运算。 请说明这个是因为[性能原因](https://jsperf.com/coercion-vs-casting/3),
 
 ```javascript
 // good
 /**
- * parseInt是代码运行慢的原因
- * 用Bitshifting将字符串转成数字使代码运行效率大幅增长
+ * parseInt 导致代码运行慢
+ * Bitshifting the String 将其强制转换为数字使其快得多。
  */
 const val = inputValue >> 0;
 ```
