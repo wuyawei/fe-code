@@ -8,13 +8,14 @@
 * [「前端发动机」原生 JavaScript 实现各种 数组 API 的 Polyfill 版](https://github.com/wuyawei/fe-code/blob/master/tiku/1.md)
 * [「前端发动机」从 bind 聊到 curry （柯里化）](https://github.com/wuyawei/fe-code/blob/master/JavaScript/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0/1.md)
 * [「前端发动机」Touchmove 禁止默认滚动的几种方案](https://github.com/wuyawei/fe-code/blob/master/questions/passive-EventListener.md)
+* [「前端发动机」前端代码规范 — JavaScript 风格指南](https://github.com/wuyawei/fe-code/blob/master/JavaScriptStyleGuide.md)
 ### 【从头到脚】
 * [【从头到脚】撸一个多人视频聊天 — WebRTC 实战（一）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc1.md)
 * [【从头到脚】WebRTC + Canvas 实现一个双人协作的共享画板](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc2.md)
 * [【从头到脚】前端实现多人视频聊天— WebRTC 实战（多人篇）](https://github.com/wuyawei/fe-code/blob/master/WebRTC/webrtc3.md)
 
 ## 学习和写作方向
-### 【前端进阶之路】系列写作方向
+### 写作方向
 #### JavaScript
 * 执行上下文和作用域链
 * 闭包
