@@ -22,7 +22,7 @@ let bar = foo;
 
 bar = 9;
 
-console.log(foo, bar); // => 9,1
+console.log(foo, bar); // => 1,9
 ```
 
 *  复杂类型
