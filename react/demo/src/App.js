@@ -4,8 +4,9 @@ import './App.css';
 const About = lazy(() => import('./About'));
 const Game = lazy(() => import('./Game'));
 const Calendar = lazy(() => import('./Calendar/index'));
-const Touch = lazy(() => import('./Touch'))
-const Carousel = lazy(() => import('./Carousel'))
+const Touch = lazy(() => import('./Touch'));
+const Carousel = lazy(() => import('./Carousel'));
+const Test = lazy(() => import('./Test/index'));
 
 function AppRouter() {
   return (
@@ -19,6 +20,8 @@ function AppRouter() {
         <Link to="/touch">touch</Link>
         <br/>
         <Link to="/carousel">carousel</Link>
+        <br/>
+        <Link to="/test">test</Link>
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
               <Route path="/about" component={About} />
@@ -26,6 +29,7 @@ function AppRouter() {
               <Route path="/game" component={Game} />
               <Route path="/touch" component={Touch} />
               <Route path="/carousel" component={Carousel} />
+              <Route path="/test" component={Test} />
           </Switch>
         </Suspense>
     </Router>
