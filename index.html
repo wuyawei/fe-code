@@ -30,17 +30,22 @@
     .container{
         width: 500px;
         height: 500px;
-        display: grid;
-        grid-template-columns: 250px 250px;
-        grid-template-rows: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        /* grid-template-columns: 250px 250px;
+        grid-template-rows: auto; */
         /*grid-column-gap: 10px;*/
         /*grid-row-gap: 10px;*/
-        grid-gap: 10px 10px;
+        /* grid-gap: 10px 10px; */
         /*justify-items: end;*/
-        border: 2px solid #17f8be;
+        /* border: 2px solid #17f8be; */
     }
     .item{
+        width: 100px;
+        height: 100px;
         background-color: #00acec;
+        margin: 10px;
     }
 </style>
 <body>
@@ -50,6 +55,8 @@
     <!--<div class="item item-3"></div>-->
 <!--</div>-->
 <div class="container">
+    <div class="item"></div>
+    <div class="item"></div>
     <div class="item"></div>
     <div class="item"></div>
     <div class="item"></div>

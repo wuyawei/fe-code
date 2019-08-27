@@ -6,8 +6,11 @@ function Test() {
         setCount(count + 1);
         console.log('3===>', count);
     }
+    function onMouseOut(e) { // 移出父元素和移出每个子元素
+        // console.log('out');
+    }
     return (
-        <div>
+        <div onMouseOut={onMouseOut} style={{border: '1px solid #000'}}>
             <h1>Now: {count}, before: {prevCount}</h1>
             <button onClick={handleClick}>add</button>
         </div>
