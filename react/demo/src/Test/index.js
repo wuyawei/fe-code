@@ -19,6 +19,7 @@ function Test() {
 
 function usePrevious(value) {
     const ref = useRef();
+    console.log('3===>', value);
     useEffect(() => {
         ref.current = value;
         console.log('1===>', value);
