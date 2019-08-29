@@ -30,9 +30,7 @@
     .container{
         width: 500px;
         height: 500px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        position: relative;
         /* grid-template-columns: 250px 250px;
         grid-template-rows: auto; */
         /*grid-column-gap: 10px;*/
@@ -42,11 +40,25 @@
         /* border: 2px solid #17f8be; */
     }
     .item{
-        width: 100px;
-        height: 100px;
-        background-color: #00acec;
-        margin: 10px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left:0;
+        top: 0;
     }
+    .item:nth-child(1){
+        background-color: #2bfbd8;
+        display: block;
+    }
+    .item:nth-child(2){
+        background-color: #f3880d;
+        display: none;
+    }
+    .item:nth-child(3){
+        background-color: #00acec;
+        display: none;
+    }
+
 </style>
 <body>
 <!--<div class="container">-->
@@ -58,9 +70,23 @@
     <div class="item"></div>
     <div class="item"></div>
     <div class="item"></div>
-    <div class="item"></div>
-    <div class="item"></div>
-    <div class="item"></div>
 </div>
 </body>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(function() {
+        let index = 0;
+        const childs  = $('.container').children();
+        setInterval(() => {
+            ++ index;
+            if (index > childs.length-1) {
+                index = 0;
+            }
+            childs.each((i, v) => {
+                $(v).fadeOut(1000);
+            })
+            $(childs[index]).fadeIn(800);
+        }, 2000)
+    })
+</script>
 </html>
