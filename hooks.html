@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button class="add">add</button>
+    <span id="count"></span>
+</body>
+<!-- https://www.netlify.com/blog/2019/03/11/deep-dive-how-do-react-hooks-really-work/ -->
+<!-- https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/ -->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    let STATE;
+    function useState(initialValue) {
+        STATE = STATE | initialValue;
+      function setState(newState) {
+        STATE = newState;
+        render();
+      }
+      return [STATE, setState];
+    }
+    function render() {
+        const [count, setCount] = useState(0);
+        $('.add').on('click', () => {
+            setCount(count + 1);
+        })
+        console.log(count);
+        $('#count').html(count);
+    }
+    render();
+</script>
+</html>

@@ -82,9 +82,7 @@
             if (index > childs.length-1) {
                 index = 0;
             }
-            childs.each((i, v) => {
-                $(v).fadeOut(1000);
-            })
+            $('.container').children().fadeOut(1000);
             $(childs[index]).fadeIn(800);
         }, 2000)
     })
