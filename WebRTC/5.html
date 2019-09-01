@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carousel</title>
+    <script>
+        function enableGesture(main) {
+            const pressDuration = 500;
+            let contexts = Object.create(null);
+            let mouseSymbol = Symbol("mouse");
+            let mouseStart = event => {
+                document.addEventListener("mousemove", mouseMove);
+                document.addEventListener("mouseup", mouseEnd);
+                contexts[mouseSymbol] = Object.create(null);
+                start(event, contexts[mouseSymbol]);
+            }
+            let mouseMove = event => {
+                move(event, contexts[mouseSymbol]);
+            }
+            let mouseEnd = event => {
+                document.removeEventListener("mousemove", mouseMove);
+                document.removeEventListener("mouseup", mouseEnd);
+                end(event, contexts[mouseSymbol]);
+                delete contexts[mouseSymbol];
+            }
+            main.addEventListener("mousedown", mouseStart);
+            let touchStart = event => {
+                for (let touch of event.changedTouches) {
+                    contexts[touch.identifier] = Object.create(null);
+                    start(touch, contexts[touch.identifier]);
+                }
+            }
+            let touchMove = event => {
+                for (let touch of event.changedTouches) {
+
+                    move(touch, contexts[touch.identifier]);
+                }
+            }
+            let touchEnd = event => {
+                for (let touch of event.changedTouches) {
+                    end(touch, contexts[touch.identifier]);
+                    delete contexts[touch.identifier];
+                }
+            }
+            let touchCancel = event => {
+                for (let touch of event.changedTouches) {
+                    cancel(touch, contexts[touch.identifier]);
+                }
+            }
+            let start = (point, context) => {
+                context.startX = point.clientX;
+                context.startY = point.clientY;
+                context.isTap = true;
+                context.isPan = false;
+                context.isPress = false;
+                context.startTime = Date.now();
+                context.pressHandler = setTimeout(() => {
+                    context.isTap = false;
+                    context.isPress = true;
+                    let e = new Event("pressstart");
+                    main.dispatchEvent(e);
+                    context.pressHandler = null;
+                }, pressDuration);
+            }
+            let move = (point, context) => {
+                let dx = point.clientX - context.startX, dy = point.clientY - context.startY;
+                if (dx * dx + dy * dy > 100) {
+                    if (context.isPan == false) {
+                        if (context.pressHandler !== null) {
+                            clearTimeout(context.pressHandler);
+                            context.pressHandler = null;
+                        }
+                        if (context.isPress) {
+                            let e = new Event("presscancel");
+                            main.dispatchEvent(e);
+                        }
+                        context.isTap = false;
+                        context.isPan = true;
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            context.isHorizontal = true;
+                            context.isVertical = false;
+                        }
+                        else {
+                            context.isHorizontal = false;
+                            context.isVertical = true;
+                        }
+                        let e = new Event("panstart");
+                        e.startX = context.startX;
+                        e.startY = context.startY;
+                        main.dispatchEvent(e);
+                    }
+                    else {
+                        let e = new Event("pan");
+                        e.dx = dx;
+                        e.dy = dy;
+                        e.isHorizontal = context.isHorizontal;
+                        e.isVertical = context.isVertical;
+                        main.dispatchEvent(e);
+                        if (context.isPress) {
+                            let e = new Event("presspan");
+                            e.dx = dx;
+                            e.dy = dy;
+                            e.isHorizontal = context.isHorizontal;
+                            e.isVertical = context.isVertical;
+                            main.dispatchEvent(e);
+                        }
+                    }
+                }
+
+            }
+            let end = (point, context) => {
+
+                if (context.pressHandler !== null) {
+                    clearTimeout(context.pressHandler);
+                    context.pressHandler = null;
+                }
+                if (context.isTap) {
+                    let e = new Event("tap");
+                    main.dispatchEvent(e);
+                }
+                let dx = point.clientX - context.startX, dy = point.clientY - context.startY;
+                if (context.isPress) {
+                    if (context.isPan) {
+                        let e = new Event("presspanend")
+                        e.dx = dx;
+                        e.dy = dy;
+                        e.isHorizontal = context.isHorizontal;
+                        e.isVertical = context.isVertical;
+                        main.dispatchEvent(e);
+                    }
+                    else {
+                        let e = new Event("press");
+                        main.dispatchEvent(e);
+                    }
+                }
+                if (context.isPan) {
+                    let v = Math.sqrt(dx * dx + dy * dy) / (Date.now() - context.startTime);
+                    if (v > 0.3) {
+                        let e = new Event("flick");
+                        e.dx = dx;
+                        e.dy = dy;
+                        e.isHorizontal = context.isHorizontal;
+                        e.isVertical = context.isVertical;
+                        context.isFlick = true;
+                        main.dispatchEvent(e);
+                    }
+                    else {
+                        context.isFlick = false;
+                    }
+                    let e = new Event("panend");
+                    e.dx = dx;
+                    e.dy = dy;
+                    e.isHorizontal = context.isHorizontal;
+                    e.isVertical = context.isVertical;
+                    e.isFlick = context.isFlick;
+                    main.dispatchEvent(e);
+                }
+            }
+            let cancel = (point, context) => {
+                if (context.pressHandler !== null) {
+                    clearTimeout(context.pressHandler);
+                    context.pressHandler = null;
+                }
+                if (context.isPan) {
+                    let e = new Event("pancancel");
+                    e.isHorizontal = context.isHorizontal;
+                    e.isVertical = context.isVertical;
+                    main.dispatchEvent(e);
+                }
+                if (context.isPress) {
+                    let e = new Event("pressdisrupt");
+                    main.dispatchEvent(e);
+                }
+            }
+            main.addEventListener("touchstart", touchStart);
+            main.addEventListener("touchmove", touchMove);
+            main.addEventListener("touchend", touchEnd);
+            main.addEventListener("touchcancel", touchCancel);
+        }
+    </script>
+    <script>
+        function cubicBezier(p1x, p1y, p2x, p2y) {
+            const ZERO_LIMIT = 1e-6;
+            // Calculate the polynomial coefficients,
+            // implicit first and last control points are (0,0) and (1,1).
+            const ax = 3 * p1x - 3 * p2x + 1;
+            const bx = 3 * p2x - 6 * p1x;
+            const cx = 3 * p1x;
+
+            const ay = 3 * p1y - 3 * p2y + 1;
+            const by = 3 * p2y - 6 * p1y;
+            const cy = 3 * p1y;
+
+            function sampleCurveDerivativeX(t) {
+                // `ax t^3 + bx t^2 + cx t' expanded using Horner 's rule.
+                return (3 * ax * t + 2 * bx) * t + cx;
+            }
+
+            function sampleCurveX(t) {
+                return ((ax * t + bx) * t + cx) * t;
+            }
+
+            function sampleCurveY(t) {
+                return ((ay * t + by) * t + cy) * t;
+            }
+
+            // Given an x value, find a parametric value it came from.
+            function solveCurveX(x) {
+                var t2 = x;
+                var derivative;
+                var x2;
+
+                // https://trac.webkit.org/browser/trunk/Source/WebCore/platform/animation
+                // First try a few iterations of Newton's method -- normally very fast.
+                // http://en.wikipedia.org/wiki/Newton's_method
+                for (let i = 0; i < 8; i++) {
+                    // f(t)-x=0
+                    x2 = sampleCurveX(t2) - x;
+                    if (Math.abs(x2) < ZERO_LIMIT) {
+                        return t2;
+                    }
+                    derivative = sampleCurveDerivativeX(t2);
+                    // == 0, failure
+                    /* istanbul ignore if */
+                    if (Math.abs(derivative) < ZERO_LIMIT) {
+                        break;
+                    }
+                    t2 -= x2 / derivative;
+                }
+
+                // Fall back to the bisection method for reliability.
+                // bisection
+                // http://en.wikipedia.org/wiki/Bisection_method
+                var t1 = 1;
+                /* istanbul ignore next */
+                var t0 = 0;
+
+                /* istanbul ignore next */
+                t2 = x;
+                /* istanbul ignore next */
+                while (t1 > t0) {
+                    x2 = sampleCurveX(t2) - x;
+                    if (Math.abs(x2) < ZERO_LIMIT) {
+                        return t2;
+                    }
+                    if (x2 > 0) {
+                        t1 = t2;
+                    } else {
+                        t0 = t2;
+                    }
+                    t2 = (t1 + t0) / 2;
+                }
+
+                // Failure
+                return t2;
+            }
+
+            function solve(x) {
+                return sampleCurveY(solveCurveX(x));
+            }
+
+            return solve;
+        }
+
+        let linear = cubicBezier(0, 0, 1, 1);
+        let ease = cubicBezier(.25, .1, .25, 1);
+        let easeIn = cubicBezier(.42, 0, 1, 1);
+        let easeOut = cubicBezier(0, 0, .58, 1);
+        let easeInOut = cubicBezier(.42, 0, .58, 1);
+        let myCB = cubicBezier(.69, -0.85, .25, 1);
+        class Timeline {
+            constructor() {
+                this._animations = [];
+                this.pauseTime = 0;
+                this.status = "inited";
+                this._startPoint = 0;
+                this._rate = 1;
+            }
+            pause() {
+                if (this.status !== "started")
+                    return;
+                this.status = "paused";
+                this._resumeTick = this._tick;
+                this._tick = null;
+                this._pauseStart = Date.now();
+            }
+            resume() {
+                if (this.status !== "paused")
+                    return;
+                this.status = "started";
+                this.pauseTime += Date.now() - this._pauseStart;
+                this._tick = this._resumeTick;
+                requestAnimationFrame(this._tick);
+            }
+            restart() {
+                if (this._tick)
+                    this._tick = null;
+                this.status = "inited";
+                this._resumeTick = null;
+                this.start();
+                //        requestAnimationFrame(()=> this.start());
+            }
+            start() {
+                if (this.status === "started")
+                    return;
+                this.status = "started";
+                let startTime = Date.now();
+                this.pauseTime = 0;
+                this._tick = () => {
+                    for (let animation of this._animations) {
+                        animation.tick((Date.now() - this.pauseTime - startTime) * this._rate + this._startPoint);
+
+                    }
+                    if (this._tick)
+                        requestAnimationFrame(this._tick);
+                }
+
+                requestAnimationFrame(this._tick);
+            }
+            set rate(value) {
+                this._rate = value;
+            }
+            get rate() {
+                return this._rate;
+            }
+            set startPoint(value) {
+                this._startPoint = value;
+            }
+            get startPoint() {
+                return this._startPoint;
+            }
+            addAnimation(animation) {
+                this._animations.push(animation);
+            }
+            removeAnimation(animation) {
+            }
+            clearAnimations() {
+                this._animations = [];
+            }
+        }
+        class DOMElementStyleNumberAnimation {
+            constructor(element, property, startTime, startValue, endTime, endValue, transitCurve, converter) {
+                this._element = element;
+                this._property = property;
+                this._startTime = startTime;
+                this._startValue = startValue;
+                this._endTime = endTime;
+                this._endValue = endValue;
+                this._transitCurve = transitCurve;
+                this._converter = converter;
+                this._fixKeyFrame = false;
+            }
+            tick(t) {
+                // if t>this._endTime解决两个动画无缝衔接问题
+                if (t > this._endTime) {
+                    if (!this._fixKeyFrame)
+                        return;
+                    else {
+                        t = this._endTime;
+                        this._fixKeyFrame = false;
+                    }
+                }
+                else if (t < this._startTime) {
+                    if (!this._fixKeyFrame)
+                        return;
+                    else {
+                        t = this._startTime;
+                        this._fixKeyFrame = false;
+                    }
+                } else {
+                    this._fixKeyFrame = true;
+                }
+                let progress = (t - this._startTime) / (this._endTime - this._startTime);
+                let displacement = this._transitCurve(progress) * (this._endValue - this._startValue);
+                let currentValue = displacement + this._startValue;
+                //        console.log("coverter=",this._converter(currentValue))
+                this._element.style[this._property] = this._converter(currentValue);
+            }
+        }
+        class DOMElementStyleVectorAnimation {
+            constructor(element, property, startTime, startValue, endTime, endValue, transitCurve, converter) {
+                this._element = element;
+                this._property = property;
+                this._startTime = startTime;
+                this._startValue = startValue;
+                this._endTime = endTime;
+                this._endValue = endValue;
+                this._transitCurve = transitCurve
+                this._converter = converter;
+                this._fixKeyFrame = false;
+            }
+            tick(t) {
+                // if t>this._endTime解决两个动画无缝衔接问题
+                if (t > this._endTime) {
+                    if (!this._fixKeyFrame)
+                        return;
+                    else {
+                        t = this._endTime;
+                        this._fixKeyFrame = false;
+                    }
+                }
+                else if (t < this._startTime) {
+                    if (!this._fixKeyFrame)
+                        return;
+                    else {
+                        t = this._startTime;
+                        this._fixKeyFrame = false;
+                    }
+                } else {
+                    this._fixKeyFrame = true;
+                }
+                let progress = (t - this._startTime) / (this._endTime - this._startTime);
+                let displacement = [];
+                let currentValue = [];
+                for (let i = 0; i < this._endValue.length; i++) {
+                    displacement[i] = this._transitCurve(progress) * (this._endValue[i] - this._startValue[i]);
+                    currentValue[i] = displacement[i] + this._startValue[i];
+
+                }
+                this._element.style[this._property] = this._converter(currentValue);
+            }
+        }
+    </script>
+</head>
+<style>
+    #container{
+        width: 500px;
+        height: 300px;
+    }
+    .carousel {
+        width: 100%;
+        height: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        /* overflow: visible;
+       outline: solid 1px blue;
+   transform: translate(500px);  */
+    }
+
+    .carousel>img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+    }
+    .carouselDot{
+        margin: -30px 0 0 0;
+        width:100%;
+        height:30px;
+        text-align: center;
+    }
+    .carouselDot>div{
+        display: inline-block;
+        margin:0 5px;
+        height: 10px;
+        width: 10px;
+        border-radius: 5px;
+        background-color: white;
+        opacity: 0.3;
+    }
+</style>
+
+<body>
+<div id="container">
+    <div></div>
+    <div></div>
+</div>
+</body>
+<script type="text/javascript">
+    let data = [
+        "https://static001.geekbang.org/resource/image/bb/21/bb38fb7c1073eaee1755f81131f11d21.jpg",
+        "https://static001.geekbang.org/resource/image/1b/21/1b809d9a2bdf3ecc481322d7c9223c21.jpg",
+        "https://static001.geekbang.org/resource/image/b6/4f/b6d65b2f12646a9fd6b8cb2b020d754f.jpg",
+        "https://static001.geekbang.org/resource/image/73/e4/730ea9c393def7975deceb48b3eb6fe4.jpg"];
+    let link=[
+        "https://time.geekbang.org/column/article/82764",
+        "https://time.geekbang.org/column/article/83302",
+        "https://time.geekbang.org/column/article/83719",
+        "https://time.geekbang.org/column/article/83860"];
+    class Carousel {
+        constructor(container, duration = 3000, elementWidth = 500, transitMethod = ease, transitionDuration = 500) {
+            this._container = container.firstElementChild;
+            this._dotDisplay = container.lastElementChild;
+            this._duration = duration;
+            this._container.classList.add("carousel");
+            this._dotDisplay.classList.add("carouselDot");
+            this._handler = null;
+            this.data = null;
+            this.elementWidth = elementWidth;
+            this.transitMethod = transitMethod;
+            this.transitionDuration = transitionDuration;
+        }
+        render() {
+            this._container.innerHTML = "";
+            for (let d in this.data) {
+                let e = document.createElement("img");
+                let dot = document.createElement("div");
+                e.src = this.data[d];
+                //若不设置transform，则无法获取到图片实时位置
+                e.style.transform = `translate(0px)`;
+                //若图片数量大于2，则把序列最后一张图片放在第一张图片的左侧，这样可以被起始的拖动看到
+                if (parseInt(d) === this.data.length -1 && this.data.length > 2){
+                    e.style.transform= `translate(-${this.elementWidth * ( 1 + parseInt(d))}px)`;
+                }
+                // // 解决点被图片盖住的问题，原因是图片设置了transform
+                dot.style.transform = `translate(0px)`;
+                this._container.appendChild(e);
+                this._dotDisplay.appendChild(dot);
+
+            }
+            let offsetTimeStart = 0;
+            let currentTranstitionDuration = 0;
+            let tl = new Timeline();
+            let position = 0;
+            let children = Array.prototype.slice.call(this._container.children);
+            this.elementWidth = Math.max(...children.map(i=>i.width));
+            let dots = Array.prototype.slice.call(this._dotDisplay.children);
+            dots[position].style['background-color'] = 'black';
+            let positionOf = (element) =>{
+                let position = element.style.transform.match(/\((.*?)\)/g)[0];
+                if (position.slice(position.length-2,position.length-1) === "%"){
+                    return parseInt(position.slice(1, position.length - 2))*this.elementWidth/100;}
+                else if (position.slice(position.length - 3, position.length - 1) === "px"){
+                    return parseInt(position.slice(1,position.length-3));}
+                else
+                    console.log("positionOf error, positoin=", position);
+            }
+            let nextFrame = (i = 1) => {
+                let current = children[position];
+                let nextPosition = (position+1)%children.length;
+                let next = children[nextPosition];
+                let nextNextPosition = (nextPosition + 1) % children.length;
+                let nextNext = children[nextNextPosition];
+                offsetTimeStart = Date.now();
+                tl.clearAnimations();
+                if (i === -1){
+                    current.style.transform = `translate(${-this.elementWidth - this.elementWidth * position}px)`;
+                }
+                else {
+                    //由于无法从ease等动作的位移推断经过时间，若动作不是linear，从暂停状态再次加载动作（比如点击提示点，pan等动作）时动画时间与正常动画时间有出入。
+                    let currentPo = positionOf(current);
+                    let currentDis = Math.abs(-this.elementWidth - this.elementWidth * position - currentPo)/this.elementWidth;
+                    tl.addAnimation(new DOMElementStyleNumberAnimation(
+                        current,
+                        "transform",
+                        0, currentPo,
+                        currentDis * this.transitionDuration, -this.elementWidth - this.elementWidth * position,
+                        this.transitMethod,
+                        (v) => `translateX(${v}px)`
+                    ));
+                }
+                if (i === 1){
+                    nextNext.style.transform = `translate(${this.elementWidth - this.elementWidth * nextNextPosition}px)`;
+                }
+                else {
+                    let nextNextPo = positionOf(nextNext);
+                    let nextNextDis = Math.abs(this.elementWidth - this.elementWidth * nextNextPosition - nextNextPo) / this.elementWidth;
+                    tl.addAnimation(new DOMElementStyleNumberAnimation(
+                        nextNext,
+                        "transform",
+                        0, nextNextPo,
+                        nextNextDis * this.transitionDuration, this.elementWidth - this.elementWidth * nextNextPosition,
+                        this.transitMethod,
+                        (v) => `translateX(${v}px)`
+                    ));
+                }
+                let nextPo = positionOf(next);
+                let nextDis =  Math.abs(- this.elementWidth * nextPosition - nextPo) / this.elementWidth;
+                tl.addAnimation(new DOMElementStyleNumberAnimation(
+                    next,
+                    "transform",
+                    0, nextPo,
+                    this.transitionDuration * nextDis,  - this.elementWidth * nextPosition,
+                    this.transitMethod,
+                    (v) => `translateX(${v}px)`
+                ));
+                tl.restart();
+                position = nextPosition;
+                //由于图片整体向左错了一位，所以dots[0]指向第二张图片，
+                //提示点变色
+                setTimeout(() => {
+                    let previousPosition = (position + children.length - 1) % children.length;
+                    for (let i in dots){
+                        dots[i].style['background-color'] = (parseInt(i)=== position) ? 'black':'white';
+                    }
+                }, this.transitionDuration)
+                this._handler = setTimeout(() => {
+                    nextFrame();
+                }, this._duration);
+
+            }
+
+            this._handler = setTimeout(() => {
+                nextFrame();
+            }, this._duration);
+            let offset = 0;
+            let currentTime = 0;
+            enableGesture(this._container);
+            for (let i in dots){
+                dots[i].addEventListener("mousedown", event => {
+                    if (tl.status !== "paused") {
+                        tl.pause();
+                        clearTimeout(this._handler);
+                        delete (this._handler);
+                        currentTime = Date.now();
+                        if (currentTime - offsetTimeStart < this.transitionDuration)
+                            offset = (1 - this.transitMethod((currentTime - offsetTimeStart) / this.transitionDuration)) * this.elementWidth;
+                        else
+                            offset = 0;
+                    }
+                    let iInt = parseInt(i);
+                    let current = children[position];
+                    let previousPosition = (position + children.length - 1) % children.length;
+                    let previous = children[previousPosition];
+                    let displacement = null;
+                    let iIntPo = null;
+
+                    if (iInt === position || iInt === previousPosition){
+                        position = (iInt + children.length - 1) % children.length;
+                        //向右移动的时候选中图片左侧图片有可能在视框右边，这样就会发成该图片飘过视框的现象，只有末端图片飘过视框时会造成视觉影响，将其作为特别情况处理。
+                        if (iInt === 0){
+                            children[children.length-1].style.transform = `translate(${- this.elementWidth - this.elementWidth * (children.length-1)}px)`;
+                        }
+                        nextFrame(0);
+                        return;
+                    }
+                    if (iInt<position){
+                        //提示点图片在current的左边，该图片与previous,current三张图片右移
+                        iIntPo = this.elementWidth * (-2 - iInt) + offset
+                        children[iInt].style.transform =  `translate(${iIntPo}px)`;
+                        displacement = 1;
+                    }
+                    else {
+                        //提示点图片在current的右边，该图片与previous,current三张图片左移
+                        iIntPo = this.elementWidth - this.elementWidth * iInt + offset
+                        children[iInt].style.transform = `translate(${iIntPo}px)`;
+                        displacement = -1;
+                    }
+                    //移动提示点位置图片以及previous,current三张图片
+                    let currentPo = positionOf(current);
+                    let currentPoN = this.elementWidth *(displacement - position);
+                    let currentDis  = Math.abs(currentPoN - currentPo) / this.elementWidth;
+                    let previousPo = positionOf(previous);
+                    let previousPoN = this.elementWidth * (displacement - previousPosition);
+                    let previousDis = Math.abs(previousPoN - previousPo) / this.elementWidth;
+                    let iIntPoN = - this.elementWidth * iInt;
+                    let iIntDis = Math.abs(iIntPoN - iIntPo) / this.elementWidth;
+                    tl.clearAnimations();
+                    tl.addAnimation(new DOMElementStyleNumberAnimation(
+                        current,
+                        "transform",
+                        0, currentPo,
+                        this.transitionDuration * currentDis, currentPoN,
+                        this.transitMethod,
+                        (v) => `translateX(${v}px)`
+                    ));
+                    tl.addAnimation(new DOMElementStyleNumberAnimation(
+                        previous,
+                        "transform",
+                        0, previousPo,
+                        this.transitionDuration * previousDis, previousPoN,
+                        this.transitMethod,
+                        (v) => `translateX(${v}px)`
+                    ));
+                    tl.addAnimation(new DOMElementStyleNumberAnimation(
+                        children[iInt],
+                        "transform",
+                        0, iIntPo,
+                        this.transitionDuration * iIntDis, iIntPoN,
+                        this.transitMethod,
+                        (v) => `translateX(${v}px)`
+                    ));
+                    tl.restart();
+                    position = iInt;
+                    //由于图片整体向左错了一位，所以dots[0]指向第二张图片，
+                    //提示点变色，将现图片右侧图片移到右侧,现图片左侧图片移到左侧，
+                    setTimeout(() => {
+                        let previousPosition = (position + children.length - 1) % children.length;
+                        let nextPosition = (position + children.length + 1) % children.length;
+                        for (let i in dots) {
+                            dots[i].style['background-color'] = (parseInt(i) === position) ? 'black' : 'white';
+                        }
+                        children[previousPosition].style.transform = `translate(${ - this.elementWidth - this.elementWidth * previousPosition}px)`
+                        children[nextPosition].style.transform = `translate(${this.elementWidth - this.elementWidth * nextPosition}px)`
+                    }, this.transitionDuration)
+                    this._handler = setTimeout(() => {`translate(${this.elementWidth - this.elementWidth * iInt + offset}px)`
+                        nextFrame();
+
+                        //若提示点图片并非current或previous，此动画持续时间会大于this.transitionDuration,时长有可能大于this._duration
+                    }, this._duration);
+
+
+                });
+            }
+            this._container.addEventListener("tap", (event) => { window.open(link[position]) });
+            this._container.addEventListener("pan", event => {
+                if (event.isVertical)
+                    return;
+                if (tl.status !== "paused"){
+                    tl.pause();
+                    clearTimeout(this._handler);
+                    delete (this._handler);
+                    currentTime= Date.now();
+                    if (currentTime - offsetTimeStart < this.transitionDuration)
+                        offset =(1-this.transitMethod((currentTime-offsetTimeStart)/this.transitionDuration))*this.elementWidth;
+                    else
+                        offset = 0;
+                }
+                let current = children[position];
+                let nextPosition = (position + 1) % children.length;
+                let next = children[nextPosition];
+                let previousPosition = (position + children.length - 1) % children.length;
+                let previous = children[previousPosition];
+                current.style.transform = `translate(${- position * this.elementWidth + event.dx+offset}px`;
+                next.style.transform = `translate(${this.elementWidth-this.elementWidth * nextPosition +event.dx+offset}px)`;
+                previous.style.transform = `translate(${this.elementWidth * ( - 1 - previousPosition)  + event.dx+offset}px)`;
+            });
+            this._container.addEventListener("panend", event => {
+                let condition = 0;
+                if (event.isVertical)
+                    return;
+                if(event.isFlick && Math.abs(event.dx)>Math.abs(event.dy)){
+                    condition = (event.dx < 0) ? 1 : -1;
+                }
+                else{
+                    let x = event.dx;
+                    condition = (x < -this.elementWidth/2) ? 1 : (x > this.elementWidth/2) ? -1 : 0;
+                }
+                position = (offset < this.elementWidth) ? ((position - 1 + 4 + condition) % 4) : ((position - 2 + 4 + condition) % 4);
+                nextFrame(condition);
+            });
+            this._container.addEventListener("pancancel", event => {
+                let condition = 0;
+                position = (offset < this.elementWidth)? ((position - 1 + 4 + condition) % 4) : ((position - 2 + 4 + condition) % 4);
+                nextFrame(condition);
+            });
+            this._container.addEventListener("mousedown", event => event.preventDefault());
+        }
+    }
+    let duration = 3000;
+    let elementWidth = 500;
+    let transitionMethod = linear;
+    let transitionDuration = 500;
+    let carousel = new Carousel(document.getElementById("container"),duration, elementWidth, transitionMethod, transitionDuration);
+    carousel.data = data;
+    carousel.render();
+</script>
+
+</html>
