@@ -18,15 +18,23 @@
 <!-- https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e -->
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
+    // useState/useEffect/useRef/useCallback/reducer
     let HOOKS = [];
-    let Tick;
-    function nextTick() {
-        if (Tick) {
+    const Tick = {
+        queue: [],
+        push: function(task) {
+            this.queue.push(task);
+        },
+        nextTick: function() {
             setTimeout(() => {
-                render();
+                // console.log(this.queue);
+                if (this.queue.length) { // 一次渲染后，全部出栈，确保单次循环不会重复渲染
+                    render();
+                    this.queue = [];
+                }
             })
         }
-    }
+    };
     function render() {
         let currentIndex = 0;
         function useState(initialValue) {
@@ -38,7 +46,8 @@
                     newState = p(HOOKS[memoryCurrentIndex]);
                 }
                 HOOKS[memoryCurrentIndex] = newState;
-                // render();
+                Tick.push(memoryCurrentIndex);
+                Tick.nextTick();
             }
             return [HOOKS[currentIndex++], setState];
         }
@@ -58,22 +67,26 @@
             HOOKS[currentIndex++] = {_deps: deps, _effect: null};
         }
         const [count, setCount] = useState(0);
-        // useEffect(() => {
-        //     // 清除副作用、支持回调
-        //     const time = setInterval(() => {
-        //         setCount(count + 1);
-        //     }, 1000)
-        //     return () => {
-        //         clearInterval(time);
-        //     }
-        // }, []);
-        console.log(666)
+        useEffect(() => {
+            // 清除副作用、支持回调
+            const time = setInterval(() => {
+                setCount(count + 1);
+            }, 1000)
+            return () => {
+                clearInterval(time);
+            }
+        }, [count]);
         const [name, setName] = useState('hi');
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);
         // })
         $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
-            // 现在触发两次set，便会重渲染两次
+            // 现在触发多次set，不会重渲染多次
+            setCount(count + 1);
+            setCount(count + 1);
+            setCount(count + 1);
+            setCount(count + 1);
+            setCount(count + 1);
             setCount(count + 1);
             setName(name + 'ha');
         }
