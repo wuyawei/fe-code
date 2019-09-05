@@ -19,33 +19,61 @@
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
     let HOOKS = [];
+    let Tick;
+    function nextTick() {
+        if (Tick) {
+            setTimeout(() => {
+                render();
+            })
+        }
+    }
     function render() {
         let currentIndex = 0;
         function useState(initialValue) {
             HOOKS[currentIndex] = HOOKS[currentIndex] || initialValue;
             const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的，需要保存本次的
-            const setState = newState => {
+            const setState = p => {
+                let newState = p;
+                if (typeof p === 'function') {
+                    newState = p(HOOKS[memoryCurrentIndex]);
+                }
                 HOOKS[memoryCurrentIndex] = newState;
-                render();
+                // render();
             }
             return [HOOKS[currentIndex++], setState];
         }
         function useEffect(fn, deps) {
-            const _deps = HOOKS[currentIndex];
+            const effect = HOOKS[currentIndex];
+            const _deps = effect && effect._deps;
             const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
+            const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的
             if (!deps || hasChange) {
+                const _effect = effect && effect._effect;
                 setTimeout(() => {
-                    fn();
+                    typeof _effect === 'function' && _effect(); // 每次先判断一下有没有上一次的副作用需要卸载
+                    const ef = fn();
+                    HOOKS[memoryCurrentIndex] = {...HOOKS[memoryCurrentIndex], _effect: ef}; // 更新effects
                 })
-                HOOKS[currentIndex++] = deps;
             }
+            HOOKS[currentIndex++] = {_deps: deps, _effect: null};
         }
         const [count, setCount] = useState(0);
+        // useEffect(() => {
+        //     // 清除副作用、支持回调
+        //     const time = setInterval(() => {
+        //         setCount(count + 1);
+        //     }, 1000)
+        //     return () => {
+        //         clearInterval(time);
+        //     }
+        // }, []);
+        console.log(666)
         const [name, setName] = useState('hi');
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);
         // })
         $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
+            // 现在触发两次set，便会重渲染两次
             setCount(count + 1);
             setName(name + 'ha');
         }
