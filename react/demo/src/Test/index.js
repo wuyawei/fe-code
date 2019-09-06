@@ -3,7 +3,11 @@ function Test() {
     const [count, setCount] = useState(0);
     const prevCount = usePrevious(count);
     function handleClick() {
-        setCount(count+1);
+        setCount(count + 1);
+        setCount(count + 2);
+        setCount(count + 3);
+        setCount(count + 4);
+        setCount(count + 5); // 以最后一个为准
         console.log('3===>', count);
     }
     function onMouseOut(e) {} // 触发条件：移出父元素和移出每个子元素
