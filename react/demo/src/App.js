@@ -11,7 +11,7 @@ const Test = lazy(() => import('./Test/index'));
 function AppRouter() {
   return (
     <Router>
-        <Link to="/about">about</Link>
+        {/* <Link to="/about">about</Link>
         <br/>
         <Link to="/calendar">calendar</Link>
         <br/>
@@ -21,7 +21,7 @@ function AppRouter() {
         <br/>
         <Link to="/carousel">carousel</Link>
         <br/>
-        <Link to="/test">test</Link>
+        <Link to="/test">test</Link> */}
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
               <Route path="/about" component={About} />
