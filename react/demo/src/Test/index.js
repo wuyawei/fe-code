@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 let num = 0;
 function Test() {
-    const [count, setCount] = useState(0);
+    let [count, setCount] = useState(0);
     const prevCount = usePrevious(count);
     function handleClick() {
         setCount(count + 1);
@@ -18,13 +18,20 @@ function Test() {
             setCount(++num);
         }, 1000);
       }, []);
-    console.log('我是 num', num);
+    // console.log('我是 num', num);
+    // useEffect(() => {
+    //     const id = setInterval(() => {
+    //         // console.log(count);
+    //         setCount(++count);
+    //     }, 1000);
+    // }, []);
+    // console.log(count);
     function onMouseOut(e) {} // 触发条件：移出父元素和移出每个子元素
     return (
         <div>
             {/* <h1>Now: {count}, before: {prevCount}</h1>
             <button onClick={handleClick}>add</button> */}
-            <h1>{count}-----{num}</h1>
+            <h1>{count}-----</h1>
         </div>
     )
 }
