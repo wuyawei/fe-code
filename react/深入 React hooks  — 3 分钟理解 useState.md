@@ -4,7 +4,7 @@ React Hooks的基本用法，[官方文档](https://react.docschina.org/docs/hoo
 
 **个人博客地址 [🍹🍰 fe-code](https://github.com/wuyawei/fe-code)**
 
-## 疑惑
+## 思考
 > 一起来看看这个栗子。
 
 ``` javascript
