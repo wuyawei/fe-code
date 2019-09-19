@@ -7,6 +7,7 @@ const Calendar = lazy(() => import('./Calendar/index'));
 const Touch = lazy(() => import('./Touch'));
 const Carousel = lazy(() => import('./Carousel'));
 const Test = lazy(() => import('./Test/index'));
+const ToScroll = lazy(() => import('./ToScroll/index'))
 
 function AppRouter() {
   return (
@@ -30,6 +31,7 @@ function AppRouter() {
               <Route path="/touch" component={Touch} />
               <Route path="/carousel" component={Carousel} />
               <Route path="/test" component={Test} />
+              <Route path="/scroll" component={ToScroll} />
           </Switch>
         </Suspense>
     </Router>
