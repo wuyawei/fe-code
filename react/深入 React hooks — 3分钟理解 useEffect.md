@@ -24,7 +24,11 @@ function Counter() {
 
 但是我们更应该知道的是，回调函数只运行一次，并不代表 useEffect 只运行一次。在每次更新中，useEffect 依然会每次都执行，只不过因为传递给它的数组依赖项是空的，导致 React 每次检查的时候，都没有发现依赖的变化，所以不会重新执行回调。
 
+**检查依赖，只是简单的比较了一下值或者引用是否相等**。
+
 而且上面的写法，官方是不推荐的。我们应该确保 useEffect 中用到的状态（如：count ），都完整的添加到依赖数组中。
+
+**不管引用的是基础类型值、还是对象甚至是函数**。
 
 ``` javascript
 function Counter() {
@@ -40,7 +44,10 @@ function Counter() {
 }
 ```
 
-这样才能保证回调中可以每次拿到当前的 count 值。咦！好像有什么奇怪的东西。
+这样才能保证回调中可以每次拿到当前的 count 值。
+
+## 副作用
+咦！好像有什么奇怪的东西。
 
 ![hook.gif](https://i.loli.net/2019/09/15/NrKyJDa9MCP5FAR.gif)
 
@@ -57,8 +64,6 @@ function Counter() {
 * 嗯，好像发现问题了。
 
 每次更新时，会重新运行 useEffect 的回调函数，也就会重新设置一个定时器。但是有一个问题是，我们上一次设置的定时器并没有清理掉，所以频繁的更新会导致越来越多的定时器同时在运行。
-
-## 副作用
 为了解决上面的问题，就需要用到 useEffect 的另一个特性：清除副作用。
 
 ``` javascript
@@ -103,4 +108,11 @@ function Counter() {
 
 ![image.png](https://i.loli.net/2019/09/15/FoIC4w2qfMQGvap.png)
 
-显然不是，useEffect 在视图更新之后才清理上一次的副作用。这么处理其实也是和 useEffect 的特性相契合的。因为在官方文档中说，可以将 useEffect 的回调和清理副作用的机制，类比成 class 组件中的生命周期。
+显然不是，useEffect 在视图更新之后才清理上一次的副作用。这么处理其实也是和 useEffect 的特性相契合的。React 只会在浏览器绘制后运行 useEffect。所以 Effect 的清除同样被延迟了。上一次的 Effect 会在重新渲染后被清除。
+
+## 类生命周期
+官方文档中说，可以将 useEffect 的回调和清理副作用的机制，类比成 class 组件中的生命周期。不过，由于 class 组件和函数组件自身特性不同的原因，导致这种类比也容易使人迷惑。
+
+> 如果你熟悉 React class 的生命周期函数，你可以把 useEffect Hook 看做 componentDidMount，componentDidUpdate 和 componentWillUnmount 这三个函数的组合。 --[使用 Effect Hook](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-effect.html)
+
+我们经常想把第二个参数设置成`[]`，来达到和 componentDidMount 一样的效果。但是往往也最容易出问题，就像我们一开始的定时器例子一样。
