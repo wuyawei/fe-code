@@ -1,0 +1,21 @@
+.wrapper{
+    height: 500px;
+    overflow: scroll;
+    position: relative;
+    border: 2px solid #eee;
+    .wrapper-box-item{
+        width: 750px;
+        line-height: 100px;
+        text-align: center;
+        background-color: red;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+    .pullup-wrapper{
+        line-height: 50px;
+        height: 50px;
+        background-color: #57b2a9;
+        color: #fff;
+        text-align: center;
+    }
+}
