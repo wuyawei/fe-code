@@ -19,7 +19,7 @@
 <!-- https://github.com/facebook/react/blob/master/packages/react-reconciler/src/ReactFiberHooks.js -->
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    // useState/useEffect/useRef/useCallback/useReducer
+    // useState/useEffect/useCallback/useReducer
     let HOOKS = [];
     let currentIndex = 0;
     function useState(initialState) {
@@ -27,10 +27,11 @@
         const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的，需要保存本次的
         const setState = p => {
             let newState = p;
+            if (typeof p === 'function') {
+                newState = p(HOOKS[memoryCurrentIndex]);
+            }
+            if (newState === HOOKS[memoryCurrentIndex]) return;
             const update = () => {
-                if (typeof p === 'function') {
-                    newState = p(HOOKS[memoryCurrentIndex]);
-                }
                 HOOKS[memoryCurrentIndex] = newState;
             }
             Tick.push(update);
@@ -53,6 +54,15 @@
         }
         HOOKS[currentIndex++] = {_deps: deps, _effect: null};
     }
+    function useReducer(reducer, initialState) {
+        const [state, setState] = useState(initialState);
+        const update = (state, action) => {
+            const result = reducer(state, action);
+            setState(result);
+        }
+        const dispatch = update.bind(null, state);
+        return [state, dispatch];
+    }
     const Tick = {
         queue: [],
         push: function(task) {
@@ -70,32 +80,44 @@
             })
         }
     };
+    
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case 'increment':
+                return {count: state.count + 1};
+            case 'decrement':
+                return {count: state.count - 1};
+            default:
+                throw new Error();
+        }
+    }
     function render() {
-        const [count, setCount] = useState(0);
-        useEffect(() => {
-            // 清除副作用、支持回调
-            const time = setInterval(() => {
-                setCount(count + 1);
-                setName(name + 'ha');
-            }, 1000)
-            return () => {
-                clearInterval(time);
-            }
-        }, [count]);
+        // const [count, setCount] = useState(0);
+        // useEffect(() => {
+        //     // 清除副作用、支持回调
+        //     const time = setInterval(() => {
+        //         setCount(count + 1);
+        //         setName(name + 'ha');
+        //     }, 1000)
+        //     return () => {
+        //         clearInterval(time);
+        //     }
+        // }, [count]);
         const [name, setName] = useState(() => 'hi');
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);
         // })
-        // console.log(666);
+        const [{count}, dispatch] = useReducer(reducer, {count: 0});
+        console.log(666);
         $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
             // 现在触发多次set，不会重渲染多次
-            setCount(count + 1);
-            setCount(count + 1);
-            setCount(count + 1);
-            setCount(count + 1);
-            setCount(count + 1);
-            setCount(count + 1);
-            setName(name + 'ha');
+            dispatch({type: 'increment'});
+            // setCount(count + 1);
+            // setCount(count + 1);
+            // setCount(count + 1);
+            // setCount(count + 1);
+            // setCount(count + 1);
+            // setName(name + 'ha');
         };
         $('#count').html(count);
         $('.name').html(name);
