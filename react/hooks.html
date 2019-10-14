@@ -9,6 +9,7 @@
 <body>
     <div class="name"></div>
     <button class="add">add</button>
+    <button class="increment">increment</button>
     <span id="count"></span>
 </body>
 <!-- https://www.netlify.com/blog/2019/03/11/deep-dive-how-do-react-hooks-really-work/ -->
@@ -63,6 +64,17 @@
         const dispatch = update.bind(null, state);
         return [state, dispatch];
     }
+    function useMemo(fn, deps) {
+        const hook = HOOKS[currentIndex];
+        const _deps = hook && hook._deps;
+        const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
+        const memo = hasChange ? fn() : hook.memo;
+        HOOKS[currentIndex++] = {_deps: deps, memo};
+        return memo;
+    }
+    function useCallback(fn, deps) {
+        return useMemo(() => fn, deps);
+    }
     const Tick = {
         queue: [],
         push: function(task) {
@@ -92,7 +104,7 @@
         }
     }
     function render() {
-        // const [count, setCount] = useState(0);
+        const [count, setCount] = useState(0);
         // useEffect(() => {
         //     // 清除副作用、支持回调
         //     const time = setInterval(() => {
@@ -107,7 +119,11 @@
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);
         // })
-        const [{count}, dispatch] = useReducer(reducer, {count: 0});
+        // const [{count}, dispatch] = useReducer(reducer, {count: 0});
+        const add = useMemo(() => count + 1, [count]);
+        const increment = useCallback(() => {
+            setCount(count + 1);
+        }, [count])
         console.log(666);
         $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
             // 现在触发多次set，不会重渲染多次
@@ -119,8 +135,9 @@
             // setCount(count + 1);
             // setName(name + 'ha');
         };
+        $('.increment')[0].onclick = increment;
         $('#count').html(count);
-        $('.name').html(name);
+        $('.name').html(add);
     }
     render();
 </script>
