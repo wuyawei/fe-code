@@ -1,3 +1,4 @@
+# 深入 React hooks  — useEffect
 ## 前言
 React Hooks的基本用法，[官方文档](https://react.docschina.org/docs/hooks-intro.html) 已经非常详细。本文的目的，是想通过一个简单的例子详细分析一些令人疑惑的问题及其背后的原因。这是系列的第二篇，主要讲解 useEffect。
 
