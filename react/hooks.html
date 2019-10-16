@@ -20,8 +20,8 @@
 <!-- https://github.com/facebook/react/blob/master/packages/react-reconciler/src/ReactFiberHooks.js -->
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    // useState/useEffect/useCallback/useReducer
-    let HOOKS = [];
+    // useState/useEffect/useCallback/useReducer/useMemo
+    const HOOKS = [];
     let currentIndex = 0;
     function useState(initialState) {
         HOOKS[currentIndex] = HOOKS[currentIndex] || (typeof initialState === 'function' ? initialState() : initialState);
