@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="name"></div>
+    <div class="number"></div>
     <button class="add">add</button>
     <button class="increment">increment</button>
     <span id="count"></span>
@@ -26,9 +27,9 @@
     const reducer = (state, action) => {
         switch (action.type) {
             case 'increment':
-                return {count: state.count + 1};
+                return {total: state.total + 1};
             case 'decrement':
-                return {count: state.count - 1};
+                return {total: state.total - 1};
             default:
                 throw new Error();
         }
@@ -49,25 +50,29 @@
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);
         // })
-        // const [{count}, dispatch] = useReducer(reducer, {count: 0});
+        const [{total}, dispatch] = useReducer(reducer, {total: 0});
         const add = useMemo(() => count + 1, [count]);
         const increment = useCallback(() => {
             setCount(count + 1);
-        }, [count])
+            setName(name + 'ha');
+        }, [count, name])
         console.log(666);
         $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
             // 现在触发多次set，不会重渲染多次
-            dispatch({type: 'increment'});
+            // dispatch({type: 'increment'});
             // setCount(count + 1);
             // setCount(count + 1);
             // setCount(count + 1);
             // setCount(count + 1);
-            // setCount(count + 1);
-            // setName(name + 'ha');
+            setTimeout(() => {
+                setCount(count + 1);
+                setName(name + 'ha');
+            }, 5000)
         };
         $('.increment')[0].onclick = increment;
-        $('#count').html(count);
-        $('.name').html(add);
+        $('#count').html(count + total);
+        $('.number').html(add);
+        $('.name').html(name);
     }
     Tick.render = render;
     render();

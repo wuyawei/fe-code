@@ -1,16 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 let num = 0;
 function Test() {
-    let [count, setCount] = useState(0);
+    const [count, setCount] = useState(0);
+    const [name, setName] = useState('oh nanana');
     const prevCount = usePrevious(count);
     function handleClick() {
-        setCount(count + 1);
-        setCount(count + 2);
-        setCount(count + 3);
-        setCount(count + 4);
-        setCount(count + 5); // 以最后一个为准
-        console.log('3===>', count);
+        setCount(count => count + 5); // 以最后一个为准, 因为setCount 不会立即触发
+        // setName(name => name + ' nanana');
+        setTimeout(() => {
+            // setCount(count + 1);
+            // setCount(count + 2);
+            // setCount(count + 3);
+            // setCount(count + 4);
+            // setCount(count + 5); // 以最后一个为准, 因为setCount 不会立即触发
+            // setName(name => name + ' nanana');
+        }, 200)
+        console(count)
     }
+    useEffect(() => {
+        document.querySelector('button').addEventListener('click', ()=> {
+            setCount(count + 5); // 以最后一个为准, 因为setCount 不会立即触发
+            setName(name => name + ' nanana');
+        })
+        console.log(count, name);
+    }, [count, name])
     // useEffect(() => {
     //     const id = setInterval(() => {
     //         console.log(num);
@@ -29,13 +42,13 @@ function Test() {
     //         clearInterval(id);
     //     }
     // }, [count]);
-    console.log(3, '我是渲染', count);
-    function onMouseOut(e) {} // 触发条件：移出父元素和移出每个子元素
+    console.log(3, '我是渲染', count, name);
+    // function onMouseOut(e) {} // 触发条件：移出父元素和移出每个子元素
     return (
         <div>
-            {/* <h1>Now: {count}, before: {prevCount}</h1>
-            <button onClick={handleClick}>add</button> */}
-            <h1>{count}-----</h1>
+            {/* <h1>Now: {count}, before: {prevCount}</h1> */}
+            <button onClick={handleClick}>add</button>
+            <h1>{count}-----{name}</h1>
         </div>
     )
 }
