@@ -7,16 +7,17 @@ const hooks = (function() {
       push: function(task) {
           this.queue.push(task);
       },
-      nextTick: function() {
-          setTimeout(() => {
-              // console.log(this.queue);
+      nextTick: function(update) {
+          this.push(update);
+          Promise.resolve(() => {
+              console.log(this.queue);
               if (this.queue.length) { // 一次渲染后，全部出栈，确保单次事件循环不会重复渲染
                   this.queue.forEach(f => f()); // 依次执行队列中所有任务
                   currentIndex = 0; // 重置计数
                   this.queue = []; // 清空队列
                   this.render && this.render();
               }
-          })
+          }).then(f => f());
       }
   };
   function useState(initialState) {
@@ -31,18 +32,17 @@ const hooks = (function() {
           const update = () => {
               HOOKS[memoryCurrentIndex] = newState;
           }
-          Tick.push(update);
-          Tick.nextTick();
+          Tick.nextTick(update);
       };
       return [HOOKS[currentIndex++], setState];
   }
   function useEffect(fn, deps) {
-      const effect = HOOKS[currentIndex];
-      const _deps = effect && effect._deps;
+      const hook = HOOKS[currentIndex];
+      const _deps = hook && hook._deps;
       const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
       const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的
-      if (!deps || hasChange) {
-          const _effect = effect && effect._effect;
+      if (hasChange) {
+          const _effect = hook && hook._effect;
           setTimeout(() => {
               typeof _effect === 'function' && _effect(); // 每次先判断一下有没有上一次的副作用需要卸载
               const ef = fn();
