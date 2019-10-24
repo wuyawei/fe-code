@@ -10,12 +10,11 @@ const hooks = (function() {
       nextTick: function(update) {
           this.push(update);
           Promise.resolve(() => {
-              console.log(this.queue);
               if (this.queue.length) { // 一次渲染后，全部出栈，确保单次事件循环不会重复渲染
                   this.queue.forEach(f => f()); // 依次执行队列中所有任务
                   currentIndex = 0; // 重置计数
                   this.queue = []; // 清空队列
-                  this.render && this.render();
+                  this.render && this.render(); // 更新dom
               }
           }).then(f => f());
       }
@@ -29,10 +28,9 @@ const hooks = (function() {
               newState = p(HOOKS[memoryCurrentIndex]);
           }
           if (newState === HOOKS[memoryCurrentIndex]) return;
-          const update = () => {
-              HOOKS[memoryCurrentIndex] = newState;
-          }
-          Tick.nextTick(update);
+          Tick.nextTick(() => {
+            HOOKS[memoryCurrentIndex] = newState;
+        });
       };
       return [HOOKS[currentIndex++], setState];
   }
