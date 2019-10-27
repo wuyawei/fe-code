@@ -36,41 +36,44 @@
     }
     function render() {
         const [count, setCount] = useState(0);
-        // useEffect(() => {
-        //     // 清除副作用、支持回调
-        //     const time = setInterval(() => {
-        //         setCount(count + 1);
-        //         setName(name + 'ha');
-        //     }, 1000)
-        //     return () => {
-        //         clearInterval(time);
-        //     }
-        // }, [count]);
-        const [name, setName] = useState(() => 'hi');
+        useEffect(() => {
+            // 清除副作用、支持回调
+            const time = setInterval(() => {
+                setCount(count => count + 1);
+            }, 1000)
+            return () => {
+                clearInterval(time);
+            }
+        }, [count]);
+        // const [name, setName] = useState(() => 'hi');
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);
         // })
-        const [{total}, dispatch] = useReducer(reducer, {total: 0});
-        const add = useMemo(() => count + 1, [count]);
-        const increment = useCallback(() => {
-            setCount(count + 1);
-            setName(name + 'ha');
-        }, [count, name])
+        // const [{total}, dispatch] = useReducer(reducer, {total: 0});
+        // const add = useMemo(() => count + 1, [count]);
+        // const increment = useCallback(() => {
+        //     setCount(count + 1);
+        //     setName(name + 'ha');
+        // }, [count, name])
         console.log(666);
-        $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
-            // 现在触发多次set，不会重渲染多次
-            // dispatch({type: 'increment'});
-            // setCount(count + 1);
-            // setCount(count + 1);
-            // setCount(count + 1);
-            // setCount(count + 1);
+        // $('.add')[0].onclick = () => { // 重复绑定会覆盖之前的
+        //     // 现在触发多次set，不会重渲染多次
+        //     // dispatch({type: 'increment'});
+        //     // setCount(count + 1);
+        //     // setCount(count + 1);
+        //     // setCount(count + 1);
+        //     // setCount(count + 1);
+        //     setCount(count + 1);
+        //     setName(name + 'ha');
+        // };
+        document.querySelector('.add').onclick = () => {
             setCount(count + 1);
-            setName(name + 'ha');
         };
-        $('.increment')[0].onclick = increment;
-        $('#count').html(count + total);
-        $('.number').html(add);
-        $('.name').html(name);
+        document.querySelector('#count').innerHTML = count;
+        // $('.increment')[0].onclick = increment;
+        // $('#count').html(count);
+        // $('.number').html(add);
+        // $('.name').html(name);
     }
     Tick.render = render;
     render();
