@@ -183,16 +183,7 @@ function useCallback(fn, deps) {
 * 完整代码在这里 [hook.js](https://github.com/wuyawei/fe-code/blob/master/react/hooks.js)
 * 使用方法如下：
 ``` javascript
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'increment':
-            return {total: state.total + 1};
-        case 'decrement':
-            return {total: state.total - 1};
-        default:
-            throw new Error();
-    }
-}
+
 function render() {
     const [count, setCount] = useState(0);
     useEffect(() => {
