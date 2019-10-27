@@ -26,11 +26,12 @@ function useState(initialState) {
       return [state, setState];
 }
 ```
- 当然现在是不完整的，因为它根本就不能更新数据。即便我们 setState 的时候，触发了组件更新，再到 useState 更新，最后也只是又一次初始化拿到的 initialState。因为每次 useState 的 state 都是局部变量，更新就等于重新创建了一次，上一次的值始终无法拿到。所以，我们需要把 state 保存起来。
+当然现在是不完整的，因为它根本就不能更新数据。即便我们 setState 的时候，触发了组件更新，再到 useState 更新，最后也只是又一次初始化拿到的 initialState。因为每次 useState 的 state 都是局部变量，更新就等于重新创建了一次，上一次的值始终无法拿到。所以，我们需要把 state 保存起来。
  
- 最简单的就是全局变量了，当然 React 并不是这么实现的。对于 hooks，React 采用的是链表，感兴趣的可以自己去看看，这里只是模拟实现一下。
+最简单的就是全局变量了，当然 React 并不是这么实现的。对于 hooks，React 采用的是链表，感兴趣的可以自己去看看，这里只是模拟实现一下。
  
- ``` javascript
+
+``` javascript
 const HOOKS = []; // 全局的存储 hook 的变量
 let currentIndex = 0; // 全局的 依赖 hook 执行顺序的下标
 function useState(initialState) {
@@ -39,91 +40,91 @@ function useState(initialState) {
     const setState = newState => HOOKS[memoryCurrentIndex] = newState;
     return [HOOKS[currentIndex++], setState]; // 为了多次调用 hook，每次执行 index 需要 +1
 }
- ```
+```
  
- 我们将所有的 hooks，都保存在一个全局的数组变量中，每次更新时去找对应的下标就好了。**这也是为什么要保证 hooks 的执行顺序在更新前后一致的原因**。试想一下，第一次运行执行了四个 hooks，下标增加到了 3；而更新的时候因为 if 判断等原因，原本的第三个 hook 没有执行，那第四个 hook 取到的值是不是就错了？。
- 
- 我们再扩展一下，useState 初始化是可以传函数的，setState 也是一样，所以可以稍微加点判断。
- 
- ``` javascript
- function useState(initialState) {
-    HOOKS[currentIndex] = HOOKS[currentIndex]
-        || (typeof initialState === 'function' ? initialState() : initialState);
-    const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的，需要保存本次的
-    const setState = p => {
-        let newState = p;
-        // setCount(count => count + 1)  判断这种用法
-        if (typeof p === 'function') newState = p(HOOKS[memoryCurrentIndex]);
-        // 如果设置前后的值一样，就不更新了
-        if (newState === HOOKS[memoryCurrentIndex]) return;
-        HOOKS[memoryCurrentIndex] = newState;
-    };
-    return [HOOKS[currentIndex++], setState];
-}
- ```
+我们将所有的 hooks，都保存在一个全局的数组变量中，每次更新时去找对应的下标就好了。**这也是为什么要保证 hooks 的执行顺序在更新前后一致的原因**。试想一下，第一次运行执行了四个 hooks，下标增加到了 3；而更新的时候因为 if 判断等原因，原本的第三个 hook 没有执行，那第四个 hook 取到的值是不是就错了？。
 
- ## Tick
- 当然，现在还只是简单地更新了对应的 state，并没有通知 render 更新函数，我们可以写个简单的工具。
- 
- ``` javascript
+我们再扩展一下，useState 初始化是可以传函数的，setState 也是一样，所以可以稍微加点判断。
+
+``` javascript
+function useState(initialState) {
+HOOKS[currentIndex] = HOOKS[currentIndex]
+    || (typeof initialState === 'function' ? initialState() : initialState);
+const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的，需要保存本次的
+const setState = p => {
+    let newState = p;
+    // setCount(count => count + 1)  判断这种用法
+    if (typeof p === 'function') newState = p(HOOKS[memoryCurrentIndex]);
+    // 如果设置前后的值一样，就不更新了
+    if (newState === HOOKS[memoryCurrentIndex]) return;
+    HOOKS[memoryCurrentIndex] = newState;
+};
+return [HOOKS[currentIndex++], setState];
+}
+```
+
+## Tick
+当然，现在还只是简单地更新了对应的 state，并没有通知 render 更新函数，我们可以写个简单的工具。
+
+``` javascript
 const HOOKS = []; // 全局的存储 hook 的变量
 let currentIndex = 0; // 全局的 依赖 hook 执行顺序的下标
 const Tick = {
-  render: null,
-  queue: [],
-  push: function(task) {
-      this.queue.push(task);
-  },
-  nextTick: function(update) {
-      this.push(update);
-      Promise.resolve(() => {
-          if (this.queue.length) { // 一次循环后，全部出栈，确保单次事件循环不会重复渲染
-              this.queue.forEach(f => f()); // 依次执行队列中所有任务
-              currentIndex = 0; // 重置计数
-              this.queue = []; // 清空队列
-              this.render && this.render(); // 更新dom
-          }
-      }).then(f => f());
-  }
-};
- ```
- 在 React 中，setState 的更新虽然是同步的，但是我们感知不到，至少看起来它异步了。这是因为 React 自己实现了一套事务管理。能力有限，这里就用 Promise 来替代一下，类似于 Vue 中的 nextTick。
- 
- ``` javascript
- const setState = p => {
-    // ···
-    Tick.nextTick(() => {
-        HOOKS[memoryCurrentIndex] = newState;
-    });
-  };
- ```
-
- ## useEffect
- useEffect 充当了 class 中的生命周期的角色，我们更多地用来通知更新，清理副作用。有了对 useState 的了解，大致原理是一样的。只不过多了一个依赖数组，如果依赖数组中的每一项都和上一次的一样，就不需要更新，反之更新。
- 
- ``` javascript
- function useEffect(fn, deps) {
-    const hook = HOOKS[currentIndex];
-    const _deps = hook && hook._deps;
-    // 判断是否传了依赖，没传默认每次更新
-    // 判断本次依赖和上次的是否全部一样
-    const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
-    const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的
-    if (hasChange) {
-        const _effect = hook && hook._effect;
-        setTimeout(() => {
-            // 每次先判断一下有没有上一次的副作用需要卸载
-            typeof _effect === 'function' && _effect();
-            // 执行本次的
-            const ef = fn();
-            // 更新effects
-            HOOKS[memoryCurrentIndex] = {...HOOKS[memoryCurrentIndex], _effect: ef};
-        })
-    }
-    // 更新依赖
-    HOOKS[currentIndex++] = {_deps: deps, _effect: null};
+render: null,
+queue: [],
+push: function(task) {
+    this.queue.push(task);
+},
+nextTick: function(update) {
+    this.push(update);
+    Promise.resolve(() => {
+        if (this.queue.length) { // 一次循环后，全部出栈，确保单次事件循环不会重复渲染
+            this.queue.forEach(f => f()); // 依次执行队列中所有任务
+            currentIndex = 0; // 重置计数
+            this.queue = []; // 清空队列
+            this.render && this.render(); // 更新dom
+        }
+    }).then(f => f());
 }
- ```
+};
+```
+在 React 中，setState 的更新虽然是同步的，但是我们感知不到，至少看起来它异步了。这是因为 React 自己实现了一套事务管理。能力有限，这里就用 Promise 来替代一下，类似于 Vue 中的 nextTick。
+
+``` javascript
+const setState = p => {
+// ···
+Tick.nextTick(() => {
+    HOOKS[memoryCurrentIndex] = newState;
+});
+};
+```
+
+## useEffect
+useEffect 充当了 class 中的生命周期的角色，我们更多地用来通知更新，清理副作用。有了对 useState 的了解，大致原理是一样的。只不过多了一个依赖数组，如果依赖数组中的每一项都和上一次的一样，就不需要更新，反之更新。
+
+``` javascript
+function useEffect(fn, deps) {
+const hook = HOOKS[currentIndex];
+const _deps = hook && hook._deps;
+// 判断是否传了依赖，没传默认每次更新
+// 判断本次依赖和上次的是否全部一样
+const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
+const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的
+if (hasChange) {
+    const _effect = hook && hook._effect;
+    setTimeout(() => {
+        // 每次先判断一下有没有上一次的副作用需要卸载
+        typeof _effect === 'function' && _effect();
+        // 执行本次的
+        const ef = fn();
+        // 更新effects
+        HOOKS[memoryCurrentIndex] = {...HOOKS[memoryCurrentIndex], _effect: ef};
+    })
+}
+// 更新依赖
+HOOKS[currentIndex++] = {_deps: deps, _effect: null};
+}
+```
  
 可以看到 useEffect 在 HOOKS 中保存了两个值，一个是依赖，一个是副作用，保存的时机和它的执行顺序一致。因为 useEffect 需要在 dom 挂载后再执行，所以用了 setTimeout 简单模拟，React 中不是这样。
 
