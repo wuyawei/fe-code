@@ -7,7 +7,7 @@
 .history/
 # testing
 /coverage
-
+/ts/node_modules
 # production
 /build
 
