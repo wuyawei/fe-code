@@ -12,7 +12,7 @@ let n: null = null;
 
 function logInfo():void {
     console.log(`${Name}${isMan ? '是' : '不是'}男生，今年${age}岁;`);
-    return n;
+    return undefined;
 }
 logInfo()
 let value: any = 12;
@@ -45,3 +45,80 @@ setTimeout(() => {
 let numList: number[] = [1, 3, 5, 7, 9];
 let strList: Array<string> = ['1', '3', '5', '7', '9'];
 let anyList: any[] = ['1', 3, {}];
+
+function getName(): string {
+    return 'hi'
+}
+
+console.log(getName())
+
+enum Directions {
+    Up = <any>'Up',
+    Down = 1,
+    Left,
+    Right
+}
+
+let directions = [Directions.Up, Directions.Down, Directions.Left, Directions.Right];
+console.log(directions)
+
+
+const enum Colors {
+    red,
+    yellow,
+    blue
+}
+
+const colors = [Colors.red, Colors.yellow, Colors.blue];
+console.log(colors)
+
+class Tick {
+    public queue: any[] = [];
+    constructor(public render: () => any) {
+        this.render = render;
+    }
+    push(task: ()=> any): void {
+        this.queue.push(task);
+    }
+    nextTick(): void {
+        this.render()
+        // ...
+    }
+}
+
+let tick = new Tick(() => {console.log('hi')});
+// let tick1 = new Tick(666);
+tick.nextTick();
+
+
+interface Alarm {
+    alert();
+}
+
+interface Light {
+    lightOn();
+    lightOff();
+}
+
+class Car implements Alarm, Light {
+    alert() {
+        console.log('Car alert');
+    }
+    lightOn() {
+        console.log('Car light on');
+    }
+    lightOff() {
+        console.log('Car light off');
+    }
+}
+
+function copyFields<T extends U, U>(target: T, source: U): T {
+    for (let id in source) {
+        target[id] = (<T>source)[id];
+    }
+    return target;
+}
+
+let x = { a: 1, b: 2, c: 3, d: 4 };
+
+console.log(copyFields(x, { b: 10, d: 20 }));
