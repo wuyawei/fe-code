@@ -122,3 +122,57 @@ function copyFields<T extends U, U>(target: T, source: U): T {
 let x = { a: 1, b: 2, c: 3, d: 4 };
 
 console.log(copyFields(x, { b: 10, d: 20 }));
+
+interface A {a:number};
+interface B {b:string};
+
+const a:A = {a:1};
+const b:B = {b:'1'};
+const ab:A&B = {...a, b: '233'};
+
+
+class Pepole<U> {
+    who: U;
+    
+    constructor(who: U) {
+        this.who = who;
+    }
+
+    say(code:U): string {
+        return this.who + ' :i am ' + code;
+    }
+}
+
+let zs =  new Pepole(123);
+console.log(zs)
+
+function convert<T>(input:T):T{
+    return input;
+}
+
+// 定义泛型类型
+interface Convert {
+    <T>(input:T):T
+}
+
+let convert2 = convert;
+let convert3: Convert = s => s;
+console.log(convert2('666'), convert3('999'))
+
+let arr = []; // :any[]
+arr.push('233');
+
+type A1 = Exclude<number|string, string|number[]>
+
+const abc:A1 = 123;
+// 兼容
+type A2 = Exclude<number|string, number|boolean>
+// 相同或兼容类型筛除，不同则以前一个为准
+const abcd:A2 = '123';
+
+type Ex = string extends '123' ? string : '123';
+const Ex:Ex = '123';
+
+type Tail<T extends any[]> = ((...args: T) => void) extends ((a: number, ...args: infer Ts) => void) ? Ts : never;
+
+const ts1: Tail<any[]> = ['1', '2', '3'];
