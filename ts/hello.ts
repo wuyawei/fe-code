@@ -176,3 +176,7 @@ const Ex:Ex = '123';
 type Tail<T extends any[]> = ((...args: T) => void) extends ((a: number, ...args: infer Ts) => void) ? Ts : never;
 
 const ts1: Tail<any[]> = ['1', '2', '3'];
+
+let z: [string, number];
+// z = ['0', 2, 3]
+z = ['0', 2]

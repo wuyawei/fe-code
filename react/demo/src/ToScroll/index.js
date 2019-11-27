@@ -3,7 +3,7 @@ import { SwipeAction, List } from 'antd-mobile';
 import BScroll from 'better-scroll';
 import './index.scss';
 function ToScroll() {
-    const [data, setData] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    const [data, setData] = useState([]);
     const [isPullUpLoad, setIsPullUpLoad] = useState(false)
     const fetchData = () => {
         return new Promise((resolve, reject) => {
@@ -13,29 +13,54 @@ function ToScroll() {
             }, 2000)
         })
     };
+    // useEffect(() => {
+    //     const scroll = new BScroll('.wrapper', {
+    //         scrollY: true,
+    //         pullUpLoad: {
+    //             threshold: 50
+    //         },
+    //         click: true,
+    //         useTransition:false // 解决ios bug
+    //     });
+    //     setTimeout(() => {
+    //         scroll.refresh();
+    //     }, 0)
+    //     scroll.on('pullingUp', async () => {
+    //         setIsPullUpLoad(true);
+    //         await fetchData();
+    //         scroll.finishPullUp();
+    //         scroll.refresh();
+    //         setIsPullUpLoad(false);
+    //     })
+    // }, []);
+    
+    const dataRef = useRef(data)
     useEffect(() => {
-        const scroll = new BScroll('.wrapper', {
-            scrollY: true,
-            pullUpLoad: {
-                threshold: 50
-            },
-            click: true,
-            useTransition:false // 解决ios bug
-        });
-        setTimeout(() => {
-            scroll.refresh();
-        }, 0)
-        scroll.on('pullingUp', async () => {
-            setIsPullUpLoad(true);
-            await fetchData();
-            scroll.finishPullUp();
-            scroll.refresh();
-            setIsPullUpLoad(false);
-        })
-    }, []);
+        const total = 100000;
+        const reFrame = (_data) => {
+            if (dataRef.current !== _data) return;
+            if (_data.length > total) return;
+            window.requestAnimationFrame(() => {
+                setData([..._data, ...new Array(20).fill('')])
+                reFrame([..._data, ...new Array(20).fill('')])
+            })
+        }
+        dataRef.current = data;
+        reFrame(data)
+    }, [data])
     return (
         <div className='wrapper'>
-            <div className='wrapper-box'>
+            {
+                data.map((v, i) => <List.Item
+                    extra="More"
+                    arrow="horizontal"
+                    key={i}
+                    onClick={e => console.log(e)}
+                    >
+                    {i}
+                    </List.Item>)
+            }
+            {/* <div className='wrapper-box'>
                 {
                     data.map((v, i) => (
                         <SwipeAction
@@ -75,7 +100,7 @@ function ToScroll() {
                         </div>
                     }
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
