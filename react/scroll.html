@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .wrapper{
+        margin: 0;
+        padding: 0;
+    }
+    .wrapper li{
+        height: 100px;
+        background-color: red;
+        color: #fff;
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+</style>
+<body>
+    <ul class="wrapper">
+
+    </ul>
+</body>
+<script>
+    const wrapper = document.querySelector('.wrapper');
+    let total = 100000;
+    let index = 0;
+    const page = 100;
+    const reFrame = () => {
+        if (total <= 0) return;
+        window.requestAnimationFrame(() => {
+            const fragment = document.createDocumentFragment();
+            new Array(page).fill('').forEach(() => {
+                const li = document.createElement('li');
+                li.innerHTML = index ++;
+                fragment.appendChild(li)
+            })
+            wrapper.appendChild(fragment);
+            total -= 100;
+            reFrame();
+        })
+    }
+    reFrame()
+</script>
+</html>

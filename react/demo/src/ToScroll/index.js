@@ -41,8 +41,8 @@ function ToScroll() {
             if (dataRef.current !== _data) return;
             if (_data.length > total) return;
             window.requestAnimationFrame(() => {
-                setData([..._data, ...new Array(20).fill('')])
-                reFrame([..._data, ...new Array(20).fill('')])
+                setData([..._data, ...new Array(100).fill('')])
+                reFrame([..._data, ...new Array(100).fill('')])
             })
         }
         dataRef.current = data;
@@ -51,14 +51,7 @@ function ToScroll() {
     return (
         <div className='wrapper'>
             {
-                data.map((v, i) => <List.Item
-                    extra="More"
-                    arrow="horizontal"
-                    key={i}
-                    onClick={e => console.log(e)}
-                    >
-                    {i}
-                    </List.Item>)
+                data.map((v, i) => <li style={{backgroundColor: 'red', height: '100px', marginBottom: '20px'}}>{i}</li>)
             }
             {/* <div className='wrapper-box'>
                 {
