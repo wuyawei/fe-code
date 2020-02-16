@@ -36,15 +36,15 @@
     }
     function render() {
         const [count, setCount] = useState(0);
-        useEffect(() => {
-            // 清除副作用、支持回调
-            const time = setInterval(() => {
-                setCount(count => count + 1);
-            }, 1000)
-            return () => {
-                clearInterval(time);
-            }
-        }, [count]);
+        // useEffect(() => {
+        //     // 清除副作用、支持回调
+        //     const time = setInterval(() => {
+        //         setCount(count => count + 1);
+        //     }, 1000)
+        //     return () => {
+        //         clearInterval(time);
+        //     }
+        // }, [count]);
         // const [name, setName] = useState(() => 'hi');
         // $('.add').on('click', () => { // 重新绑定需要解绑之前的
         //     setCount(count + 1);

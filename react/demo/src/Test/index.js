@@ -1,36 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react';
-let num = 0;
-function Test() {
-    const [count, setCount] = useState(0);
-    const [name, setName] = useState('oh nanana');
-    const prevCount = usePrevious(count);
-    function handleClick() {
-        setCount(count => count + 5); // 以最后一个为准, 因为setCount 不会立即触发
-        // setName(name => name + ' nanana');
-        setTimeout(() => {
-            // setCount(count + 1);
-            // setCount(count + 2);
-            // setCount(count + 3);
-            // setCount(count + 4);
-            // setCount(count + 5); // 以最后一个为准, 因为setCount 不会立即触发
-            // setName(name => name + ' nanana');
-        }, 200)
-        console(count)
-    }
+function usePrevious(value) {
+    const ref = useRef();
     useEffect(() => {
-        document.querySelector('button').addEventListener('click', ()=> {
-            setCount(count + 5); // 以最后一个为准, 因为setCount 不会立即触发
-            setName(name => name + ' nanana');
-        })
-        console.log(count, name);
-    }, [count, name])
+        ref.current = value;
+    });
+    return ref.current;
+}
+function Test() {
+    let [count, setCount] = useState(0);
+    const [name, setName] = useState('oh nanana');
+    // const prevCount = usePrevious(count);
+    // function handleClick() {
+    //     setCount(count => count + 5); // 以最后一个为准, 因为setCount 不会立即触发
+    //     // setName(name => name + ' nanana');
+    //     setTimeout(() => {
+    //         // setCount(count + 1);
+    //         // setCount(count + 2);
+    //         // setCount(count + 3);
+    //         // setCount(count + 4);
+    //         // setCount(count + 5); // 以最后一个为准, 因为setCount 不会立即触发
+    //         // setName(name => name + ' nanana');
+    //     }, 200)
+    //     console(count)
+    // }
     // useEffect(() => {
-    //     const id = setInterval(() => {
-    //         console.log(num);
-    //         // console.log(count)
-    //         setCount(++num);
-    //     }, 1000);
-    //   }, []);
+    //     document.querySelector('button').addEventListener('click', ()=> {
+    //         setCount(count + 5); // 以最后一个为准, 因为setCount 不会立即触发
+    //         setName(name => name + ' nanana');
+    //     })
+    //     console.log(count, name);
+    // }, [count, name])
+    useEffect(() => {
+        const id = setInterval(() => {
+            // console.log(count)
+            // setCount(++count);
+            setCount(count + 1)
+        }, 1000);
+    }, []);
+    console.log(count);
     // console.log('我是 num', num);
     // useEffect(() => {
     //     const id = setInterval(() => {
@@ -42,22 +49,15 @@ function Test() {
     //         clearInterval(id);
     //     }
     // }, [count]);
-    console.log(3, '我是渲染', count, name);
+    // console.log(3, '我是渲染', count, name);
     // function onMouseOut(e) {} // 触发条件：移出父元素和移出每个子元素
     return (
         <div>
             {/* <h1>Now: {count}, before: {prevCount}</h1> */}
-            <button onClick={handleClick}>add</button>
+            {/* <button onClick={handleClick}>add</button> */}
             <h1>{count}-----{name}</h1>
         </div>
     )
 }
 
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
-}
 export default Test;
