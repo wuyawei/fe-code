@@ -1,6 +1,5 @@
 const factories = {};
 const _require = (deps, factor) => {
-    const _deps = [];
     deps = deps.map(dep => factories[dep]());
     factor.apply(null, deps);
 }
