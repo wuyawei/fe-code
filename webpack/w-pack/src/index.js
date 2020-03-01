@@ -32,9 +32,19 @@ class WPack {
             deps
         };
     }
+    styleLoader(content) {
+        return `
+            let style = document.createElement("style");
+            style.innerText = ${JSON.stringify(content).replace(/\\r\\n/g, '')};
+            document.head.appendChild(style);
+        `
+    }
     createModules(modulePath, name) {
          // 读取文件内容
-        const fileContent = fs.readFileSync(modulePath,'utf-8');
+        let fileContent = fs.readFileSync(modulePath,'utf-8');
+        if (/\.css$/.test(modulePath)) {
+            fileContent = this.styleLoader(fileContent);
+        }
         // 替换 require 为 __w_require__,并收集文件中的其它文件依赖; path.dirname 字符串转成目录层级
         const {code, deps} = this.parseFile(fileContent, path.dirname(name));
         this.modules[name] = `function(module, exports, __w_require__){

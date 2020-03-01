@@ -15,7 +15,16 @@
 }({"./test/index.js":function(module, exports, __w_require__){
             eval(`const logName = __w_require__("./test/log.js");
 const name = __w_require__("./test/name.js");
-logName(name);`)
+const composeName = __w_require__("./util/composeName.js");
+__w_require__("./test/style.css");
+logName(name);
+const createComponent = () => {
+    const div = document.createElement('div');
+    div.classList.add('name');
+    div.innerText = composeName(name);
+    document.body.appendChild(div);
+}
+createComponent();`)
         },"./test/log.js":function(module, exports, __w_require__){
             eval(`const composeName = __w_require__("./util/composeName.js");
 const log = (name) => {
@@ -28,4 +37,10 @@ module.exports = log;`)
 }`)
         },"./test/name.js":function(module, exports, __w_require__){
             eval(`module.exports = '张三';`)
+        },"./test/style.css":function(module, exports, __w_require__){
+            eval(`
+            let style = document.createElement("style");
+            style.innerText = ".name{    color: red;}";
+            document.head.appendChild(style);
+        `)
         },});

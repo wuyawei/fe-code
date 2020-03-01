@@ -1,7 +1,7 @@
-const path = require('./node_modules/path');
-const HtmlWebpackPlugin = require('./node_modules/html-webpack-plugin');
-const CleanWebpackPlugin = require('./node_modules/clean-webpack-plugin');
-const webpack = require('./node_modules/webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: {
@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js',
+        filename: '[name].bundle.js',
         publicPath: '/'
     },
     devtool: 'inline-source-map',
@@ -42,7 +42,7 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 102400,
+                            limit: 10240,
                             name: 'img/[name].[ext]',
                             publicPath: './'
                         }
