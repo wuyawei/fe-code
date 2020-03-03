@@ -1,6 +1,7 @@
 .red{
     color: red;
-    background: url('./img/1.jpg');
+    background: url('~static/img/1.jpg'); 
+    /* css中用alias别名前面要加~ */
     background-position: center;
     background-size: cover;
 }

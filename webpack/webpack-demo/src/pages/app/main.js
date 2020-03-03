@@ -1,6 +1,5 @@
 import app from './app';
-import img from './img/2.jpg';
-console.log(util)
+import img from 'static/img/2.jpg';
 let myimg = util.createImg(img, document.querySelector("#app"));
 let ele = app();
 document.querySelector("#app").appendChild(ele);

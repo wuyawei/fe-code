@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "build": "webpack",
+    "build": "set NODE_ENV=production&& webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
@@ -13,6 +13,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-loader": "8.0.0-beta.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "clean-webpack-plugin": "^1.0.0",
     "css-loader": "^1.0.1",
     "express": "^4.16.4",
@@ -24,5 +29,7 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
   }
 }
