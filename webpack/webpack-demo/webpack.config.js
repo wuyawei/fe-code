@@ -20,6 +20,7 @@ module.exports = {
         publicPath: '/'
     },
     resolve: {
+        extensions: ['.js', '.json', '.scss', '.css'],
         // 设置别名
         alias: {
             '@': resolve('src'),// 这样配置后 @ 可以指向 src 目录
@@ -29,7 +30,8 @@ module.exports = {
     // devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
-        hot: true
+        hot: true,
+        historyApiFallback: true // 找不到正确资源的指向 index.html
     },
     optimization: {
         minimizer: [
@@ -103,14 +105,26 @@ module.exports = {
                 ],
             },
             {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                  loader: 'babel-loader',
-                  options: {
-                    presets: ['@babel/preset-env']
-                  }
-                }
+                test: /\.scss/, // 把scss转为webpack可识别的模块
+                loaders: [
+                    isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                        },
+                    },
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                options: {
+                    plugins: ['react-hot-loader/babel'], // 热更新插件
+                    presets: ['@babel/preset-env', '@babel/preset-react'], // jsx转为js函数
+                },
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,

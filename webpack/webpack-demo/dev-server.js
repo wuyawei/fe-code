@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const config = require('./webpack.config.js');
 const options = {
-    contentBase: './dist',
+    contentBase: '/',
     hot: true,
     host: 'localhost'
 };
