@@ -44,8 +44,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.ProvidePlugin({util: require.resolve('./src/common/utils.js')}),
+        new webpack.DllReferencePlugin({
+            manifest: require(path.join(__dirname, 'dist', 'vendor.manifest.json'))
+        }),
         new CleanWebpackPlugin(['dist']),
+        new webpack.ProvidePlugin({util: require.resolve('./src/common/utils.js')}),
         new HtmlWebpackPlugin({
             title: 'index',
             filename: 'index.html',
@@ -76,7 +79,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'css/[name]-[contenthash].css',
             chunkFilename: 'css/[name]-[contenthash].css'
-        }),
+        })
     ],
     module: {
         rules: [
@@ -106,6 +109,7 @@ module.exports = {
             },
             {
                 test: /\.scss/, // 把scss转为webpack可识别的模块
+                exclude: /node_modules/,
                 loaders: [
                     isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
                     {
@@ -127,7 +131,8 @@ module.exports = {
                 },
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|svg|jpg|gif|flv)$/,
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'url-loader',
