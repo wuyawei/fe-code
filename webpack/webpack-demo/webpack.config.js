@@ -27,26 +27,32 @@ module.exports = {
             'static': resolve('static')
         }
     },
+    resolveLoader: { // 配置loader查找路径
+        modules: [
+            'node_modules',
+            path.resolve(__dirname, 'loaders')
+        ]
+    },
     // devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
         hot: true,
         historyApiFallback: true // 找不到正确资源的指向 index.html
     },
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: false // set to true if you want JS source maps
-            }),
-            // new OptimizeCSSAssetsPlugin({})
-        ]
-    },
+    // optimization: {
+    //     minimizer: [
+    //         new UglifyJsPlugin({
+    //             cache: true,
+    //             parallel: true,
+    //             sourceMap: false // set to true if you want JS source maps
+    //         }),
+    //         // new OptimizeCSSAssetsPlugin({})
+    //     ]
+    // },
     plugins: [
-        new webpack.DllReferencePlugin({
-            manifest: require(path.join(__dirname, 'dist', 'vendor.manifest.json'))
-        }),
+        // new webpack.DllReferencePlugin({
+        //     manifest: require(path.join(__dirname, 'vendor.manifest.json'))
+        // }),
         new CleanWebpackPlugin(['dist']),
         new webpack.ProvidePlugin({util: require.resolve('./src/common/utils.js')}),
         new HtmlWebpackPlugin({
@@ -124,11 +130,22 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
-                options: {
-                    plugins: ['react-hot-loader/babel'], // 热更新插件
-                    presets: ['@babel/preset-env', '@babel/preset-react'], // jsx转为js函数
-                },
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: ['react-hot-loader/babel'], // 热更新插件
+                            presets: [['@babel/preset-env', {modules: false}], '@babel/preset-react'], // jsx转为js函数
+                        }
+                    },
+                    {
+                        loader: 'test-loader',
+                        options: {
+                            content: '测试一下'
+                        }
+                    }
+
+                ]
             },
             {
                 test: /\.(png|svg|jpg|gif|flv)$/,

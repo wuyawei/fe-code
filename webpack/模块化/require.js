@@ -1,3 +1,6 @@
+// AMD 规范 RequireJS
+// CMD 规范 SeaJS
+// ES6 export/import
 const factories = {};
 const _require = (deps, factor) => {
     const _deps = factories[deps]._deps;

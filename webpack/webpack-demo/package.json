@@ -1,10 +1,13 @@
 {
   "name": "webpack-demo",
+  "sideEffects": [
+    "./src/pages/app/fn.js"
+  ],
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "build": "set NODE_ENV=production&& webpack -p",
+    "build": "set NODE_ENV=production&& webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dll": "webpack -p --progress --config webpack.dll.conf.js",
     "watch": "webpack --watch",
@@ -33,7 +36,9 @@
     "webpack": "^4.26.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.4.0",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "loader-utils": "^1.4.0",
+    "schema-utils": "^2.6.4"
   },
   "dependencies": {
     "dplayer": "^1.25.0",

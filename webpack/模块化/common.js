@@ -1,6 +1,7 @@
 // vscode 配置node提示 
 // cnpm i typings -g
 // typings install dt~node --global --save
+// CommonJS 规范 module.exports  主要用于node
 const fs = require('fs');
 const req = (modulePath) => {
     const module = {
