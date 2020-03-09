@@ -6,13 +6,15 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin"); // js压缩
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack');
+const InlineScriptPlugin = require('./plugins/inline-script-plugin');
 const isDev = process.env.NODE_ENV !== 'production'; // 有个坑 set NODE_ENV=production&&前面不能加空格
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: {
-        index: './src/pages/app/main.js',
-        home: './src/pages/home/index.js',
-        util: './src/common/utils.js'
+        // index: './src/pages/app/main.js',
+        // home: './src/pages/home/index.js',
+        // util: './src/common/utils.js'
+        test: './src/pages/test/index.js'
     },
     output: {
         path: resolve('dist'),
@@ -55,25 +57,38 @@ module.exports = {
         // }),
         new CleanWebpackPlugin(['dist']),
         new webpack.ProvidePlugin({util: require.resolve('./src/common/utils.js')}),
+        // new HtmlWebpackPlugin({
+        //     title: 'index',
+        //     filename: 'index.html',
+        //     template: './index.html',
+        //     chunks: ['index', 'util'], // 需要引入的代码块
+        //     hash: true,
+        //     minify: {
+        //         removeAtrributeQuotes: true
+        //     }
+        // }),
+        // new HtmlWebpackPlugin({
+        //     title: 'home',
+        //     filename: 'home.html',
+        //     template: './index.html',
+        //     chunks: ['home', 'util'], // 需要引入的代码块
+        //     hash: true,
+        //     minify: {
+        //         removeAtrributeQuotes: true
+        //     }
+        // }),
         new HtmlWebpackPlugin({
-            title: 'index',
-            filename: 'index.html',
+            title: 'test',
+            filename: 'test.html',
             template: './index.html',
-            chunks: ['index', 'util'], // 需要引入的代码块
+            chunks: ['test'], // 需要引入的代码块
             hash: true,
             minify: {
                 removeAtrributeQuotes: true
             }
         }),
-        new HtmlWebpackPlugin({
-            title: 'home',
-            filename: 'home.html',
-            template: './index.html',
-            chunks: ['home', 'util'], // 需要引入的代码块
-            hash: true,
-            minify: {
-                removeAtrributeQuotes: true
-            }
+        new InlineScriptPlugin({
+            regSrc: /\/(.*?\.bundle\.js?).*/
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
