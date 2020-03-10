@@ -11,10 +11,10 @@ const isDev = process.env.NODE_ENV !== 'production'; // 有个坑 set NODE_ENV=p
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: {
-        // index: './src/pages/app/main.js',
+        index: './src/pages/app/main.js',
         // home: './src/pages/home/index.js',
-        // util: './src/common/utils.js'
-        test: './src/pages/test/index.js'
+        util: './src/common/utils.js'
+        // test: './src/pages/test/index.js'
     },
     output: {
         path: resolve('dist'),
@@ -57,16 +57,16 @@ module.exports = {
         // }),
         new CleanWebpackPlugin(['dist']),
         new webpack.ProvidePlugin({util: require.resolve('./src/common/utils.js')}),
-        // new HtmlWebpackPlugin({
-        //     title: 'index',
-        //     filename: 'index.html',
-        //     template: './index.html',
-        //     chunks: ['index', 'util'], // 需要引入的代码块
-        //     hash: true,
-        //     minify: {
-        //         removeAtrributeQuotes: true
-        //     }
-        // }),
+        new HtmlWebpackPlugin({
+            title: 'index',
+            filename: 'index.html',
+            template: './index.html',
+            chunks: ['index', 'util'], // 需要引入的代码块
+            hash: true,
+            minify: {
+                removeAtrributeQuotes: true
+            }
+        }),
         // new HtmlWebpackPlugin({
         //     title: 'home',
         //     filename: 'home.html',
@@ -77,19 +77,19 @@ module.exports = {
         //         removeAtrributeQuotes: true
         //     }
         // }),
-        new HtmlWebpackPlugin({
-            title: 'test',
-            filename: 'test.html',
-            template: './index.html',
-            chunks: ['test'], // 需要引入的代码块
-            hash: true,
-            minify: {
-                removeAtrributeQuotes: true
-            }
-        }),
-        new InlineScriptPlugin({
-            regSrc: /\/(.*?\.bundle\.js?).*/
-        }),
+        // new HtmlWebpackPlugin({
+        //     title: 'test',
+        //     filename: 'test.html',
+        //     template: './index.html',
+        //     chunks: ['test'], // 需要引入的代码块
+        //     hash: true,
+        //     minify: {
+        //         removeAtrributeQuotes: true
+        //     }
+        // }),
+        // new InlineScriptPlugin({ // js内联插件
+        //     regSrc: /\/(.*?\.bundle\.js?).*/ // 匹配js名称
+        // }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         // extract-text-webpack-plugin  生成css文件
