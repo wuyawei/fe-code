@@ -172,4 +172,9 @@ const {log} = console;
 // const compose = (...fns) => fns.reverse().reduce((f, g) => {
 //     return (...args) => g(f(...args));
 // });
-// compose(log,r => r + 1, r => r + 2)(5);
+// 可以接受多个参数
+// const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
+// compose(log,r => r + 1, (x,y,z) => x+y+z)(1,2,3);
+// 从右往左
+const compose2 = (...fns) => fns.reduceRight((f, g) => (...args) => g(f(...args)));
+compose2(log,r => r + 1, (x,y,z) => x+y+z)(1,2,3);
