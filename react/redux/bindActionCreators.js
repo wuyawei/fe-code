@@ -7,7 +7,7 @@ const bindActionCreators = (actionCreators, dispatch) => {
         return bindActionCreator(actionCreators, dispatch);
     }
     if (typeof actionCreators !== 'object' || actionCreators === null) {
-        throw Error('参数不合法！！！');
+        throw new Error('参数不合法！！！');
     }
     const boundActionCreators = {};
     Object.keys(actionCreators).forEach(k => {
