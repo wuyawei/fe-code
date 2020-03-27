@@ -1,0 +1,15 @@
+{
+  "name": "w-pack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "w-pack": "./src/index.js"
+  },
+  "scripts": {
+    "build": "node ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
