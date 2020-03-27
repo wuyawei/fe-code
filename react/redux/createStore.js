@@ -4,7 +4,7 @@ const randomString = () =>
         .substring(7)
 /**
  * @param {*} reducer 
- * @param {*} preloadedState
+ * @param {*} preloadedState 默认值
  * @param {*} enhancer  增强器
  */
 const createStore = (reducer, preloadedState, enhancer) => {
@@ -35,10 +35,14 @@ const createStore = (reducer, preloadedState, enhancer) => {
         return currentState;
     }
 
-    // 绑定订阅者
+    /**
+     * 绑定订阅者
+     * @param {*} listener 订阅者
+     * @returns unsubscribe 退订器
+     */
     const subscribe = (listener) => {
         if (typeof listener !== 'function') {
-            throw new Error('监听器需要是函数');
+            throw new Error('订阅者需要是函数');
         }
         if (isDispatching) {
             throw new Error('当前正在派发，不能在此时添加订阅者subscribe()');
@@ -57,6 +61,11 @@ const createStore = (reducer, preloadedState, enhancer) => {
         }
     }
 
+    /**
+     * 派发
+     * @param {*} action 
+     * @returns
+     */
     const dispatch = (action) => {
         if (typeof action.type === 'undefined') {
             throw new Error('需要指定派发的 action.type');
@@ -77,8 +86,11 @@ const createStore = (reducer, preloadedState, enhancer) => {
         return action;
     }
 
-    // 替换 reducer
-    // 一般用于动态修改 reducer
+    /**
+     * 替换 reducer
+     * 一般用于动态修改 reducer 新的 reducer
+     * @param {*} nextReducer
+     */
     const replaceReducer = (nextReducer) => {
         if (typeof nextReducer !== 'function') {
             throw new Error('nextReducer 需要是函数');
@@ -88,7 +100,10 @@ const createStore = (reducer, preloadedState, enhancer) => {
         dispatch({ type: randomString() });
     }
 
-    // 观察者
+    /**
+     * 添加 观察者
+     * @returns unsubscribe 退订
+     */
     const observable = () => {
         const outerSubscribe = subscribe;
         return {
@@ -98,6 +113,7 @@ const createStore = (reducer, preloadedState, enhancer) => {
                 }
                 // 观察 state
                 const observerState = () => {
+                    // observer 通过 next 方法接收最新的 state
                     if (observer.next) {
                         observer.next(getState());
                     }
@@ -116,6 +132,8 @@ const createStore = (reducer, preloadedState, enhancer) => {
 
     // 初始化 state
     dispatch({ type: randomString() });
+
+    // store
     return {
         getState,
         subscribe,
