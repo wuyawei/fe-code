@@ -8,7 +8,7 @@ const randomString = () =>
  * @param {*} enhancer  增强器
  */
 const createStore = (reducer, preloadedState, enhancer) => {
-    // 允许不传默认值，第二参数传增强器
+    // 允许不传默认值时，第二参数传增强器
     if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
         enhancer = preloadedState;
         preloadedState = undefined;
