@@ -22,3 +22,5 @@
 // react-redux 通过 subscribeUpdates 订阅了 store 的 state 的更新，即 dispatch 会触发 subscribeUpdates
 // 而 subscribeUpdates 会关联 react 的 setState 或 useState，从而触发 react 的更新
 // 所以 react-redux 通过发布订阅把 react 和 redux 联系在一起
+
+// react 的 Subscription 和 store 的 subscribe，被同一个 onStateChange（即 subscribeUpdates）订阅
