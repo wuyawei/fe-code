@@ -57,7 +57,7 @@ const createStore = (reducer, preloadedState, enhancer) => {
             }
             // 解绑
             isSubscribed = false;
-            currentListeners = currentListeners.filter(lis !== listener);
+            currentListeners = currentListeners.filter(lis => lis !== listener);
         }
     }
 
