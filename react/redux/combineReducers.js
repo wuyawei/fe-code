@@ -18,7 +18,7 @@ const combineReducers = (reducers) => {
             newState[k] = newStateForKey;
             hasChanged = hasChanged || newStateForKey !== cacheStateForKey; // hasChanged 判断每个 state 是否有变化，有一个变化则需要更新
         })
-        hasChanged = hasChanged || Object.keys(resultReducers).length !== Object.keys(state).length; // 判断是否有被删除（不合法）的 reducer，有的话用最新的
+        hasChanged = hasChanged || Object.keys(resultReducers).length !== Object.keys(state).length; // 判断是否有给了state 默认值，但reducer不合法的情况，有的话用最新的
         return hasChanged ? newState : state;
     }
 }
