@@ -30,20 +30,38 @@
     let total = 100000;
     let index = 0;
     const page = 100;
+    const render = (len) => {
+        const fragment = document.createDocumentFragment();
+        new Array(len).fill('').forEach(() => {
+            const li = document.createElement('li');
+            li.innerHTML = index ++;
+            fragment.appendChild(li)
+        })
+        wrapper.appendChild(fragment);
+    }
     const reFrame = () => {
         if (total <= 0) return;
-        window.requestAnimationFrame(() => {
-            const fragment = document.createDocumentFragment();
-            new Array(page).fill('').forEach(() => {
-                const li = document.createElement('li');
-                li.innerHTML = index ++;
-                fragment.appendChild(li)
-            })
-            wrapper.appendChild(fragment);
+        // window.requestAnimationFrame(() => {
+        //     render(page);
+        //     total -= 100;
+        //     reFrame();
+        // })
+        window.requestIdleCallback((IdleDeadline) => {
+            // 核心可以设置回调执行时间，IdleDeadline.timeRemaining() 是留给回调的可用时间，
+            // IdleDeadline.didTimeout 返回 true，说明时间不够了 
+            // 此时可以跳过本次执行
+            console.log(IdleDeadline.didTimeout, IdleDeadline.timeRemaining())
+            if (IdleDeadline.didTimeout) {
+                reFrame();
+                return;
+            };
+            render(page);
             total -= 100;
             reFrame();
-        })
+        }, {timeout: 10})
     }
-    reFrame()
+    // reFrame()
+    // render(total)
+
 </script>
 </html>

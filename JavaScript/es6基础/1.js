@@ -189,6 +189,13 @@
 // }
 // console.log(factorial(5)); // 120
 
+// function trampoline(f) { // 蹦床函数
+//     while (f && f instanceof Function) {
+//         f = f();
+//     }
+//     return f;
+// }
+
 // 柯里化阶乘
 // function factorial(n, total = 1) {
 //     if (n <= 1) return total;
