@@ -60,14 +60,14 @@ function Carousel(props) {
         if (autoPlay) {
             time.current = setTimeout(autoPlayFun, 1000);
         }
-    }, [])
+    }, [autoPlay, autoPlayFun])
     return (
-        <div className='kool-carousel'>
-            <div className='kool-carousel-item-wrapper' style={{ width: `${width}rem`, height: `${height}rem` }} onTouchStart={onTouchStart}>
+        <div className='my-carousel'>
+            <div className='my-carousel-item-wrapper' style={{ width: `${width}rem`, height: `${height}rem` }} onTouchStart={onTouchStart}>
                 {props.children.map((carousel, i) => (
                     <div
                         className={
-                            `kool-carousel-item`}
+                            `my-carousel-item`}
                         style={{transform: `translate(${movePosition}rem)`, transition: transition}}
                         key={i}
                     >
@@ -75,9 +75,9 @@ function Carousel(props) {
                     </div>
                 ))}
             </div>
-            <div className='kool-carousel-slider-wrapper'>
+            <div className='my-carousel-slider-wrapper'>
                 {props.children.map((v, i) => (
-                    <div className={`kool-carousel-slider-item ${position.current === i ? 'active' : ''}`} key={i}></div>
+                    <div className={`my-carousel-slider-item ${position.current === i ? 'active' : ''}`} key={i}></div>
                 ))}
             </div>
         </div>

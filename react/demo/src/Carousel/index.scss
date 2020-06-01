@@ -1,14 +1,14 @@
-.kool-carousel {
+.my-carousel {
     width: 7.5rem;
     overflow: hidden;
     // touch-action: none;
 }
-.kool-carousel-item-wrapper {
+.my-carousel-item-wrapper {
     position: relative;
     margin: 0 auto;
     white-space: nowrap;
 }
-.kool-carousel-item {
+.my-carousel-item {
     width: 100%;
     height: 100%;
     color: #fff;
@@ -16,7 +16,7 @@
     transition:ease 0.5s;
 }
 
-.kool-carousel-slider-wrapper {
+.my-carousel-slider-wrapper {
     margin: 0.4rem auto 0;
     height: 0.12rem;
     position: relative;
@@ -24,7 +24,7 @@
     transform: translateX(-50%);
     display: inline-block;
 }
-.kool-carousel-slider-item {
+.my-carousel-slider-item {
     width: 0.12rem;
     height: 0.12rem;
     border-radius: 50%;
@@ -32,7 +32,7 @@
     margin-right: 0.1rem;
     float: left;
 }
-.kool-carousel-slider-item.active {
+.my-carousel-slider-item.active {
     width: 0.28rem;
     height: 0.12rem;
     background-color: #424966;

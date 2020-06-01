@@ -98,7 +98,7 @@ function Calendar() {
     } = calendarData;
 
     return (
-        <div className='kool-Calendar'>
+        <div className='my-Calendar'>
           <header>
                 <span onClick={ handlePrevMonth }>{'<'}</span>
                 <span>{month}</span>
