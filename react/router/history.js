@@ -2,6 +2,54 @@ const BeforeUnloadEventType = 'beforeunload';
 const HashChangeEventType = 'hashchange';
 const PopStateEventType = 'popstate';
 
+const createPath = ({
+    pathname = '/',
+    search = '',
+    hash = ''
+}) => {
+    return pathname + search + hash;
+}
+
+const createHref = (to) => {
+    return typeof to === 'string' ? to : createPath(to);
+}
+
+const parsePath = () => {
+    let partialPath = {};
+    if (path) {
+      let hashIndex = path.indexOf('#');
+      if (hashIndex >= 0) {
+        partialPath.hash = path.substr(hashIndex);
+        path = path.substr(0, hashIndex);
+      }
+  
+      let searchIndex = path.indexOf('?');
+      if (searchIndex >= 0) {
+        partialPath.search = path.substr(searchIndex);
+        path = path.substr(0, searchIndex);
+      }
+  
+      if (path) {
+        partialPath.pathname = path;
+      }
+    }
+    return partialPath;
+}
+
+const getNextLocation = (to, state = null) =>{
+    return {
+      ...(typeof to === 'string' ? parsePath(to) : to),
+      state
+    };
+}
+
+const getHistoryStateAndUrl = (nextLocation) => {
+    return [
+        nextLocation.state,
+        createHref(nextLocation)
+    ]
+}
+
 /**
  * 事件发布的构造器
  * @returns
@@ -23,8 +71,16 @@ const createEvents = () => {
 /**
  * popstate 事件监听
  * listeners 接收监听器并订阅 popstate 的改变
- * 包装 push、replace、go、back
+ * 包装 push、replace、go、back、forward
+ * 需要注意的是调用history.pushState()或history.replaceState()不会触发popstate事件。
+ * 只有在做出浏览器动作时，才会触发该事件, 如用户点击浏览器的回退按钮
+ * （或者在Javascript代码中调用history.back()或者history.forward()方法）
  */
+const ACTION = {
+    POP: 'pop',
+    PUSH: 'push',
+    REPLACE: 'replace'
+}
 export const createBrowserHistory = () => {
     const globalHistory = window.history;
     const getLocation = () => {
@@ -37,12 +93,48 @@ export const createBrowserHistory = () => {
             state
         }
     }
+    const applyListen = (action) => {
+        listeners.call({
+            action,
+            location: getLocation()
+        });
+    }
     const handlePop = () => {
-        listeners.call(getLocation())
+        applyListen(ACTION.POP);
     }
     window.addEventListener(PopStateEventType, handlePop);
+
     const listeners = createEvents();
+
+    const push = (to, state) => {
+        const [historyState, url] = getHistoryStateAndUrl(getNextLocation(to, state));
+        try {
+            globalHistory.pushState(historyState, '', url);
+        } catch (error) {
+            window.location.assign(url);
+        }
+        applyListen(ACTION.PUSH);
+    }
+
+    const replace = (to, state) => {
+        const [historyState, url] = getHistoryStateAndUrl(getNextLocation(to, state));
+        globalHistory.replaceState(historyState, '', url);
+        applyListen(ACTION.REPLACE);
+    }
+
+    const go = (delta) => {
+        globalHistory.go(delta);
+    }
     return {
+        push,
+        replace,
+        go,
+        back() {
+          go(-1);
+        },
+        forward() {
+          go(1);
+        },
         listen(listener) {
             return listeners.push(listener);
         },
