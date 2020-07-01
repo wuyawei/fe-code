@@ -10,10 +10,6 @@ const createPath = ({
     return pathname + search + hash;
 }
 
-const createHref = (to) => {
-    return typeof to === 'string' ? to : createPath(to);
-}
-
 const parsePath = () => {
     let partialPath = {};
     if (path) {
@@ -43,12 +39,6 @@ const getNextLocation = (to, state = null) =>{
     };
 }
 
-const getHistoryStateAndUrl = (nextLocation) => {
-    return [
-        nextLocation.state,
-        createHref(nextLocation)
-    ]
-}
 
 /**
  * 事件发布的构造器
@@ -93,6 +83,15 @@ export const createBrowserHistory = () => {
             state
         }
     }
+    const createHref = (to) => {
+        return typeof to === 'string' ? to : createPath(to);
+    }
+    const getHistoryStateAndUrl = (nextLocation) => {
+        return [
+            nextLocation.state,
+            createHref(nextLocation)
+        ]
+    }
     const applyListen = (action) => {
         listeners.call({
             action,
@@ -128,7 +127,7 @@ export const createBrowserHistory = () => {
     return {
         push,
         replace,
-        go,
+        go, 
         back() {
           go(-1);
         },
@@ -143,5 +142,84 @@ export const createBrowserHistory = () => {
 
 
 export const createHashHistory = () => {
+    const globalHistory = window.history;
+    const getLocation = () => {
+        const { pathname = '/', search = '', hash = '' } = parsePath(
+            window.location.hash.substr(1)
+        );
+        const state = globalHistory.state || {};
+        return {
+            pathname, 
+            search,
+            hash,
+            state
+        }
+    }
+    const getBaseHref = () => {
+        let base = document.querySelector('base');
+        let href = '';
+        if (base && base.getAttribute('href')) {
+          let url = window.location.href;
+          let hashIndex = url.indexOf('#');
+          href = hashIndex === -1 ? url : url.slice(0, hashIndex);
+        }
+        return href;
+    }
+    // 拿到基础url，再将 hash 路由拼接成 path
+    const createHref = (to) => {
+        return getBaseHref() + '#' + (typeof to === 'string' ? to : createPath(to));
+    }
+    const getHistoryStateAndUrl = (nextLocation) => {
+        return [
+            nextLocation.state,
+            createHref(nextLocation)
+        ]
+    }
+    const applyListen = (action) => {
+        listeners.call({
+            action,
+            location: getLocation()
+        });
+    }
+    const handlePop = () => {
+        applyListen(ACTION.POP);
+    }
+    window.addEventListener(PopStateEventType, handlePop);
+    window.addEventListener(HashChangeEventType, handlePop);
 
+    const listeners = createEvents();
+
+    const push = (to, state) => {
+        const [historyState, url] = getHistoryStateAndUrl(getNextLocation(to, state));
+        try {
+            globalHistory.pushState(historyState, '', url);
+        } catch (error) {
+            window.location.assign(url);
+        }
+        applyListen(ACTION.PUSH);
+    }
+
+    const replace = (to, state) => {
+        const [historyState, url] = getHistoryStateAndUrl(getNextLocation(to, state));
+        globalHistory.replaceState(historyState, '', url);
+        applyListen(ACTION.REPLACE);
+    }
+
+    const go = (delta) => {
+        globalHistory.go(delta);
+    }
+    return {
+        push,
+        replace,
+        go, 
+        back() {
+          go(-1);
+        },
+        forward() {
+          go(1);
+        },
+        listen(listener) {
+            return listeners.push(listener);
+        },
+    }
 }
