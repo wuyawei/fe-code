@@ -47,6 +47,9 @@ const getNextLocation = (to, state = null) =>{
 const createEvents = () => {
     const handlers = [];
     return {
+        get length() {
+            return handlers.length;
+        },
         push(fn) {
             handlers.push(fn);
             // 返回一个解绑器
