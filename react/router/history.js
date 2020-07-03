@@ -2,6 +2,7 @@ const BeforeUnloadEventType = 'beforeunload';
 const HashChangeEventType = 'hashchange';
 const PopStateEventType = 'popstate';
 
+// 将对象编译成 path
 const createPath = ({
     pathname = '/',
     search = '',
@@ -10,6 +11,7 @@ const createPath = ({
     return pathname + search + hash;
 }
 
+// 将 path 解析成 location 对象
 const parsePath = () => {
     let partialPath = {};
     if (path) {
@@ -18,13 +20,11 @@ const parsePath = () => {
         partialPath.hash = path.substr(hashIndex);
         path = path.substr(0, hashIndex);
       }
-  
       let searchIndex = path.indexOf('?');
       if (searchIndex >= 0) {
         partialPath.search = path.substr(searchIndex);
         path = path.substr(0, searchIndex);
       }
-  
       if (path) {
         partialPath.pathname = path;
       }
@@ -32,13 +32,13 @@ const parsePath = () => {
     return partialPath;
 }
 
+// 获取将要跳转的 loaction 对象
 const getNextLocation = (to, state = null) =>{
     return {
       ...(typeof to === 'string' ? parsePath(to) : to),
       state
     };
 }
-
 
 /**
  * 事件发布的构造器
@@ -73,36 +73,42 @@ const ACTION = {
 }
 export const createBrowserHistory = () => {
     const globalHistory = window.history;
+    // 获取当前 location + history state
     const getLocation = () => {
         const { pathname, search, hash } = window.location;
         const state = globalHistory.state || {};
         return {
-            pathname, 
+            pathname,
             search,
             hash,
             state
         }
     }
+    // 组合将要跳转的字符串 url
     const createHref = (to) => {
         return typeof to === 'string' ? to : createPath(to);
     }
+    // 获取将要跳转 state url
     const getHistoryStateAndUrl = (nextLocation) => {
         return [
             nextLocation.state,
             createHref(nextLocation)
         ]
     }
+    // 应用所有 listener
     const applyListen = (action) => {
         listeners.call({
             action,
             location: getLocation()
         });
     }
+    // 监听路由变化
     const handlePop = () => {
         applyListen(ACTION.POP);
     }
     window.addEventListener(PopStateEventType, handlePop);
 
+    // 创建监听者
     const listeners = createEvents();
 
     const push = (to, state) => {
