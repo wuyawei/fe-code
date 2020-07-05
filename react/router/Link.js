@@ -41,9 +41,9 @@ const Link = ({replace, to, component = LinkAnchor, ...rest}) => {
         ...rest,
         href,
         navigate() {
-          const location = resolveToLocation(to, location);
+          const _location = resolveToLocation(to, location);
           const method = replace ? history.replace : history.push;
-          method(location);
+          method(_location);
         }
     };
     return React.createElement(component, props);

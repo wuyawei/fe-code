@@ -8,13 +8,12 @@ const Switch = ({children, ...props}) => {
 
     let element, match;
     // 匹配到第一个成功，就停止
-    React.Children.forEach(this.props.children, child => {
-        if (match == null && React.isValidElement(child)) {
-          element = child;
-          const path = child.props.path || child.props.from;
-          match = path
-            ? matchPath(location.pathname, { ...child.props, path })
-            : context.match;
+    React.children.forEach((child) => {
+        if(!match && React.isValidElement(child)) {
+            element = child;
+            // Redirect props.from
+            const path = child.props.path || child.props.from;
+            match = path ? matchPath(location.pathname, {...child.props, path}) : context.match;
         }
     });
     return <>
