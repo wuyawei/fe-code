@@ -3,12 +3,14 @@
 // ES6 export/import
 const factories = {};
 const _require = (deps, factor) => {
-    const _deps = factories[deps]._deps;
-    _deps.forEach((dep, i) => _require([dep], (d) => {
-        _deps[i] = d;
-    }));
-    deps = deps.map(dep => factories[dep](..._deps));
-    factor.apply(null, deps);
+    depsFn = deps.map(dep => {
+        const _deps = factories[dep]._deps;
+        _deps.forEach((_dep, i) => _require([_dep], (d) => {
+            _deps[i] = d;
+        }));
+        return factories[dep].apply(null, _deps);
+    });
+    factor.apply(null, depsFn);
 }
 const define = (name, deps, factor) => {
     factories[name] = factor;
@@ -23,6 +25,8 @@ define('age', [], () => {
 define('say', ['name', 'age'], (name, age) => {
     return () => {console.log(`我的名字是${name}, 今年${age}`)};
 });
-_require(['say'], (say) => {
+_require(['name', 'age', 'say'], (name, age, say) => {
+    console.log("name", name);
+    console.log("age", age);
     say();
 })
