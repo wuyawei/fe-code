@@ -128,6 +128,9 @@ export const createBrowserHistory = () => {
         globalHistory.go(delta);
     }
     return {
+        get location() {
+            return getLocation();
+        },
         push,
         replace,
         go, 
@@ -212,6 +215,9 @@ export const createHashHistory = () => {
         globalHistory.go(delta);
     }
     return {
+        get location() {
+            return getLocation();
+        },
         push,
         replace,
         go, 
