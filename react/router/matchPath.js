@@ -10,7 +10,7 @@ const compilePath = (path, options) => {
 }
 
 const matchPath = (pathname, options = {}) => {
-    // 为了统一匹配多个 path，Switch 用到
+    // 用于统一匹配多个 path
     if (typeof options === "string" || Array.isArray(options)) {
         options = { path: options };
     }

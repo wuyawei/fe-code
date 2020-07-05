@@ -74,6 +74,12 @@ const ACTION = {
     PUSH: 'push',
     REPLACE: 'replace'
 }
+
+/**
+ * TODO: block 路由跳转拦截
+ * TODO: react-router 还未与新版 history 的 push 兼容
+ * @returns
+ */
 export const createBrowserHistory = () => {
     const globalHistory = window.history;
     const getLocation = () => {
@@ -143,6 +149,7 @@ export const createBrowserHistory = () => {
         listen(listener) {
             return listeners.push(listener);
         },
+        createHref
     }
 }
 
@@ -230,5 +237,6 @@ export const createHashHistory = () => {
         listen(listener) {
             return listeners.push(listener);
         },
+        createHref
     }
 }
