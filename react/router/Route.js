@@ -2,12 +2,14 @@ import React, {useContext} from 'react';
 import RouterContext from './RouterContext';
 import matchPath from './matchPath';
 
-const Route = ({path, computedMatch, component, to, render, children}) => {
+const Route = ({computedMatch, component, render, children, ...args}) => {
     const context = useContext(RouterContext);
-    const match = computedMatch || context.match;
+    const location = args.location || context.location;
+    // computedMatch Switch 中计算好的 match
     const props = {
         ...context,
-        match: path ? matchPath(path) : context.match
+        location,
+        match: computedMatch ? computedMatch : args.path ? matchPath(location.pathname, args) : context.match
     }
     return <RouterContext.Provider value={props}>
         {props.match
