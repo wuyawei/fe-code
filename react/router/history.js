@@ -47,6 +47,9 @@ const getNextLocation = (to, state = null) =>{
 const createEvents = () => {
     const handlers = [];
     return {
+        get length() {
+            return handlers.length;
+        },
         push(fn) {
             handlers.push(fn);
             // 返回一个解绑器
@@ -71,6 +74,12 @@ const ACTION = {
     PUSH: 'push',
     REPLACE: 'replace'
 }
+
+/**
+ * TODO: block 路由跳转拦截
+ * TODO: react-router 还未与新版 history 的 push 兼容
+ * @returns
+ */
 export const createBrowserHistory = () => {
     const globalHistory = window.history;
     // 获取当前 location + history state
@@ -131,6 +140,9 @@ export const createBrowserHistory = () => {
         globalHistory.go(delta);
     }
     return {
+        get location() {
+            return getLocation();
+        },
         push,
         replace,
         go, 
@@ -143,6 +155,7 @@ export const createBrowserHistory = () => {
         listen(listener) {
             return listeners.push(listener);
         },
+        createHref
     }
 }
 
@@ -215,6 +228,9 @@ export const createHashHistory = () => {
         globalHistory.go(delta);
     }
     return {
+        get location() {
+            return getLocation();
+        },
         push,
         replace,
         go, 
@@ -227,5 +243,6 @@ export const createHashHistory = () => {
         listen(listener) {
             return listeners.push(listener);
         },
+        createHref
     }
 }
