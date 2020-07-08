@@ -143,17 +143,18 @@ function Counter() {
 * [useEffect 完整指南](https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/)
 * [使用 Effect Hook](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-effect.html)
 
-## 交流群
-
->微信群：扫码回复加群。
-
-![mmqrcode1566432627920.png](https://user-gold-cdn.xitu.io/2019/9/15/16d3303fb5ae517d?w=200&h=200&f=jpeg&s=25608)
-
 ## 后记
   如果你看到了这里，且本文对你有一点帮助的话，希望你可以动动小手支持一下作者，感谢🍻。文中如有不对之处，也欢迎大家指出，共勉。好了，又耽误大家的时间了，感谢阅读，下次再见！
 
 * **文章仓库** [🍹🍰fe-code](https://github.com/wuyawei/fe-code)
 
+## 公众号
 感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。
 
 ![](https://user-gold-cdn.xitu.io/2019/7/21/16c14d1d0f3be11e?w=400&h=400&f=jpeg&s=34646)
+
+## 交流群
+
+> 微信群请加我微信，回复加群
+
+![](https://raw.githubusercontent.com/wuyawei/fe-code/master/user.jpg)

@@ -23,6 +23,6 @@
 
 ## 交流群
 
-> 微信群请加我微信（q1324210213），回复加群
+> 微信群请加我微信，回复加群
 
-![](./user.jpg)
+![](https://raw.githubusercontent.com/wuyawei/fe-code/master/user.jpg)
