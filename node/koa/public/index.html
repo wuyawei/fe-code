@@ -29,4 +29,12 @@ hello world
         }, 1000);
     })
 </script>
+<script type="module">
+    import {a, setA} from './module.js';
+    console.log(a);
+    setTimeout(() => {
+        setA();
+        console.log(a);
+    }, 1000);
+</script>
 </html>

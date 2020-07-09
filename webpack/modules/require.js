@@ -31,3 +31,4 @@ _require(['name', 'age', 'say'], (name, age, say) => {
 
 // CMD 规范 SeaJS
 // ES6 export/import
+// es6 export 变量  导出的还是引用；commonjs 则是值的拷贝

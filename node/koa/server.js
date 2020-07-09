@@ -43,31 +43,31 @@ app.use((ctx, next) => {
     next();
 });
 
-// app.use(async (ctx, next) => {
-//     if (/\./.test(ctx.request.url)) {
-//         await koaSend(
-//             ctx,
-//             'index.html',
-//             {
-//                 root: path.join(__dirname, './'),
-//                 maxage: 1000 * 60 * 60 * 24 * 7,
-//                 gzip: true,
-//             } // eslint-disable-line
-//         );
-//     } else {
-//         await next();
-//     }
-// });
+app.use(async (ctx, next) => {
+    if (/\./.test(ctx.request.url)) {
+        await koaSend(
+            ctx,
+            'index.html',
+            {
+                root: path.join(__dirname, './'),
+                maxage: 1000 * 60 * 60 * 24 * 7,
+                gzip: true,
+            } // eslint-disable-line
+        );
+    } else {
+        await next();
+    }
+});
 // 在端口3001监听:
-/*app.listen(3001, _ => {
-    console.log('app started at port 3001...');
-});*/
-let options = {
-    key: fs.readFileSync('./privatekey.pem'),
-    cert: fs.readFileSync('./certificate.pem')
-};
-// https协议需要生成相关证书
-https.createServer(options, app.callback()).listen(3001, _ => {
+app.listen(3001, _ => {
     console.log('app started at port 3001...');
 });
+// let options = {
+//     key: fs.readFileSync('./privatekey.pem'),
+//     cert: fs.readFileSync('./certificate.pem')
+// };
+// https协议需要生成相关证书
+// https.createServer(options, app.callback()).listen(3001, _ => {
+//     console.log('app started at port 3001...');
+// });
 // https.createServer(app.callback()).listen(3001);
