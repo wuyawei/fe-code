@@ -1,3 +1,4 @@
+// 后进先出
 class Stack {
     constructor() {
         this.dataStore = [];
