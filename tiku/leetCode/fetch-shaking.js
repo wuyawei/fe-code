@@ -7,7 +7,7 @@ const onChange = () => {
         queue.push(i);
         delay(time).then(() => {
             if (queue.includes(i)) {
-                console.log('fffff', i);
+                console.log('fffff', i, queue);
             }
         }).finally(() => {
             queue = queue.filter(v => v > i);
@@ -24,7 +24,7 @@ async function run() {
     await delay(50);
     change(300);
 }
-// run();
+run();
 // change(500);
 // change(100);
 // change(100);
