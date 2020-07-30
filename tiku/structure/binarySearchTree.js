@@ -47,6 +47,38 @@ class BinarySearchTree {
         }
         return searchNode(this.root, key);
     }
+    // 中序遍历 先去比自己小的 再到自己 再到比自己大的
+    inOrderTraverse(callback) {
+        const inOrderTraverseNode = (node, fn) => {
+            if(node === null) return;
+            inOrderTraverseNode(node.left, fn);
+            fn(node.key)
+            inOrderTraverseNode(node.right, fn);
+        }
+        inOrderTraverseNode(this.root, callback)
+    }
+    
+    // 先序遍历 优先自己 再比自己小的 最后比自己大的
+    preOrderTraverse(callback) {
+        const preOrderTraverseNode = (node, fn) => {
+            if(node === null) return;
+            fn(node.key)
+            preOrderTraverseNode(node.left, fn);
+            preOrderTraverseNode(node.right, fn);
+        }
+        preOrderTraverseNode(this.root, callback)
+    }
+    
+    // 后序遍历 先小的  再大的 最后自己
+    postOrderTraverse(callback) {
+        const postOrderTraverseNode = (node, fn) => {
+            if(node === null) return;
+            postOrderTraverseNode(node.left, fn);
+            postOrderTraverseNode(node.right, fn);
+            fn(node.key)
+        }
+        postOrderTraverseNode(this.root, callback)
+    }
     max() {
         const node = this.root;
         while(node && node.right) {
