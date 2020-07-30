@@ -79,6 +79,15 @@ class BinarySearchTree {
         }
         postOrderTraverseNode(this.root, callback)
     }
+
+    remove(key) {
+        const removeNode = (node, key) => {
+
+        }
+        removeNode(this.root, key);
+    }
+
+    // 最大值
     max() {
         const node = this.root;
         while(node && node.right) {
@@ -89,6 +98,8 @@ class BinarySearchTree {
         }
         return null;
     }
+
+    //最小值
     min() {
         const node = this.root;
         while(node && node.left) {
