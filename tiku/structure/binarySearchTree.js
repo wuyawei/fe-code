@@ -33,7 +33,7 @@ class BinarySearchTree {
             insertNode(this.root, newNode);
         }
     }
-    search(key) {
+    search(searchKey) {
         const searchNode = (node, key) => {
             if(node === null) return false;
             if (key < node.key) {
@@ -45,7 +45,7 @@ class BinarySearchTree {
             }
             return false;
         }
-        return searchNode(this.root, key);
+        return searchNode(this.root, searchKey);
     }
     // 中序遍历 先去比自己小的 再到自己 再到比自己大的
     inOrderTraverse(callback) {
@@ -80,11 +80,43 @@ class BinarySearchTree {
         postOrderTraverseNode(this.root, callback)
     }
 
-    remove(key) {
+    remove(searchKey) {
         const removeNode = (node, key) => {
+            if(node === null) return null;
+            if(key < node.key) {
+                node.left = removeNode(node.left, key);
+                return node;
+            } else if(key > node.ley) {
+                node.right = removeNode(node.right, key);
+                return node;
+            } else {
+                // 没有子节点
+                if(node.left === null && node.right === null) {
+                    node = null;
+                    return node;
+                }
+                // 只有右子节点
+                if(node.left === null && node.right) {
+                    node = node.right;
+                    return node;
+                }
+                // 只有左子节点
+                if(node.left && node.right === null) {
+                    node = node.left;
+                    return node;
+                }
+                // 有两个子节点
+                if(node.left && node.right) {
+                    const tmp = node.right;
+                    const min = this.findMinKey(tmp);
+                    node.key = min;
+                    node.right = removeNode(tmp, min);
+                    return node;
+                }
+            }
 
         }
-        removeNode(this.root, key);
+        removeNode(this.root, searchKey);
     }
 
     // 最大值
@@ -99,9 +131,7 @@ class BinarySearchTree {
         return null;
     }
 
-    //最小值
-    min() {
-        const node = this.root;
+    findMinKey(node) {
         while(node && node.left) {
             node = node.left;
         }
@@ -109,5 +139,10 @@ class BinarySearchTree {
             return node.key;
         }
         return null;
+    }
+
+    //最小值
+    min() { 
+        return this.findMinKey(this.root);
     }
 }
