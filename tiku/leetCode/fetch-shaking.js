@@ -17,6 +17,7 @@ const onChange = () => {
 
 const change = onChange();
 
+// 最快返回的异步操作执行完后，先发出暂未返回的全部删掉
 async function run() {
     change(500);
     await delay(100);
