@@ -32,4 +32,18 @@ var c = foo( 2 );
 
 /* 
 作用域和块作用域
+IIFE
+try/catch、let、const
+*/
+
+/* 
+变量、函数声明提升，函数声明先于变量
+foo(); // 1
+function foo() {     console.log( 1 ); } 
+var foo = function() {     console.log( 2 ); };
+
+只是变量提升优先，赋值是可以成功的
+function foo() {     console.log( 1 ); } 
+var foo = function() {     console.log( 2 ); };
+foo(); // 2
 */
