@@ -38,9 +38,9 @@ var isSymmetric = function(root) {
     return isMirror(root, root);
 };
 
-// 迭代
 
-var isSymmetric = function(root) {
+// 迭代
+var isSymmetric1 = function(root) {
     const queue = [root, root];
     while(queue.length) {
         const t1 = queue.pop();
