@@ -9,6 +9,15 @@ function usePrevious(value) {
 function Test() {
     let [count, setCount] = useState(0);
     const [name, setName] = useState('oh nanana');
+    useEffect(() => {
+        // Promise.resolve().then(() => {
+        // })
+        setName('hi');
+        setCount(c => c+1);
+    }, [])
+    useEffect(() => {
+        console.log(document.querySelector('h1'));
+    }, [name])
     // const prevCount = usePrevious(count);
     // function handleClick() {
     //     setCount(count => count + 5); // 以最后一个为准, 因为setCount 不会立即触发
@@ -30,14 +39,14 @@ function Test() {
     //     })
     //     console.log(count, name);
     // }, [count, name])
-    useEffect(() => {
-        const id = setInterval(() => {
-            // console.log(count)
-            // setCount(++count);
-            setCount(count + 1)
-        }, 1000);
-    }, []);
-    console.log(count);
+    // useEffect(() => {
+    //     const id = setInterval(() => {
+    //         // console.log(count)
+    //         // setCount(++count);
+    //         setCount(count + 1)
+    //     }, 1000);
+    // }, []);
+    // console.log(count);
     // console.log('我是 num', num);
     // useEffect(() => {
     //     const id = setInterval(() => {
@@ -55,7 +64,7 @@ function Test() {
         <div>
             {/* <h1>Now: {count}, before: {prevCount}</h1> */}
             {/* <button onClick={handleClick}>add</button> */}
-            <h1>{count}-----{name}</h1>
+            {count && <h1>{count}-----{name}</h1>}
         </div>
     )
 }
