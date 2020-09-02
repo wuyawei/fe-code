@@ -6,7 +6,8 @@ function fetch(data) {
   });
 }
 
-// 缓存同一请求
+// 并发缓存同一请求
+// 非并发可以继续发
 const getData = fn => {
     const cache = {};
     return (url) => {

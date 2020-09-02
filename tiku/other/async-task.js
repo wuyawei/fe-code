@@ -40,6 +40,10 @@ const addTask = (time, info) => {
 addTask.queue = [];
 addTask.cache = [];
 
+// 保证同时执行的只有两个任务
+// 且按照时间顺序打印
+// 1000 > 500 + 300 && 1000 < 500 + 300 + 400
+// 所以输出顺序 2、3、1、4
 addTask(1000, '1');
 addTask(500, '2');
 addTask(300, '3');
