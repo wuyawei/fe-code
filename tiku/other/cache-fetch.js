@@ -6,6 +6,7 @@ function fetch(data) {
   });
 }
 
+// 缓存同一请求
 const getData = fn => {
     const cache = {};
     return (url) => {
@@ -22,10 +23,10 @@ const getData = fn => {
 
 const cachePromise = getData(fetch)
 
-cachePromise('3').then((a) => {
+const a = cachePromise('3').then((a) => {
     console.log(a);
-  });
-cachePromise('2').then((a) => {
+});
+cachePromise('3').then((a) => {
     console.log(a);
 });
 
