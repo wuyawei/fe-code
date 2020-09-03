@@ -12,7 +12,7 @@ hello world
 <script src="jsonp.js"></script>
 <script>
     jsonp({
-        url: 'https://localhost:3001/getuser',
+        url: 'http://localhost:3001/getuser',
         params: {},
         callback: 'getuser'
     }).then(r => {
@@ -22,12 +22,12 @@ hello world
         }, 1000);
         console.log(r);
     });
-    fetch('https://localhost:3001/getuser?callback=getuser').then(res => res.text()).then(r => {
-        setTimeout(_ => {
-            let getuser = document.querySelector('#getuser');
-            getuser.innerText = r;
-        }, 1000);
-    })
+    // fetch('https://localhost:3001/getuser?callback=getuser').then(res => res.text()).then(r => {
+    //     setTimeout(_ => {
+    //         let getuser = document.querySelector('#getuser');
+    //         getuser.innerText = r;
+    //     }, 1000);
+    // })
 </script>
 <script type="module">
     import {a, setA} from './module.js';
@@ -35,6 +35,6 @@ hello world
     setTimeout(() => {
         setA();
         console.log(a);
-    }, 1000);
+    }, 1000); 
 </script>
 </html>
