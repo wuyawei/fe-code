@@ -503,3 +503,16 @@ const data = [
 
 
 console.log('1111', findId({ key: '64',  data: JSON.parse(JSON.stringify(data))}).id); // 查找父级
+
+// class A{
+//     constructor() {
+//         return {a: '1'}
+//     }
+//     getA() {
+//         console.log(this.a)
+//     }
+// }
+
+// const a = new A(); // 直接返回return的对象
+// console.log("a", a)
+// a.getA()
