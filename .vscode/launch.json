@@ -11,6 +11,16 @@
             ],
             "cwd": "${workspaceRoot}",
             "protocol": "inspector"
+        },
+        {
+
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:8080",
+            "file": "${workspaceFolder}/index.html",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
