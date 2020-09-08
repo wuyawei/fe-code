@@ -34,6 +34,25 @@ const createFlow = (arr) => {
         run
     };
 };
+const createFlow1 = (arr) => {
+    const queue = arr.flat();
+    const run = (done) => {
+        done && queue.push(done);
+        let p = Promise.resolve();
+        for(let i = 0; i < queue.length; i++) {
+            const fn = queue[i];
+            if (typeof fn.run === 'function') {
+                p = p.then(() => fn.run())
+            } else {
+                p = p.then(() => fn());
+            }
+        }
+        return p;
+    }
+    return {
+        run
+    };
+};
 
 
 const subFlow = createFlow([() => delay(1000).then(() => log("c"))]);
