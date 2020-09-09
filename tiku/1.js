@@ -1,6 +1,6 @@
 // 实现一个forEach
-let arr = [3,2,1,NaN,{}];
-let obj = {name: 'a'};
+// let arr = [3,2,1,NaN,{}];
+// let obj = {name: 'a'};
 // Array.prototype.myforeach = function (fn, context = null) {
 //     let index = 0;
 //     let arr = this;
@@ -516,3 +516,9 @@ console.log('1111', findId({ key: '64',  data: JSON.parse(JSON.stringify(data))}
 // const a = new A(); // 直接返回return的对象
 // console.log("a", a)
 // a.getA()
+
+// let arr = [1,2,3];
+// arr.reduceMap= function(callback) {
+//    return this.reduce((pre, cur) => [...pre, callback(cur)], []);
+// }
+// console.log("arr.map", arr.reduceMap((v, i) => v * 2));
