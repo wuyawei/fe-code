@@ -9,8 +9,7 @@
 var longestPalindrome = function(s) {
     let result = s[0] || "";
     for(var i = 0; i < s.length; i++){
-        for(var j = 1; j <= 2; j++){
-            //奇数偶数回文
+        for(var j = 1; j <= 2; j++){ //奇数偶数回文 
             var left = i;
             var right = i + j;
             console.log("longestPalindrome -> right", left, right)
