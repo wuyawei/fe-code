@@ -6,18 +6,26 @@ function usePrevious(value) {
     });
     return ref.current;
 }
+const tasks = new Array(10).fill(null)
+const doWorkIfNeeded = (isInput) => {
+    const date = Date.now();
+    while(Date.now() - date < 2000) {
+        if(isInput.current) return;
+    }
+    tasks.pop();
+}
 function Test() {
     let [count, setCount] = useState(0);
     const [name, setName] = useState('oh nanana');
-    useEffect(() => {
-        // Promise.resolve().then(() => {
-        // })
-        setName('hi');
-        setCount(c => c+1);
-    }, [])
-    useEffect(() => {
-        console.log(document.querySelector('h1'));
-    }, [name])
+    // useEffect(() => {
+    //     // Promise.resolve().then(() => {
+    //     // })
+    //     setName('hi');
+    //     setCount(c => c+1);
+    // }, [])
+    // useEffect(() => {
+    //     console.log(document.querySelector('h1'));
+    // }, [name])
     // const prevCount = usePrevious(count);
     // function handleClick() {
     //     setCount(count => count + 5); // 以最后一个为准, 因为setCount 不会立即触发
@@ -60,13 +68,39 @@ function Test() {
     // }, [count]);
     // console.log(3, '我是渲染', count, name);
     // function onMouseOut(e) {} // 触发条件：移出父元素和移出每个子元素
+    const isInput = useRef(false);
+    const onChange = () => {
+        isInput.current = true;
+    }
+    const onBlur = () => {
+        isInput.current = false;
+    }
+    requestIdleCallback(myWork, { timeout: 2000 });
+    function myWork(deadline) {
+        // 如果有剩余时间，或者任务已经超时，并且存在任务就需要执行
+        while ((deadline.timeRemaining() > 0 || deadline.didTimeout)
+            && tasks.length > 0) {
+            console.log("myWork -> deadline.timeRemaining", deadline.timeRemaining(), deadline.didTimeout, tasks);
+            doWorkIfNeeded(isInput);
+        }
+        // 当前存在任务，再次调用 requestIdleCallback，会在空闲时间执行 myWork
+        if (tasks.length > 0) {
+            requestIdleCallback(myWork, { timeout: 2000 });
+        }
+    }
     return (
         <div>
             {/* <h1>Now: {count}, before: {prevCount}</h1> */}
             {/* <button onClick={handleClick}>add</button> */}
+            <input onInput={onChange} onBlur={onBlur}/>
             {count && <h1>{count}-----{name}</h1>}
         </div>
     )
+    // for(let i =0; i < 1; i++) {
+    //     let [a] = useState(11111);
+    //     useEffect(() => {}, []);
+    //     return <>{a}</>
+    // }
 }
 
 export default Test;
