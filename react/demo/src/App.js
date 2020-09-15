@@ -10,6 +10,7 @@ const Carousel = lazy(() => import('./Carousel'));
 const Test = lazy(() => import('./Test/index'));
 const ToScroll = lazy(() => import('./ToScroll/index'))
 const Lazy = lazy(() => import('./Lazy'))
+const Ability = lazy(() => import('./Ability'))
 
 function AppRouter() {
   return (
@@ -34,7 +35,8 @@ function AppRouter() {
               <Route path="/carousel" component={Carousel} />
               <Route path="/test" component={Test} />
               <Route path="/scroll" component={ToScroll} />
-              <Route path="/lazy" component={Lazy} />
+              <Route path="/Lazy" component={Lazy} />
+              <Route path="/ability" component={Ability} />
           </Switch>
         </Suspense>
     </Router>
