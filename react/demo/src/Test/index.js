@@ -7,10 +7,12 @@ function usePrevious(value) {
     return ref.current;
 }
 const tasks = new Array(10).fill(null)
-const doWorkIfNeeded = (isInput) => {
+const doWorkIfNeeded = (isInput, inputRef) => {
     const date = Date.now();
+    inputRef.current.value = inputRef.current.value + '1';
+    console.log("doWorkIfNeeded -> inputRef.current.value", inputRef.current.value)
     while(Date.now() - date < 2000) {
-        if(isInput.current) return;
+        // if(isInput.current) return;
     }
     tasks.pop();
 }
@@ -75,13 +77,13 @@ function Test() {
     const onBlur = () => {
         isInput.current = false;
     }
+    const inputRef = useRef(null)
     requestIdleCallback(myWork, { timeout: 2000 });
     function myWork(deadline) {
         // 如果有剩余时间，或者任务已经超时，并且存在任务就需要执行
         while ((deadline.timeRemaining() > 0 || deadline.didTimeout)
             && tasks.length > 0) {
-            console.log("myWork -> deadline.timeRemaining", deadline.timeRemaining(), deadline.didTimeout, tasks);
-            doWorkIfNeeded(isInput);
+            doWorkIfNeeded(isInput, inputRef);
         }
         // 当前存在任务，再次调用 requestIdleCallback，会在空闲时间执行 myWork
         if (tasks.length > 0) {
@@ -92,7 +94,7 @@ function Test() {
         <div>
             {/* <h1>Now: {count}, before: {prevCount}</h1> */}
             {/* <button onClick={handleClick}>add</button> */}
-            <input onInput={onChange} onBlur={onBlur}/>
+            <input onInput={onChange} onBlur={onBlur} ref={inputRef}/>
             {count && <h1>{count}-----{name}</h1>}
         </div>
     )
