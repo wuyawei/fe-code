@@ -175,6 +175,25 @@ const {log} = console;
 // 可以接受多个参数
 // const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 // compose(log,r => r + 1, (x,y,z) => x+y+z)(1,2,3);
-// 从右往左
-const compose2 = (...fns) => fns.reduceRight((f, g) => (...args) => g(f(...args)));
-compose2(log,r => r + 1, (x,y,z) => x+y+z)(1,2,3);
+// // 从右往左
+// const compose2 = (...fns) => fns.reduceRight((f, g) => (...args) => g(f(...args)));
+// compose2(log,r => r + 1, (x,y,z) => x+y+z)(1,2,3);
+
+
+function add(a, b, c) {
+    return a + b + c;
+}
+function _curry(fn, ..._arg) {
+    const len = fn.length;
+    return  function fnc(...args) {
+        _arg = [..._arg, ...args];
+        if (_arg.length < len) { // 参数不够，继续返回函数
+            return fnc;
+        } else { // 参数足够，执行原函数
+            return fn(..._arg);
+        }
+    };
+}
+
+const _curryAdd = _curry(add, 1); 
+console.log("_curryAdd()", _curryAdd(2)()(1))
