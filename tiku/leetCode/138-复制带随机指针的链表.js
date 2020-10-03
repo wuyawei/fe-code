@@ -26,17 +26,20 @@ var copyRandomList = function(head) {
     let copyHead = new Node(0);
     let copy = copyHead;
     const copyMap = new Map();
-    while(origin.next) {
+    // 先拷贝一份
+    while(origin) {
         let copyNode = new Node(origin.val);
         copyNode.next = origin.next;
+        // 记录每个原来的节点对应的拷贝节点
         copyMap.set(origin, copyNode);
-    
+
         copy.next = copyNode;
-        copy = copyNode.next;
-        origin = origin.next;
+        origin = copyNode.next;
+        copy = copyNode;
     }
     origin = head;
     copy = copyHead.next;
+    // 处理random
     while(origin){
         if(origin.random) {
             copy.random = copyMap.get(origin.random);
