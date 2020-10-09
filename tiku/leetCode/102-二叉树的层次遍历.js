@@ -38,6 +38,9 @@ var levelOrder = function(root) {
     const result = [];
     const queue = [root];
     while(queue.length) {
+        // 用 currLevel 做出队
+        // 因为 queue 会继续添加子节点，length 会变
+        // 
         let currLevel = queue.length;
         const currNodes = [];
         while(currLevel > 0) {
