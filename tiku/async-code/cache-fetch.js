@@ -18,7 +18,7 @@ const getData = fn => {
         Promise.resolve().then(() => {
             delete cache[url];
         })
-        return cache[url]
+        return cache[url];
     }
 }
 
