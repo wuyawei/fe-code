@@ -1,6 +1,6 @@
 /* 
 * 同时发送四个异步请求，但是需要顺序执行 1 -> 2 -> 3 -> 4 的返回结果，
-* 如果1到了就执行1的回调 ，如果2先到1没到则需要等待1，然后执行1的回调，执行2的回调
+* 如果1到了就执行1的回调 ，如果2先到1没到则需要等待1，执行完1的回调后，立即执行2的回调
 */
 const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 const fetch = (time, val) => new Promise((resolve, reject) => {
@@ -20,19 +20,19 @@ const fetched = (time, callback) => {
     }
     function execute() {
         pending = false;
-        let index = 0;
         const _queue = [...queue];
         queue = [];
         const eva = (i) => {
-            if(!_queue[i]) return;
-            const _fetch = _queue[i].fetch;
-            const _callback = _queue[i].callback;
+            if(!_queue.length) return;
+            const fn = _queue.shift();
+            const _fetch = fn.fetch;
+            const _callback = fn.callback;
             _fetch.then(r => {
                 _callback(r);
-                eva(++i);
+                eva();
             })
         }
-        eva(index)
+        eva()
     }
 }
 
