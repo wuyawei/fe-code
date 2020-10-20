@@ -50,4 +50,5 @@ var multiply = function(num1, num2) {
     }
     return arr.join('');
 };
-console.log("multiply([9,9,9], [9,9,9])", multiply([9,9,9], [9,9,9]))
+// console.log("multiply([9,9,9], [9,9,9])", multiply('999', '999'));
+
