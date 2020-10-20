@@ -31,8 +31,10 @@ var multiply = function(num1, num2) {
         for(let j = len2-1; j >= 0; j--) {
             // 相乘后与之前的乘积相加
             arr[i+j+1] = num1[i] * num2[j] + arr[i+j+1]; 
+            console.log("multiply -> arr[i+j+1]", arr[i+j+1]);
         }
-    }
+    } 
+    console.log("multiply -> arr", arr)
     let step = 0; // 进位数
     for(let i = arr.length - 1; i >=0; i--) {
         // 求进
@@ -48,3 +50,4 @@ var multiply = function(num1, num2) {
     }
     return arr.join('');
 };
+console.log("multiply([9,9,9], [9,9,9])", multiply([9,9,9], [9,9,9]))
