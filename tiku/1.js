@@ -502,7 +502,7 @@ const data = [
 ];
 
 
-console.log('1111', findId({ key: '64',  data: JSON.parse(JSON.stringify(data))}).id); // 查找父级
+// console.log('1111', findId({ key: '64',  data: JSON.parse(JSON.stringify(data))}).id); // 查找父级
 
 // class A{
 //     constructor() {
@@ -522,3 +522,15 @@ console.log('1111', findId({ key: '64',  data: JSON.parse(JSON.stringify(data))}
 //    return this.reduce((pre, cur) => [...pre, callback(cur)], []);
 // }
 // console.log("arr.map", arr.reduceMap((v, i) => v * 2));
+// 0 1 2 3 5 8 
+function fibnacci(n) {
+    if(n === 0) return 0;
+    if(n === 1) return 1;
+    return fibnacci(n - 1) + fibnacci(n -2);
+}
+console.log("fibnacci(5)", fibnacci(6));
+
+function fibnacci1(n, result, prev) {
+    
+}
+console.log("fibnacci1(6)", fibnacci1(6, 0, 1));
