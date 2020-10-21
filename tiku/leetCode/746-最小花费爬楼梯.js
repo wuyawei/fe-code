@@ -29,9 +29,9 @@ cost 的长度将会在 [2, 1000]。
  * 爬到第i级台阶的最小花费，等于爬到前1级或前2级的最小花费中最小的那个再加本级花费 cost[i]
  * 第一级 dp[0] 有一种情况 cost[0]
  * 第二级 有两种，可以从0到1，也可以直接1；
- * 即 dp[1] = Math.min(cost[0]+cost[1], cost[1]) = cost[1]； 因为是非负整数；
+ * 即 dp[1] = Math.min(cost[0]+cost[1], 0 + cost[1]) = cost[1]； 因为是非负整数；
  * 所以转移方程 dp[i] = Math.min(dp[i-1], dp[i-2]) + cost[i];
- * 根据题意，爬到第n级，也就是最后一级台阶时，不花费
+ * 根据题意，爬到第n级（下标为 n），也就是最后一级台阶时，不花费
  * 所以 if(i === n) {
             dp[i] = Math.min(dp[i-1], dp[i-2]);
         }
@@ -62,7 +62,7 @@ var minCostClimbingStairs1 = function(cost) {
     const dp = [];
     dp[0] = cost[0];
     dp[1] = cost[1];
-    for(let i = 2; i < n; i++) { 
+    for(let i = 2; i < n; i++) {
         dp[i] = Math.min(dp[i-1], dp[i-2]) + cost[i]; 
     }
     return dp[n-1];
