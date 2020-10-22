@@ -72,9 +72,9 @@ const applyMiddleware = (...middlewares) => {
 //         return store
 //     }
 // }
-// const store = createStore(reducer, compose(applyMiddleware(logger), storeEnhancer));
+// const store = createStore(reducer, compose(applyMiddleware(logger), storeEnhancer()));
 // 等同于
-// const store = compose(applyMiddleware(logger), storeEnhancer)(createStore)(reducer, ...args);
+// const store = compose(applyMiddleware(logger), storeEnhancer())(createStore)(reducer, ...args);
 // compose 用来连接多个 storeEnhancer（增强器） 和 applyMiddleware（中间件）
 // 每个增强器返回以下函数，作为下一个增强器或者 applyMiddleware 的 createStore，最终得到一个叠加的，增强过的 store。
 //  (reducer, ...args) => {

@@ -1,5 +1,5 @@
 const combineReducers = (reducers) => {
-    const resultReducers = {}; 
+    const resultReducers = {};
     Object.keys(reducers).forEach(K => {
         if (typeof reducers[k] === 'function') {
             resultReducers[k] = reducers[k];
