@@ -522,15 +522,61 @@ const data = [
 //    return this.reduce((pre, cur) => [...pre, callback(cur)], []);
 // }
 // console.log("arr.map", arr.reduceMap((v, i) => v * 2));
-// 0 1 2 3 5 8 
+
+
+// 斐波那契
+// 0 1 1 2 3 5 8 
+// 普通
 function fibnacci(n) {
     if(n === 0) return 0;
     if(n === 1) return 1;
     return fibnacci(n - 1) + fibnacci(n -2);
 }
-console.log("fibnacci(5)", fibnacci(6));
+// console.log("fibnacci(5)", fibnacci(5));
 
-function fibnacci1(n, result, prev) {
-    
+// 尾递归
+function fibnacci1(n, a1, a2) {
+    if(n === 0) return a1;
+    return fibnacci1(n - 1, a2, a1 + a2 );
 }
-console.log("fibnacci1(6)", fibnacci1(6, 0, 1));
+// console.log("fibnacci1(6)", fibnacci1(5, 0, 1));
+
+// 迭代
+function fibnacciWithLoop(n, a1 = 0, a2 = 1) {
+    while(n-- > 0) {
+        [a1, a2] = [a2, a1 + a2];
+    }
+    return a1;
+}
+// console.log("fibnacciWithLoop -> fibnacciWithLoop", fibnacciWithLoop(5, 0, 1));
+
+// 蹦床函数
+// 如果函数返回值是一个函数，就继续调用，直到不是函数
+function trampoline(f) {
+    while (f && f instanceof Function) {
+      f = f();
+    };
+    return f;
+}
+function fibnacciWithTram(n, a1 = 0, a2 = 1) {
+    if(n === 0) return a1;
+    return fibnacci1.bind(null, n - 1, a2, a1 + a2);
+} 
+console.log("trampoline", trampoline(fibnacciWithTram(8000)));
+
+// n 的阶乘
+// 非尾递归
+function factorial1(n) {
+    if(n === 1) return 1;
+    return n * factorial1(n - 1);
+}
+// console.log("factorial1 -> factorial1", factorial1(5));
+
+// 尾递归
+// 核心思路是把return 的表达式，改写在尾部调用函数的参数中
+// 保证尾调用函数在运行时，不依赖外层函数的变量等
+function factorial(n, total) {
+    if(n === 1) return n * total;
+    return factorial(n - 1, n * total);
+}
+// console.log("factorial -> factorial", factorial(100, 1));
