@@ -21,3 +21,7 @@ const jsonp = function ({url, params, callback}) {
 if (typeof module !== 'undefined' && !module.nodeType && module.exports) {
     module.exports = jsonp;
 }
+console.log('123')
+const dom = document.querySelector('.red')
+dom.style.color='red';
+dom.style.marginLeft = '100px';

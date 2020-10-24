@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>wuyw</title>
+    <link rel="stylesheet" href="/1.css">
 </head>
 <body>
-hello world
-<div id="user"></div>
-<p id="getuser"></p>
-</body>
+
+<div id="getuser" class="red">getuser</div>
+<script src="https://h5.koocdn.com/chuguo/toefl-h5/static/js/login.js"></script>
+<div id="user" class="red">hello world</div>
 <script src="jsonp.js"></script>
+</body>
+
 <script>
-    jsonp({
-        url: 'http://localhost:3001/getuser',
-        params: {},
-        callback: 'getuser'
-    }).then(r => {
-        setTimeout(_ => {
-            let user = document.querySelector('#user');
-            user.innerText = r;
-        }, 1000);
-        console.log(r);
-    });
+    // jsonp({
+    //     url: 'http://localhost:3001/getuser',
+    //     params: {},
+    //     callback: 'getuser'
+    // }).then(r => {
+    //     setTimeout(_ => {
+    //         let user = document.querySelector('#user');
+    //         user.innerText = r;
+    //     }, 1000);
+    //     console.log(r);
+    // });
     // fetch('https://localhost:3001/getuser?callback=getuser').then(res => res.text()).then(r => {
     //     setTimeout(_ => {
     //         let getuser = document.querySelector('#getuser');
@@ -29,12 +32,12 @@ hello world
     //     }, 1000);
     // })
 </script>
-<script type="module">
+<!-- <script type="module">
     import {a, setA} from './module.js';
     console.log(a);
     setTimeout(() => {
         setA();
         console.log(a);
     }, 1000); 
-</script>
+</script> -->
 </html>
