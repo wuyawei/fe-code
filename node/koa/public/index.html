@@ -31,6 +31,30 @@
     //         getuser.innerText = r;
     //     }, 1000);
     // })
+    // window.addEventListener('error', (error) => {
+    //     console.log('addEventListener', error);
+    // }, true)
+    // window.onerror = function (event, source, lineno, colno, error) {
+    //     console.log('onerror', error);
+    //     // return true
+    // };
+    // try {
+    //     setTimeout(() => {
+    //         aa;
+    //     });
+    // } catch (e){
+    //     console.log('try catch', e)
+    // }
+    window.addEventListener('rejectionhandled', (event) => {
+        console.log(event)
+    }, true);
+    window.addEventListener('unhandledrejection', (event) => {
+        console.log(event)
+    }, true);
+    let a = Promise.reject('eee');
+    setTimeout(() => {
+        a.catch(() => '456');
+    })
 </script>
 <!-- <script type="module">
     import {a, setA} from './module.js';
