@@ -562,7 +562,7 @@ function fibnacciWithTram(n, a1 = 0, a2 = 1) {
     if(n === 0) return a1;
     return fibnacci1.bind(null, n - 1, a2, a1 + a2);
 } 
-console.log("trampoline", trampoline(fibnacciWithTram(8000)));
+// console.log("trampoline", trampoline(fibnacciWithTram(8000)));
 
 // n 的阶乘
 // 非尾递归
@@ -580,3 +580,33 @@ function factorial(n, total) {
     return factorial(n - 1, n * total);
 }
 // console.log("factorial -> factorial", factorial(100, 1));
+
+// 数组的拍平
+const isArray = arr => Array.isArray(arr);
+const myflat = (arr) => {
+    let result = [];
+    arr.forEach(v => {
+        if(isArray(v)) {
+            const res = myflat(v);
+            result = result.concat(res);
+        } else {
+            result.push(v);
+        }
+    })
+    return result;
+}
+const arr1 = [1,2,[3,4,[5,6]]];
+// console.log("myflat(arr1)", myflat(arr1));
+
+const myflat1 = (arr) => {
+    return arr.reduce((pre, cur) => {
+        let res = [];
+        if(isArray(cur)) {
+            res = res.concat(myflat1(cur));
+        } else {
+            res.push(cur);
+        }
+        return [...pre, ...res];
+    }, []);
+}
+console.log("myflat1", myflat1(arr1));
