@@ -16,6 +16,7 @@ const insertSort = (arr) => {
                 // 找到最终位置
                 target = j;
             } else {
+                // 如果已排列表中，最大的一个都比 target 小，那本次循环可以跳过
                 break;
             }
         }

@@ -33,4 +33,18 @@
         }
         next();
     }
-    co(fn)
+    // co(fn)
+
+    // 输入中文字符串，统计中文种类及出现字数
+    const echocount = (str) => {
+        const map = {};
+        for (let i = 0; i < str.length; i++) {
+            if(map[str[i]]) {
+                map[str[i]]++;
+            } else {
+                map[str[i]] = 1;
+            }
+        }
+        return map;
+    }
+    console.log("echocount('所产所生的的监察局范德萨')", echocount('所产所生的的监察局范德萨'));
