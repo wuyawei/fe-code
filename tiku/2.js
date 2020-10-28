@@ -29,7 +29,7 @@
         const next = (res) => {
             const {value, done} = gen.next(res);
             if (done) return;
-            value.then(res => next(res));
+            value.then(next);
         }
         next();
     }
