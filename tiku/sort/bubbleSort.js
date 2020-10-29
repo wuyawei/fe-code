@@ -1,6 +1,6 @@
 const bubbleSort = (arr) => {
     for(let i = 0; i < arr.length; i++) {
-        for(let j = 0; j < arr.length - i; j++) {
+        for(let j = 0; j < arr.length - i - 1; j++) {
             if(arr[j] > arr[j+1]) {
                 let tmp = arr[j];
                 arr[j] = arr[j+1];
@@ -44,7 +44,7 @@ const bubbleSort3 = (arr) => {
     return arr;
 }
 
-const arr = [1,3,6,8,7,5,2, 1, 12];
-// console.log(bubbleSort(arr));
+const arr = [12, 1,3,6,8,7,5,2, 1];
+console.log(bubbleSort(arr));
 // console.log(bubbleSort1(arr));
-console.log(bubbleSort3(arr));
+// console.log(bubbleSort3(arr));
