@@ -1,5 +1,3 @@
-const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
-
 const bubbleSort = (arr) => {
     for(let i = 0; i < arr.length; i++) {
         for(let j = 0; j < arr.length - i; j++) {
