@@ -16,15 +16,8 @@
 // trafficLight().lightUp('red').wait(2000).lightUp('yellow').wait(1000).lightUp('green')
 
 const parseToMoney = (num) => {
-    num = num.toFixed(3);
     let [start, end] = (num+'').split('.');
-    while(end[end.length -1] === '0') {
-        if(end === '0') {
-            end = ''
-        }else {
-            end = end.slice(0, -1);
-        }
-    }
+    end = end && end.slice(0, 3);
     end = end ? '.'+end : ''
     let str = '';
     let index = 1;
@@ -82,4 +75,4 @@ const createTrafficLight = () => {
     return () => light;
 }
 const trafficLight = createTrafficLight();
-trafficLight().lightUp('red').wait(2000).lightUp('yellow').wait(1000).lightUp('green')
+// trafficLight().lightUp('red').wait(2000).lightUp('yellow').wait(1000).lightUp('green')
