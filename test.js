@@ -76,3 +76,4 @@ const createTrafficLight = () => {
 }
 const trafficLight = createTrafficLight();
 // trafficLight().lightUp('red').wait(2000).lightUp('yellow').wait(1000).lightUp('green')
+

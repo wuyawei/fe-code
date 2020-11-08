@@ -9,7 +9,7 @@
     //         console.log(new Date(), n)
     //     }, n * 1000))(i)
     // }
-    
+
     // 间隔 0、1、2、3、4 s 并输出对应值
     const p = (n) => {
         return new Promise((resolve, reject) => setTimeout(() => {
@@ -47,4 +47,4 @@
         }
         return map;
     }
-    console.log("echocount('所产所生的的监察局范德萨')", echocount('所产所生的的监察局范德萨'));
+    // console.log("echocount('所产所生的的监察局范德萨')", echocount('所产所生的的监察局范德萨'));
