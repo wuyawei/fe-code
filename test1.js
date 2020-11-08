@@ -15,12 +15,13 @@ function convert(num) {
     }
     return str;
 }
-console.log(convert(26)) // Z
-console.log(convert(52)) // AZ
-console.log(convert(54)) // BB
-console.log(convert(27)) // AA
-console.log(convert(78)) // BZ
-console.log(convert(999)) // ALK
+// console.log(convert(26)) // Z
+// console.log(convert(52)) // AZ
+// console.log(convert(54)) // BB
+// console.log(convert(27)) // AA
+// console.log(convert(78)) // BZ
+// console.log(convert(999)) // ALK
+// console.log(convert(99999)) // EQXC
 
 
 
@@ -30,10 +31,30 @@ console.log(convert(999)) // ALK
 // str = "2[e2[d]]", 返回 "eddedd"
 // str = "3[abc]2[cd]ff", 返回 "abcabcabccdcdff".
 // 可以看出: N[string]，表示string 正好重复 N 次。假设字符串一定是有效正确的字符串
-// function decodeStr(inputStr) {
-// }
-// console.log(decodeStr("2[a]1[bc]"))
+function decodeStr(inputStr) {
+    const queue = [];
+    let index = 0;
+    let str = '';
+    while(index < inputStr.length) {
+        if(inputStr[index] === '[') {
+            queue.push(index);
+        } else if(inputStr[index] === ']') {
+            const i = queue.pop();
+            let item = inputStr.slice(i + 1, index);
+            let num = inputStr[i-1];
+            let s = '';
+            while(num > 0) {
+                s+=item;
+                num --;
+            }
+            str+=s;
+        }
+        index++;
+    }
+    return str;
+}
+console.log(decodeStr("2[a]1[bc]"))
 // console.log(decodeStr("2[e2[d]]"))
-// console.log(decodeStr("3[abc]2[cd]ff"))
+console.log(decodeStr("3[abc]2[cd]ff"))
 
 
