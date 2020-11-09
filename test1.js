@@ -26,35 +26,42 @@ function convert(num) {
 
 
 
-// 实现一个方法decodeStr，输入一个字符串，根据约定规则输出编码结果。约定规则如下：
+// 实现一个方法 decodeStr，输入一个字符串，根据约定规则输出编码结果。约定规则如下：
 // str = "2[a]1[bc]", 返回 "aabc".
 // str = "2[e2[d]]", 返回 "eddedd"
 // str = "3[abc]2[cd]ff", 返回 "abcabcabccdcdff".
 // 可以看出: N[string]，表示string 正好重复 N 次。假设字符串一定是有效正确的字符串
 function decodeStr(inputStr) {
-    const queue = [];
-    let index = 0;
-    let str = '';
+    const stack = [];
+    let index = 0; 
     while(index < inputStr.length) {
-        if(inputStr[index] === '[') {
-            queue.push(index);
-        } else if(inputStr[index] === ']') {
-            const i = queue.pop();
-            let item = inputStr.slice(i + 1, index);
-            let num = inputStr[i-1];
-            let s = '';
-            while(num > 0) {
-                s+=item;
-                num --;
+        if(inputStr[index] !== ']') {
+            stack.push(inputStr[index]);
+        } else {
+            let tmp = '';
+            if(inputStr[index] === ']') {
+                while(stack[stack.length - 1] !== '[') {
+                    tmp = stack.pop() + tmp;
+                }
+                stack.pop();
+                let step = 1;
+                let num = 0;
+                while(typeof +stack[stack.length - 1] === 'number' && !Object.is(NaN, +stack[stack.length - 1])) {
+                    num = num + step * stack.pop();
+                    step = step * 10;
+                }
+                while(num > 0) {
+                    stack.push(tmp);
+                    num--;
+                }
             }
-            str+=s;
         }
         index++;
     }
-    return str;
-}
-console.log(decodeStr("2[a]1[bc]"))
-// console.log(decodeStr("2[e2[d]]"))
-console.log(decodeStr("3[abc]2[cd]ff"))
+    return stack.join('');
+};
+console.log(decodeStr("2[a]1[bc]"));
+console.log(decodeStr("2[e2[d]]"));
+console.log(decodeStr("3[abc]2[cd]ff"));
 
 
