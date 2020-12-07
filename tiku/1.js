@@ -596,6 +596,7 @@ const myflat = (arr) => {
     return result;
 }
 const arr1 = [1,2,[3,4,[5,6]]];
+
 // console.log("myflat(arr1)", myflat(arr1));
 
 const myflat1 = (arr) => {
@@ -610,3 +611,4 @@ const myflat1 = (arr) => {
     }, []);
 }
 console.log("myflat1", myflat1(arr1));
+// 测试
