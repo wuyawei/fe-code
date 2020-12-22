@@ -8,9 +8,9 @@ const Calendar = lazy(() => import('./Calendar/index'));
 const Touch = lazy(() => import('./Touch'));
 const Carousel = lazy(() => import('./Carousel'));
 const Test = lazy(() => import('./Test/index'));
-const ToScroll = lazy(() => import('./ToScroll/index'))
-const Lazy = lazy(() => import('./Lazy'))
-const Ability = lazy(() => import('./Ability'))
+const ToScroll = lazy(() => import('./ToScroll/index'));
+const Lazy = lazy(() => import('./Lazy'));
+const Ability = lazy(() => import('./Ability'));
 
 function AppRouter() {
   return (
