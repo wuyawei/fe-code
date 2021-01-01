@@ -8,6 +8,7 @@ const createThunkMiddleware = (extraArgument) => ({dispatch, getState}) => next 
 const thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
+
 // const api = "http://www.example.com/sandwiches/";
 // const whatever = 42;
 // const store = createStore(
