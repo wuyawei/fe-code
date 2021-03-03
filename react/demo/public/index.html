@@ -35,4 +35,28 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+    window.addEventListener('unhandledrejection', event =>
+    {
+        console.log(event.reason); // 打印"Hello, Fundebug!"
+    });
+
+    window.addEventListener('rejectionhandled', event =>
+    {
+        console.log('rejection handled'); // 1秒后打印"rejection handled"
+    });
+
+
+    function foo()
+    {
+        return Promise.reject('Hello, Fundebug!');
+    }
+
+    var r = foo();
+
+    setTimeout(() =>
+    {
+        r.catch(e =>{});
+    }, 3000);
+  </script>
 </html>

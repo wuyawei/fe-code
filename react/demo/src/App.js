@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import 'antd-mobile/dist/antd-mobile.css'; 
 import './App.css';
-const About = lazy(() => import('./About'));
+const About = lazy(() => import('./About'))
 const Game = lazy(() => import('./Game'));
 const Calendar = lazy(() => import('./Calendar/index'));
 const Touch = lazy(() => import('./Touch'));

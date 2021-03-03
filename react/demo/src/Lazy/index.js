@@ -9,7 +9,7 @@ const fetch = async() => {
     if (!cache.k) {
         cache.k = fn();
     }
-    newData = await cache.k;
+    newData = await cache.k
     cache.k = newData;
     return true;
 };
