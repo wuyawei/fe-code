@@ -48,18 +48,18 @@ function useState(initialState) {
 
 ``` javascript
 function useState(initialState) {
-HOOKS[currentIndex] = HOOKS[currentIndex]
-    || (typeof initialState === 'function' ? initialState() : initialState);
-const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的，需要保存本次的
-const setState = p => {
-    let newState = p;
-    // setCount(count => count + 1)  判断这种用法
-    if (typeof p === 'function') newState = p(HOOKS[memoryCurrentIndex]);
-    // 如果设置前后的值一样，就不更新了
-    if (newState === HOOKS[memoryCurrentIndex]) return;
-    HOOKS[memoryCurrentIndex] = newState;
-};
-return [HOOKS[currentIndex++], setState];
+    HOOKS[currentIndex] = HOOKS[currentIndex]
+        || (typeof initialState === 'function' ? initialState() : initialState);
+    const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的，需要保存本次的
+    const setState = p => {
+        let newState = p;
+        // setCount(count => count + 1)  判断这种用法
+        if (typeof p === 'function') newState = p(HOOKS[memoryCurrentIndex]);
+        // 如果设置前后的值一样，就不更新了
+        if (newState === HOOKS[memoryCurrentIndex]) return;
+        HOOKS[memoryCurrentIndex] = newState;
+    };
+    return [HOOKS[currentIndex++], setState];
 }
 ```
 
@@ -104,25 +104,25 @@ useEffect 充当了 class 中的生命周期的角色，我们更多地用来通
 
 ``` javascript
 function useEffect(fn, deps) {
-const hook = HOOKS[currentIndex];
-const _deps = hook && hook._deps;
-// 判断是否传了依赖，没传默认每次更新
-// 判断本次依赖和上次的是否全部一样
-const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
-const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的
-if (hasChange) {
-    const _effect = hook && hook._effect;
-    setTimeout(() => {
-        // 每次先判断一下有没有上一次的副作用需要卸载
-        typeof _effect === 'function' && _effect();
-        // 执行本次的
-        const ef = fn();
-        // 更新effects
-        HOOKS[memoryCurrentIndex] = {...HOOKS[memoryCurrentIndex], _effect: ef};
-    })
-}
-// 更新依赖
-HOOKS[currentIndex++] = {_deps: deps, _effect: null};
+    const hook = HOOKS[currentIndex];
+    const _deps = hook && hook._deps;
+    // 判断是否传了依赖，没传默认每次更新
+    // 判断本次依赖和上次的是否全部一样
+    const hasChange = _deps ? !deps.every((v, i) => _deps[i] === v) : true;
+    const memoryCurrentIndex = currentIndex; // currentIndex 是全局可变的
+    if (hasChange) {
+        const _effect = hook && hook._effect;
+        setTimeout(() => {
+            // 每次先判断一下有没有上一次的副作用需要卸载
+            typeof _effect === 'function' && _effect();
+            // 执行本次的
+            const ef = fn();
+            // 更新effects
+            HOOKS[memoryCurrentIndex] = {...HOOKS[memoryCurrentIndex], _effect: ef};
+        })
+    }
+    // 更新依赖
+    HOOKS[currentIndex++] = {_deps: deps, _effect: null};
 }
 ```
  
