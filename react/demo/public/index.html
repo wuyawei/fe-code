@@ -36,29 +36,30 @@
     -->
   </body>
   <script>
-    window.addEventListener('unhandledrejection', event => {
-        console.log(event.reason);
-    });
+    // window.addEventListener('unhandledrejection', event => {
+    //     console.log(event.reason);
+    // });
 
-    window.addEventListener('rejectionhandled', event => {
-        console.log('rejection handled', event);
-    });
+    // window.addEventListener('rejectionhandled', event => {
+    //     console.log('rejection handled', event);
+    // });
 
-    function foo() {
-        return Promise.reject('出错了AAA');
-    }
+    // function foo() {
+    //     return Promise.reject('出错了AAA');
+    // }
 
-    var r = foo();
+    // var r = foo();
 
-    try {
-          Promise.reject('出错了BBB')
-        } catch (error) {
-          console.log('error: ', error);
-    }
+    // try {
+    //       Promise.reject('出错了BBB')
+    //     } catch (error) {
+    //       console.log('error: ', error);
+    // }
 
-    setTimeout(() => {
-        r.catch(e =>{});
-    }, 3000);
+    // // r.catch(e =>{});
+    // setTimeout(() => {
+    //     r.catch(e =>{});
+    // }, 3000);
 
   </script>
 </html>
