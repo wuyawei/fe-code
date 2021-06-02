@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>wuyw</title>
-    <link rel="stylesheet" href="/1.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/1.css" />
+  </head>
+  <body>
+    <div id="getuser" class="red">getuser</div>
+    <script src="https://h5.koocdn.com/chuguo/toefl-h5/static/js/login.js"></script>
+    <div id="user" class="red">hello world</div>
+    <script src="jsonp.js"></script>
+  </body>
 
-<div id="getuser" class="red">getuser</div>
-<script src="https://h5.koocdn.com/chuguo/toefl-h5/static/js/login.js"></script>
-<div id="user" class="red">hello world</div>
-<script src="jsonp.js"></script>
-</body>
-
-<script>
+  <script>
     // jsonp({
     //     url: 'http://localhost:3001/getuser',
     //     params: {},
@@ -45,18 +44,35 @@
     // } catch (e){
     //     console.log('try catch', e)
     // }
-    window.addEventListener('rejectionhandled', (event) => {
-        console.log(event)
-    }, true);
-    window.addEventListener('unhandledrejection', (event) => {
-        console.log(event)
-    }, true);
-    let a = Promise.reject('eee');
+    window.addEventListener(
+      "rejectionhandled",
+      (event) => {
+        console.log(event);
+      },
+      true
+    );
+    window.addEventListener(
+      "unhandledrejection",
+      (event) => {
+        console.log("event: ", 11111);
+        // event.stopImmediatePropagation();
+      },
+      true
+    );
+    window.addEventListener(
+      "unhandledrejection",
+      (event) => {
+        console.log(22222);
+        event.stopImmediatePropagation();
+      },
+      true
+    );
+    let a = Promise.reject("eee");
     setTimeout(() => {
-        a.catch(() => '456');
-    })
-</script>
-<!-- <script type="module">
+      a.catch(() => "456");
+    });
+  </script>
+  <!-- <script type="module">
     import {a, setA} from './module.js';
     console.log(a);
     setTimeout(() => {
