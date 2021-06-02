@@ -44,33 +44,33 @@
     // } catch (e){
     //     console.log('try catch', e)
     // }
-    window.addEventListener(
-      "rejectionhandled",
-      (event) => {
-        console.log(event);
-      },
-      true
-    );
-    window.addEventListener(
-      "unhandledrejection",
-      (event) => {
-        console.log("event: ", 11111);
-        // event.stopImmediatePropagation();
-      },
-      true
-    );
-    window.addEventListener(
-      "unhandledrejection",
-      (event) => {
-        console.log(22222);
-        event.stopImmediatePropagation();
-      },
-      true
-    );
-    let a = Promise.reject("eee");
-    setTimeout(() => {
-      a.catch(() => "456");
-    });
+    // window.addEventListener(
+    //   "rejectionhandled",
+    //   (event) => {
+    //     console.log(event);
+    //   },
+    //   true
+    // );
+    // window.addEventListener(
+    //   "unhandledrejection",
+    //   (event) => {
+    //     console.log("event: ", 11111);
+    //     // event.stopImmediatePropagation();
+    //   },
+    //   true
+    // );
+    // window.addEventListener(
+    //   "unhandledrejection",
+    //   (event) => {
+    //     console.log(22222);
+    //     event.stopImmediatePropagation();
+    //   },
+    //   true
+    // );
+    // let a = Promise.reject("eee");
+    // setTimeout(() => {
+    //   a.catch(() => "456");
+    // });
   </script>
   <!-- <script type="module">
     import {a, setA} from './module.js';
