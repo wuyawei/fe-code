@@ -7,7 +7,7 @@
     "antd": "^3.19.3",
     "antd-mobile": "^2.3.1",
     "better-scroll": "^1.15.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
