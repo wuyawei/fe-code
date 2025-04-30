@@ -1,5 +1,5 @@
 /* 
-给定一个矩阵 A， 返回 A 的转置矩阵。
+给定一个矩阵 A， 返回 A 的转置矩阵。
 
 矩阵的转置是指将矩阵的主对角线翻转，交换矩阵的行索引与列索引。
 
@@ -11,6 +11,12 @@
 
 输入：[[1,2,3],[4,5,6]]
 输出：[[1,4],[2,5],[3,6]]
+123
+456
+--
+14
+25
+36
 */
 
 
@@ -26,14 +32,16 @@
  * @return {number[][]}
  */
 var transpose = function(A) {
-    let b = A.length - 1;
-    let r = A[0].length - 1;
-    let a = [];
-    for(let l = 0;l<=r;l++) {
-        a[l] = []
-        for(let t = 0; t <= b; t++) {
-            a[l].push([A[t][l]]);
+    const rows = A.length; // 2
+    const cols = A[0].length; // 3
+    const result = [];
+    
+    for (let c = 0; c < cols; c++) {
+        result[c] = [];
+        for (let r = 0; r < rows; r++) {
+            result[c].push(A[r][c]);
         }
     }
-    return a;
+    
+    return result;
 };

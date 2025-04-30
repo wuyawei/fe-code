@@ -61,3 +61,21 @@ delay(1000).then(_ => {
 })
 
 // 等待1s 输出 1、2 再等0.5s 输出 3、4
+
+const createFetch = () => {
+    const queue = []
+    return (time, callback) => {
+        queue.push({
+            delay: delay(time),
+            callback
+        })
+        const next = (result) => {
+            if(!queue.length) return
+            const {delay, callback} = queue.shift()
+            delay.then(res => {
+                next(callback(result))
+            })
+        }
+        next()
+    }
+}

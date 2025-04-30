@@ -11,4 +11,5 @@ const createElement = (type, props, ...children) => {
     return new Element(type, props);
 }
 
+export { Element };
 export default createElement;

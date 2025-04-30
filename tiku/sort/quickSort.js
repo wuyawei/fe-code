@@ -15,6 +15,24 @@ const quickSort = arr => {
 }
 
 
+const quickSortRandom = (arr) => {
+    if(arr.length <=1 ) return arr
+    const index = Math.floor(Math.random() * arr.length)
+    const target = arr[index]
+    const left = []
+    const right = []
+    for(let i = 0; i<arr.length;i++) {
+        if(i === index) continue;  // 跳过基准值
+        if(arr[i] < target) {
+            left.push(arr[i])
+        }else {
+            right.push(arr[i])
+        }
+    }
+    return quickSortRandom(left).concat([target], quickSortRandom(right))
+}
+
+
 const quickSort2 = (arr) => {
     quick(arr, 0, arr.length-1);
     return arr;

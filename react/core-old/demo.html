@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易版 React Demo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        #root {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .counter {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        button {
+            cursor: pointer;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #3a80d2;
+        }
+        h1, h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- 仅使用一个简单的脚本标签 -->
+    <script type="module">
+        // 清除所有可能的全局状态
+        window._reactAppStarted = undefined;
+        window._reactApp = undefined;
+        window._reactEventsInitialized = undefined;
+        window._reactAppInitialized = undefined;
+        
+        // 手动导入应用并执行一次
+        import startApp from './demo.js';
+        
+        // 直接启动应用，不使用任何条件判断
+        setTimeout(() => {
+            document.getElementById('root').innerHTML = '';
+            startApp();
+        }, 0);
+    </script>
+</body>
+</html> 

@@ -16,21 +16,49 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
+
+// 新建节点，不改变原链表
+const reverseListI = (oldList) => {
+    let newList = null;
+    let curr = oldList;
+    while(curr) {
+        const node = new ListNode(curr.val);
+        node.next = newList;
+        newList = node;
+        curr = curr.next;
+    }
+    return newList;
+}
+
 // 迭代
-// var reverseList = function(head) {
-//     let curr = head;
-//     let node = null;
-//     while(curr) {
-//         let tmp = curr.next;
-//         curr.next = node;
-//         node = curr;
-//         curr = tmp;
-//     }
-//     return node;
-// };
+const reverseList = (head) => {
+    let prev = null;
+    let curr = head;
+    while (curr) {
+        let temp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = temp;
+    }
+    return prev;
+}
+
+const reverseListR = (head) => {
+    let prev = null;
+    let curr = head;
+    const _reverse = (p, c) => {
+        if(!c) return p;
+        let temp = c.next;
+        c.next = p;
+        return _reverse(temp, c)
+    }
+    return _reverse(prev, curr)
+}
+
+
 
 // 递归
-var reverseList = function(head) {
+var reverseListO = function(head) {
     let curr = head;
     let result = null;
     const reverse = (cur, res) => {

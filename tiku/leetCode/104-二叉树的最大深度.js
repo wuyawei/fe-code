@@ -24,6 +24,24 @@
  *     this.left = this.right = null;
  * }
  */
+const findDeep = (root) => {
+    let maxLen = 0;
+    let level = 0;
+    const travers = (node) => {
+        if(!node) {
+            maxLen = Math.max(level, maxLen)
+        }
+        level++
+        travers(node.left)
+        travers(node.right)
+        level--
+    }
+    travers(root)
+    return maxLen
+}
+
+
+
 /**
  * @param {TreeNode} root
  * @return {number}
