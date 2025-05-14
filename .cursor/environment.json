@@ -1,0 +1,21 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "user": "ubuntu",
+  "install": "./.cursor/install.sh",
+  "start": "",
+  "terminals": [
+    {
+      "name": "dev",
+      "command": "cd /workspace && npm run dev",
+      "description": "启动前端开发服务器"
+    },
+    {
+      "name": "test",
+      "command": "cd /workspace && npm run test",
+      "description": "运行测试"
+    }
+  ]
+}
