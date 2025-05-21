@@ -20,9 +20,3 @@
 感兴趣的同学可以关注下我的公众号 **前端发动机**，好玩又有料。
 
 ![](https://user-gold-cdn.xitu.io/2019/7/21/16c14d1d0f3be11e?w=400&h=400&f=jpeg&s=34646)
-
-## 交流群
-
-> 微信群请加我微信，回复加群
-
-![](https://raw.githubusercontent.com/wuyawei/fe-code/master/user.jpg)
